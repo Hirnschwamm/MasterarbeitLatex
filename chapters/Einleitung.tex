@@ -1,8 +1,31 @@
 \chapter{Einleitung}
 \label{chap:Einleitung}
 
+DUMMY CITATION DAMIT BIBTEX SEINE SCHEISS FRESSE HÄLT UND DEN SCHEISS BAUT: \cite{Coloouris:02}
+
 \section{MyContactCenter}
-TODO
+In vielen Bereichen modernen Lebens hat sich seit dem Anstoß des digitalen Zeitalters ein signifikanter Wandel eingestellt [CITATION]. Das weite Feld  der zwischenmenschlichen Kommunikation zeigt dies wie kaum ein anderes auf. Auch an der Schnittstelle zwischen Privat- und Arbeitsleben zeigt sich diese Modernisierung und im Speziellen an der Kommunikation zwischen Unternehmen und ihren Kunden. Eine moderne Institution dieser Kommunikation ist das Contact Center. Hierbei handelt es sich um einen zentralen Anlaufpunkt für Kunden, an dem diese über verschiedene Kommunikationskanäle ein Anliegen anbringen können, welches von Agenten des Unternehmens bearbeitet wird. Diese Kommunikation ist jedoch nicht einseitig: Auch Contact Center nehmen Kontakt zur Kundschaft auf, um beispielsweise Marktforschung zu betreiben. 
+\newline
+Moderne Call Center setzen vermehrt auf die Möglichkeiten des Internets und im speziellen auf IP-Telephonie, um Ihre Anforderungen der Kommunikation zu erfüllen [CITATION]. Die von der Firma ilogixx hergestellte Software-Lösung MyContactCenter (im Folgenden mit MyCC abgekürzt) hat zum Ziel, Betreiber von Contact Center dabei zu unterstützen. Eine Kernaufgabe der Anwendung ist die Automatische Kontakt Verteilung (kurz ACD für automatic contact distribution). Das Produkt nimmt hierbei Anfragen auf unterschiedlichen Kommunikationskanälen entgegen, kategorisiert diese nach Sprache und Aufgabenbereich, und teilt sie freien Agenten zu, welche für diese Aufgabenbereiche beziehungsweise Sprache eingeteilt sind. Die Agenten interagieren nun über MyCC mit dem Anfragenden, bis die Kommunikation auf beiden Seiten beendet wird. Anschließend hat der Agent nun eine Nachbearbeitungszeit, in der das Anliegen des Anfragenden zu Ende gebracht werden kann. Danach ist der Agent wieder für die nächste Anfrage frei.
+\newline
+MyContactCenter ist eine verteilte Anwendung. Die Hauptkomponente ist der Server, welcher den Großteil der Verwaltungsaufgaben übernimmt. Er verwaltet eine Liste der angemeldeten Agenten, sowie deren aktuellen Kommunikationsstatus (frei, im Gespräch, etc.) und Nutzerdaten (Name, Sprache, Kompetenzbereich, etc.). Auch gehört das Kategorisieren und Zuordnen von Anfragen während der automatischen Kontakt Verteilung, und das weiterleiten dieser an den nächsten freien Agenten zu seinen Aufgaben. Konfiguriert wird der Server über einen Administrations-Client. Hier kann der Administrator des Contact Centers alle für den Betrieb benötigten Einstellungen vornehmen, wie zum Beispiel das Anlegen von neuen Sprachen und Aufgabenbereichen, oder das Verwalten von Agenten-Daten. Agenten besitzen eine eigene Client-Anwendung, die sich für die Dauer der Nutzungszeit am Server anmeldet.  Mit diesem Client kann der Agent vom Server erhaltene Anfragen bearbeiten, also zum Beispiel auf eine Email antworten oder sein IP-Telefon steuern. Dabei setzt MyCC auf bestehende Kommunikations-Infrastruktur auf. So wird beispielsweise die eigentliche IP-Telefonie nicht von MyCC implementiert, sondern von einer darunter liegenden Telefonanlage, mit der MyCC über eine Scripting-Schnittstelle kommuniziert.
+\newline
+Die Vermittlung einer Konversationsanfrage eines Kunden zu einem Agenten stellt also eine der Hauptaufgaben von MyContactCenter dar. Die vorliegende Ausarbeitung beschäftigt sich mit dem Entwurf und der Implementierung einer Erweiterung des Produktes, welche es den Betreibern des Contact Centers ermöglichen soll, noch mehr Kontrolle über die Behandlung der Konversationsanfrage zu erhalten. Mittels einer domänenspezifischen Sprache soll durch den Administrator das Konversationsrouting programmierbar sein, wie eine eingehende Anfrage vor und nach der Zustellung zum Agenten behandelt wird.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{Motivation}
 TODO
