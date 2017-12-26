@@ -48,16 +48,16 @@ Als Benutzer von MyContactCenter stehen die Anwender der DSL häufig in Kontakt 
 
 
 \section{Benötigtes Vorwissen}
-MyContactCenter kommt in einem umfangreichen Ökosystem von Drittanbieter-Software zum Einsatz. Dementsprechend kommt auch die Implementierung der DSL nicht ohne den Einsatz einiger schon existierender Technologien zum Einsatz. Für das weitere Verständnis der vorliegenden Arbeit sind die Prinzipien einiger dieser Technologien nicht unwichtig und sollen im Folgenden etwas näher beleuchtet werden. 
+MyContactCenter kommt in einem umfangreichen Ökosystem von Drittanbieter-Software zum Einsatz. Für das weitere Verständnis der vorliegenden Arbeit werden die Prinzipien einiger Technologien erläutert, welche Einfluss auf die Implementierung der domänenspezifischen Sprache nehmen. 
 
 \subsection{.NET}
-TODO 
- 
+MyContactCenter und die DSL ist mit dem Microsoft .NET Software Framework entwickelt worden. Hauptbestandteile von .NET ist die Microsoft Intermediate Language (MSIL), auch genannt Common Intermediate Langugage (CIL), und die Common Intermediate Runtime (CLR), welche Sprachinteroperabilität zwischen unterschiedlichen Universalsprachen (wie zum Beispiel C\# oder Visual Basic) ermöglicht. Benutzer des .NET Frameworks schreiben Code in einer vom Framework unterstützen Sprache, welcher vom Compiler in vom Menschen größtenteils unlesbaren MSIL-Bytecode übersetzt wird. Dieser Bytecode wird von der CLR mittels eines Just-In-Time-Compilers in Maschinencode transformiert und ausgeführt. Zusätzlich stellt das .NET Framework eine große Anzahl an Bibliotheken mit grundlegenden Funktionen zur Verfügung. [CITATION ganzer Absatz]
+
 \subsection{Roslyn}
-TODO
+Roslyn ist eine .NET Compiler-Plattform welche Entwicklern die Werkzeuge eines Compilers für C\#- und Visual Basic-Code über eine API im eigenen Programmcode zur Verfügung stellt. So kann Code selbst analysiert, generiert und kompiliert werden. Die Implementierung der domänenspezifischen Sprache benutzt Roslyn um über eine Codegenerierungs-API einen MSIL-Syntaxbaum zu generieren und diesen zu einem .NET-Assembly zu kompilieren.
 
 \subsection{Asynchrone Methodenausführung in .NET}
-TODO
+Einige Operationen innerhalb eines Konversationsroutings erfordern Thread-blockierende Operationen (zum Beispiel das Abspielen von Audiodateien). Um solche Blockaden zu verhindern, werden diese mittels asynchroner Methodenausführung auf anderen Threads ausgeführt. Dies findet in .NET über eine das Async/Await-Sprachkonstrukt statt: Eine Methode, hier genannt Methode A, kann mit dem Schlüsselwort ``async'' gekennzeichnet werden. Dies signalisiert, dass A eine asynchrone Methode ist, welche in ihrem Methoden-Körper mittels des ``await''-Schlüsselworts auf eine andere asynchrone Methode B warten kann. Trifft der Programmfluss auf dieses ``await'', wird die Kontrolle an den Aufrufer von A zurückgegeben, während auf das Ergebnis von B gewartet wird. Bs Arbeit läuft im Hintergrund auf einem anderen Thread weiter bis ein Ergebnis vorliegt, welches an A zurückgeliefert werden kann. Der Programmfluss von A geht nun an der Stelle weiter, an der B aufgerufen wurde. Auf diese Weise wurde der Hauptprogrammfluss nicht blockiert, obwohl eine potentiell rechenintensive Operation in B ausgeführt wurde.
 
 \subsection{SIP}
-TODO
+Die Kommunikation der Routing Engine mit der PBX findet über das Session Initiation Protocol statt. Es handelt sich hierbei um ein Klartext-Protokoll, welches in der Anwendungsschicht des OSI-Modells angesiedelt ist. Es wird dafür benutzt, Kommunikationssitzungen zwischen sogenannten User Agents zu initiieren. Solche User Agents können beispielsweise Soft-Phones sein, die an der PBX angemeldet sind. Die PBX agiert im Kontext von SIP als Proxy-Server, welcher die Vermittlung zwischen User Agents sicherstellt. Ist eine Kommunikationssitzung zu Stande gekommen, wird ein Medienstrom über das Real-Time Transport Protocol ausgetauscht. Die Conversation Routing Engine, also der Teil von MyContactCenter, der die DSL-Modelle ausführt, ist als User Agent an der PBX angemeldet und der Sitzungspartner einer eingehenden Konversation über den Verlauf eines Konversationsroutings. Die Implementierung des Session Initiation Protocols ist an einer Drittanbieter-Bibliothek namens PJSIP ausgelagert. Diese übernimmt auch die Simulation eines SIP User Agents. 
