@@ -24,7 +24,11 @@ Aus dieser Aufgabe ergeben sich folgende Anforderungen für die DSL:
 Die obenstehende Liste stellt die Mindestanforderungen dar, die erfüllt sein müssen, damit ein Benutzer über die gewünschten Konfigurationsmöglichkeiten für eine Automatische Kontaktverteilung verfügt. Der im Folgenden Kapitel beschriebene Entwurf einer domänenspezifischen Sprache ist ein Versuch, ein System zu designen, welches die obenstehenden Anforderungen erfüllt. Zur Umsetzung des Entwurfs wurde ein grafischer Editor und ein Code-Generator umgesetzt, deren Implementierung näher in Kapitel \ref{chap:Implementierung} erläutert wird.
 
 \section{Beschreibung der Sprache}
-TODO
+Die domänenspezifische Sprache ist als grafische Sprache entworfen. Das bedeutet, dass die konkrete Syntax, also das äußere Erscheinungsbild, mit dem der Benutzer interagiert, in Formen und Verbindungen statt in Text ausgedrückt wird. Vergleichbar sind grafische DSLs zum Beispiel mit der Unified Modeling Language (UML), welche allerdings den Anspruch erhebt, eine Universalsprache zu sein [CITATION].
+\newline 
+In der vorliegend implementierten DSL werden Formen und Linien im zweidimensionalen Raum angeordnet, um das Verhalten des Konversationsroutings zu spezifizieren. Instruktionen, die mit einer eingehenden Kontaktanfrage interagieren, sind dabei als Rechtecke dargestellt. Es gibt eine Vielzahl von verschiedenen Instruktionen, welche einzeln in folgenden Abschnitten beschrieben werden. Jede Art von  Instruktion ist mit einem Namen eindeutig gekennzeichnet und kann einmal, mehrmals, oder, mit Ausnahme der Start-Instruktion, auch gar nicht im Routing auftreten. Das Verhalten von Instruktionen kann parametrisiert sein: Zum Beispiel kann ein Benutzer bei der Instruktion zum Abspielen einer Audio-Datei die Datei angeben, die wiedergegeben werden soll. Jedes Rechteck besitzt eine bestimmte Anzahl von Ein- und Ausgängen, symbolisiert durch kleinere Rechtecke, die in der Peripherie des großen Rechtecks eingelassen ist. Die Anzahl an Ein- und Ausgängen eines Rechtecks bestimmen, wie viele ein- beziehungsweise ausgehende Verbindungen für ein Rechteck zugelassen werden und sind für jede Art von Instruktion individuell festgelegt. Eine gerichtete Verbindung in Form eines Pfeils kann zwischen einem Ein- und Ausgang gezogen werden. Dabei geht der Pfeil vom Eingang aus und zeigt mit der Pfeilspitze auf den Eingang. Während ein Ausgang immer nur eine einzige ausgehende Verbindung hat, kann ein Eingang beliebig viele eingehende Verbindungen akzeptieren. Die Verbindungen zwischen Rechtecken symbolisieren den zeitlichen Ablauf innerhalb des Konversationsroutings: Eine Instruktion A wird dann ausgeführt, wenn eine andere Instruktion B beendet wurde und im Zuge der Ausführung von B ein Ausgang gewählt wurde, der über eine Verbindung zum Eingang von A führt. Welcher Ausgang von B gewählt wird, hängt dabei von der Instruktion ab, die von B symbolisiert wird. Jedes spezifizierte Routing benötigt einen Ausgangspunkt, an dem das Routing seinen Anfang nimmt. Dies geschieht beim Start-Knoten, welcher keinen Eingang und nur einen einzelnen Ausgang hat. Von hier aus kann nun eine Verbindung zu einer Instruktion gezogen werden, welche als erstes im Routing ausgeführt wird. 
+\newline
+Ein so spezifiziertes Konversationsrouting kann auch vereinfacht als gerichteter Graph betrachtet werden, in dem die Instruktionen (Rechtecke) die Knoten und die Verbindungen (Pfeile) die Kanten darstellen. Diese Betrachtungsweise vereinfacht unter anderem das Verständnis der Algorithmik welche bei der Implementierung zum Einsatz kam und ist auch der Grund, warum im Folgenden Instruktionen auch als Knoten bezeichnet werden. 
 
 \section{Sprachelemente}
 TODO
@@ -41,9 +45,6 @@ TODO
 \subsection{Skills und Languages}
 TODO
 
-\subsection{Variablen}
-TODO
-
 \subsection{Verzweigungen}
 TODO
 
@@ -54,6 +55,12 @@ TODO
 TODO
 
 \subsection{Terminierung}
+TODO
+
+\subsection{Variablen}
+TODO
+
+\subsection{Funktionen}
 TODO
 
 \section{Verarbeitungsschritte}
