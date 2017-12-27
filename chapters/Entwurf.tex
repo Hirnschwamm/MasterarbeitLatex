@@ -1,7 +1,27 @@
 \chapter{Entwurf}
 
 \section{Anforderungen}
-TODO
+Einige Teilmenge der Anforderungen der domänenspezifischen Sprache wurden bereits in Kapitel \ref{sec:Motivation} in Form von User-Stories aufgeführt. Im Folgenden werden die Anforderungen in einer allgemeineren und umfassenderen Form wiedergegeben. Die zentrale Aussage die den Anforderungen zu Grunde liegt ist die zusammenfassende Formulierung des zu lösenden Problems: ``Benutzer von MyContactCenter brauchen eine Möglichkeit, das Routing von Konversationsanfragen für eine automatische Kontaktverteilung frei programmieren zu können''. Die Umsetzung dieser Vision ist das langfristige Ziel, sprengt allerdings den Rahmen einer Masterarbeit und damit den der vorliegenden Ausarbeitung. Zwar wurde beim Entwurf Acht darauf gegeben, allen Arten von Konversationsanfragen gerecht zu werden. Für die vorliegende Implementierung beschränkt sich die Ausarbeitung aber lediglich auf das Routing von eingehenden Telefonanrufen. Die relevante Aufgabe lautet also: ``Benutzer von MyContactCenter brauchen eine Möglichkeit, das Routing eingehender Telefonanrufe für eine automatische Kontaktverteilung frei programmieren zu können''.
+\newline
+Aus dieser Aufgabe ergeben sich folgende Anforderungen für die DSL:
+\begin{itemize}
+\item Die DSL muss eine Sammlung an Instruktionen bereit stellen, welche mit einem eingehenden Anruf interagieren
+\item Instruktionen der DSL müssen sich in einer Reihenfolge arrangieren lassen, welche den zeitlichen Ablauf eines Anrufroutings spezifiziert. Ein solcher Ablauf muss Verzweigungen und Schleifen zulassen.
+\item Die Sammlung an Instruktionen müssen folgende Interaktionen mit einem eingehenden Anruf möglich machen:
+	\begin{itemize}
+	\item Entgegen nehmen eines Anrufs
+	\item Abspielen von Audiodateien 
+	\item Abrufen von Eingaben des Anrufers über Mehrfrequenzwahlverfahren
+	\item Ausführen von Benutzerscripten. Bei Bedarf soll ein Benutzer über die Programmiersprache C\# eigene Scripte programmieren können, welche dann im Routing ausgeführt werden.
+	\item Einordnen von Anrufen in die Kategorien ``Sprache'' und ``Wissensbereich''. Die Einordnung eines Anrufes in diese Kategorien bestimmt, welche Agenten den Anruf entgegen nehmen können.
+	\item Terminieren eines Anrufs
+	\item Zustellung eines Anrufs an einen Agenten
+	\end{itemize}
+\item Ein Ablauf von Instruktionen muss mit einer grafischen Benutzeroberfläche arrangierbar sein.
+\item Ein Ablauf von Instruktionen muss in ausführbaren Code transformiert werden können.
+\item Der Ersteller eines Ablaufs von Instruktionen soll durch eine hohe Benutzerfreundlichkeit unterstützt und davor bewahrt werden, unnötige Fehler zu machen.  
+\end{itemize}
+Die obenstehende Liste stellt die Mindestanforderungen dar, die erfüllt sein müssen, damit ein Benutzer über die gewünschten Konfigurationsmöglichkeiten für eine Automatische Kontaktverteilung verfügt. Der im Folgenden Kapitel beschriebene Entwurf einer domänenspezifischen Sprache ist ein Versuch, ein System zu designen, welches die obenstehenden Anforderungen erfüllt. Zur Umsetzung des Entwurfs wurde ein grafischer Editor und ein Code-Generator umgesetzt, deren Implementierung näher in Kapitel \ref{chap:Implementierung} erläutert wird.
 
 \section{Beschreibung der Sprache}
 TODO
