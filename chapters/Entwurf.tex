@@ -69,31 +69,67 @@ Wie oben beschrieben sind die Hauptelemente der DSL ihre Instruktionen und die V
 \end{labeling}
 
 \subsection{Set Skill}
-TODO
+\label{subsec:Set Skill}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 1
+\item [Parameter] Der zu setzende Wissensbereich
+\item [Beschreibung] Damit die automatische Kontaktverteilung von MyContactCenter funktioniert, müssen Konversationen in Sprachen (engl. languages) und Wissensbereiche (engl. Skills) eingeteilt (siehe \ref{sec:MyContactCenter} werden. Die Kategorisierung dieser Konversationen sollte auch innerhalb eines Konversationsroutings möglich sein. Dazu dient die Set Skill-Instruktion, welche der Konversation ein dem System bekannten Wissensbereich zuweist. Der Benutzer kann so aus einer Liste der verfügbaren Wissensbereiche einen Bereich wählen, in den die aktuelle Konversation passt.
+\end{labeling}
 
 \subsection{Set Language}
-TODO
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 1
+\item [Parameter] Die zu setzende Sprache
+\item [Beschreibung] Verhält sich für Spachen analog zur Instruktion aus \ref{subsec:Set Skill}.
+\end{labeling}
 
 \subsection{Branch}
-TODO
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 2
+\item [Parameter] Ein C\#-Ausdruck der bei Auswertung einen booleschen Wert zurückgibt
+\item [Beschreibung] Verzweigungen im Konversationsrouting machen es dem Benutzer möglich, komplexere Abläufe durch Fallunterscheidungen zu modellieren und so mehr Anwendungsszenarien für das Konversationsrouting abzubilden. Solche Verzweigungen werden durch die  Branch-Instruktion möglich. Diese besitzt als Parameter einen frei programmierbaren C\#-Ausdruck, welcher als Boolean auswertbar sein muss. Bei Ausführung einer Branch-Instruktion wird der Ausdruck ausgewertet und je nach Ergebnis einer der beiden mit ``True'' und ``false'' bezeichneten  Ausgänge für die folgende Instruktion ausgewählt.
+\end{labeling}
 
 \subsection{Script}
-TODO
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] Variabel
+\item [Parameter] C\#-Quellcode
+\item [Beschreibung] Ein Ziel der domänenspezifischen Sprache ist zwar, dem Benutzer das langwierige Programmieren mit einer Universalsprache zu ersparen. Aber auf diese Weise können nicht alle relevanten Anwendungsfälle abgedeckt werden. In den Fällen, in denen die Sammlung an grundlegenden Instruktionen nicht ausreicht, wird es dem Benutzer ermöglicht, mittels der Script-Instruktion eigenen C\#-Code im Zuge eines Konversationsroutings auszuführen. Der Skript-Code wird direkt als Parameter der Instruktion übergeben und unterliegt gewissen Rahmen-Bedingungen. Es wird nur Code zugelassen, der laut den C\#-Vorschriften in einem Methoden-Körper möglich ist. Damit fallen potentiell gefährliche Operationen wie das Definieren von eigenen Typen oder Funktionen weg. Ebenfalls wird vom Benutzer verlangt, am Ende seines Skripts einen String zurückzuliefern. Dieser String muss identisch mit dem Bezeichner eines der Ausgänge der Skript-Instruktion sein, deren Anzahl und Bezeichner durch den Benutzer festgelegt werden. Auf diese Weise hat der Benutzer innerhalb seines C\#-Skripts die Kontrolle darüber, welcher Ausgang und somit welche Instruktion als nächstes im Konversationsrouting ausgeführt werden. Für eine erfolgreiche Validierung eines Modells muss jeglicher vom Benutzer geschriebene Code compilierbar sein.   
+\end{labeling}
 
 \subsection{Deliver}
-TODO
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 0
+\item [Parameter] Sip-Uri des Zustellungsziels
+\item [Beschreibung] Ein Endpunkt in einem Konversationsrouting ist die Zustellung an einen Sip User Agent, zum Beispiel einen MyCC-Agenten. Dies wird mit dem Deliver-Knoten erreicht, welcher als Parameter einen United Resource Identifier (URI) als String erhält. URIs werden in SIP zur Identifizierung von User Agents benutzt. Der aktuelle Kontrollfluss des Konversationsroutings gibt an dieser Stelle die Kontrolle über die Konversation an den spezifizierten Teilnehmer ab. Daher besitzt die Deliver-Instruktion keinen Ausgang, mit dem man eine unmittelbare Nachfolgeinstruktion angeben könnte.
+\end{labeling}
 
 \subsection{Terminate}
-TODO
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 0
+\item [Parameter] -
+\item [Beschreibung] \blindtext   
+\end{labeling}
 
 \subsection{Variablen}
-TODO
+\blindtext
 
 \subsection{Funktionen}
-TODO
+\blindtext
 
 \subsection{Set Variables}
-TODO
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 1
+\item [Parameter] Eine Sammlung an Variablenzuweisungen
+\item [Beschreibung] \blindtext
+\end{labeling}
 
 \section{Verarbeitungsschritte}
 TODO
