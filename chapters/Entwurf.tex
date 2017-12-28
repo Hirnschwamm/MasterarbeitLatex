@@ -1,7 +1,7 @@
 \chapter{Entwurf}
 
 \section{Anforderungen}
-Einige Teilmenge der Anforderungen der domänenspezifischen Sprache wurden bereits in Kapitel \ref{sec:Motivation} in Form von User-Stories aufgeführt. Im Folgenden werden die Anforderungen in einer allgemeineren und umfassenderen Form wiedergegeben. Die zentrale Aussage die den Anforderungen zu Grunde liegt ist die zusammenfassende Formulierung des zu lösenden Problems: ``Benutzer von MyContactCenter brauchen eine Möglichkeit, das Routing von Konversationsanfragen für eine automatische Kontaktverteilung frei programmieren zu können''. Die Umsetzung dieser Vision ist das langfristige Ziel, sprengt allerdings den Rahmen einer Masterarbeit und damit den der vorliegenden Ausarbeitung. Zwar wurde beim Entwurf Acht darauf gegeben, allen Arten von Konversationsanfragen gerecht zu werden. Für die vorliegende Implementierung beschränkt sich die Ausarbeitung aber lediglich auf das Routing von eingehenden Telefonanrufen. Die relevante Aufgabe lautet also: ``Benutzer von MyContactCenter brauchen eine Möglichkeit, das Routing eingehender Telefonanrufe für eine automatische Kontaktverteilung frei programmieren zu können''.
+Eine Teilmenge der Anforderungen der domänenspezifischen Sprache wurde bereits in Kapitel \ref{sec:Motivation} in Form von User-Stories aufgeführt. Im Folgenden werden die Anforderungen in einer allgemeineren und umfassenderen Form wiedergegeben. Die zentrale Aussage die den Anforderungen zu Grunde liegt, ist die zusammenfassende Formulierung des zu lösenden Problems: ``Benutzer von MyContactCenter brauchen eine Möglichkeit, das Routing von Konversationsanfragen für eine automatische Kontaktverteilung frei programmieren zu können''. Die Umsetzung dieser Vision ist das langfristige Ziel, sprengt allerdings den Rahmen einer Masterarbeit und damit den der vorliegenden Ausarbeitung. Zwar wurde beim Entwurf Acht darauf gegeben, allen Arten von Konversationsanfragen gerecht zu werden. Für die vorliegende Implementierung beschränkt sich die Ausarbeitung aber lediglich auf das Routing von eingehenden Telefonanrufen. Die relevante Aufgabe lautet also: ``Benutzer von MyContactCenter brauchen eine Möglichkeit, das Routing eingehender Telefonanrufe für eine automatische Kontaktverteilung frei programmieren zu können''.
 \newline
 Aus dieser Aufgabe ergeben sich folgende Anforderungen für die DSL:
 \begin{itemize}
@@ -9,7 +9,7 @@ Aus dieser Aufgabe ergeben sich folgende Anforderungen für die DSL:
 \item Instruktionen der DSL müssen sich in einer Reihenfolge arrangieren lassen, welche den zeitlichen Ablauf eines Anrufroutings spezifiziert. Ein solcher Ablauf muss Verzweigungen und Schleifen zulassen.
 \item Die Sammlung an Instruktionen müssen folgende Interaktionen mit einem eingehenden Anruf möglich machen:
 	\begin{itemize}
-	\item Entgegen nehmen eines Anrufs
+	\item Entgegennehmen eines Anrufs
 	\item Abspielen von Audiodateien 
 	\item Abrufen von Eingaben des Anrufers über Mehrfrequenzwahlverfahren
 	\item Ausführen von Benutzerscripten. Bei Bedarf soll ein Benutzer über die Programmiersprache C\# eigene Scripte programmieren können, welche dann im Routing ausgeführt werden.
@@ -17,8 +17,8 @@ Aus dieser Aufgabe ergeben sich folgende Anforderungen für die DSL:
 	\item Terminieren eines Anrufs
 	\item Zustellung eines Anrufs an einen Agenten
 	\end{itemize}
-\item Ein Ablauf von Instruktionen muss mit einer grafischen Benutzeroberfläche arrangierbar sein.
-\item Ein Ablauf von Instruktionen muss in ausführbaren Code transformiert werden können.
+\item Ein Ablauf von Instruktionen muss mittels einer grafischen Benutzeroberfläche arrangierbar sein.
+\item Ein Ablauf von Instruktionen muss in ausführbaren Code transformierbar sein.
 \item Der Ersteller eines Ablaufs von Instruktionen soll durch eine hohe Benutzerfreundlichkeit unterstützt und davor bewahrt werden, unnötige Fehler zu machen.  
 \end{itemize}
 Die obenstehende Liste stellt die Mindestanforderungen dar, die erfüllt sein müssen, damit ein Benutzer über die gewünschten Konfigurationsmöglichkeiten für eine Automatische Kontaktverteilung verfügt. Der im Folgenden Kapitel beschriebene Entwurf einer domänenspezifischen Sprache ist ein Versuch, ein System zu designen, welches die obenstehenden Anforderungen erfüllt. Zur Umsetzung des Entwurfs wurde ein grafischer Editor und ein Code-Generator umgesetzt, deren Implementierung näher in Kapitel \ref{chap:Implementierung} erläutert wird.
@@ -26,41 +26,73 @@ Die obenstehende Liste stellt die Mindestanforderungen dar, die erfüllt sein m�
 \section{Beschreibung der Sprache}
 Die domänenspezifische Sprache ist als grafische Sprache entworfen. Das bedeutet, dass die konkrete Syntax, also das äußere Erscheinungsbild, mit dem der Benutzer interagiert, in Formen und Verbindungen statt in Text ausgedrückt wird. Vergleichbar sind grafische DSLs zum Beispiel mit der Unified Modeling Language (UML), welche allerdings den Anspruch erhebt, eine Universalsprache zu sein [CITATION].
 \newline 
-In der vorliegend implementierten DSL werden Formen und Linien im zweidimensionalen Raum angeordnet, um das Verhalten des Konversationsroutings zu spezifizieren. Instruktionen, die mit einer eingehenden Kontaktanfrage interagieren, sind dabei als Rechtecke dargestellt. Es gibt eine Vielzahl von verschiedenen Instruktionen, welche einzeln in folgenden Abschnitten beschrieben werden. Jede Art von  Instruktion ist mit einem Namen eindeutig gekennzeichnet und kann einmal, mehrmals, oder, mit Ausnahme der Start-Instruktion, auch gar nicht im Routing auftreten. Das Verhalten von Instruktionen kann parametrisiert sein: Zum Beispiel kann ein Benutzer bei der Instruktion zum Abspielen einer Audio-Datei die Datei angeben, die wiedergegeben werden soll. Jedes Rechteck besitzt eine bestimmte Anzahl von Ein- und Ausgängen, symbolisiert durch kleinere Rechtecke, die in der Peripherie des großen Rechtecks eingelassen ist. Die Anzahl an Ein- und Ausgängen eines Rechtecks bestimmen, wie viele ein- beziehungsweise ausgehende Verbindungen für ein Rechteck zugelassen werden und sind für jede Art von Instruktion individuell festgelegt. Eine gerichtete Verbindung in Form eines Pfeils kann zwischen einem Ein- und Ausgang gezogen werden. Dabei geht der Pfeil vom Eingang aus und zeigt mit der Pfeilspitze auf den Eingang. Während ein Ausgang immer nur eine einzige ausgehende Verbindung hat, kann ein Eingang beliebig viele eingehende Verbindungen akzeptieren. Die Verbindungen zwischen Rechtecken symbolisieren den zeitlichen Ablauf innerhalb des Konversationsroutings: Eine Instruktion A wird dann ausgeführt, wenn eine andere Instruktion B beendet wurde und im Zuge der Ausführung von B ein Ausgang gewählt wurde, der über eine Verbindung zum Eingang von A führt. Welcher Ausgang von B gewählt wird, hängt dabei von der Instruktion ab, die von B symbolisiert wird. Jedes spezifizierte Routing benötigt einen Ausgangspunkt, an dem das Routing seinen Anfang nimmt. Dies geschieht beim Start-Knoten, welcher keinen Eingang und nur einen einzelnen Ausgang hat. Von hier aus kann nun eine Verbindung zu einer Instruktion gezogen werden, welche als erstes im Routing ausgeführt wird. 
+In der vorliegend implementierten DSL werden Formen und Linien im zweidimensionalen Raum angeordnet, um das Verhalten des Konversationsroutings zu modellieren. Ein Modell der DSL ist also Instruktionen, die mit einer eingehenden Kontaktanfrage interagieren, sind dabei als Rechtecke dargestellt. Es gibt eine Vielzahl von verschiedenen Instruktionen, welche einzeln in folgenden Abschnitten beschrieben werden. Jede Art von  Instruktion ist mit einem Namen eindeutig gekennzeichnet und kann einmal, mehrmals, oder, mit Ausnahme der Start-Instruktion, auch gar nicht im Routing auftreten. Das Verhalten von Instruktionen kann parametrisiert sein: Zum Beispiel gibt ein Benutzer bei der Instruktion zum Abspielen einer Audio-Datei die Datei an, die wiedergegeben werden soll. Jedes Rechteck besitzt eine bestimmte Anzahl von Ein- und Ausgängen, symbolisiert durch kleinere Rechtecke, die in der Peripherie des großen Rechtecks eingelassen ist. Die Anzahl an Ein- und Ausgängen eines Rechtecks bestimmen, wie viele ein- beziehungsweise ausgehende Verbindungen für ein Rechteck zugelassen werden und ist für jede Art von Instruktion individuell festgelegt. Eine gerichtete Verbindung in Form eines Pfeils kann zwischen einem Ein- und Ausgang gezogen werden. Dabei geht der Pfeil vom Ausgang aus und zeigt mit der Pfeilspitze auf den Eingang. Während ein Ausgang immer nur eine einzige ausgehende Verbindung hat, kann ein Eingang beliebig viele eingehende Verbindungen akzeptieren. Die Verbindungen zwischen Rechtecken symbolisieren den zeitlichen Ablauf innerhalb des Konversationsroutings: Eine Instruktion A wird dann ausgeführt, wenn eine andere Instruktion B beendet wurde und im Zuge der Ausführung von B ein Ausgang gewählt wurde, der über eine Verbindung zum Eingang von A führt. Welcher Ausgang von B gewählt wird, hängt dabei vom Typ der Instruktion ab. Damit der Benutzer eindeutig den Kontrollfluss modellieren kann, besitzen alle Ausgänge einer Instruktion über Bezeichner, welche andeuten in welchen Situationen welche Ausgänge benutzt werden.  In Abb. [IMAGE] sind die erläuterten Elemente der DSL-Notation mit entsprechender Beschriftung zu sehen. [IMAGE EXPLANATION]
 \newline
-Ein so spezifiziertes Konversationsrouting kann auch vereinfacht als gerichteter Graph betrachtet werden, in dem die Instruktionen (Rechtecke) die Knoten und die Verbindungen (Pfeile) die Kanten darstellen. Diese Betrachtungsweise vereinfacht unter anderem das Verständnis der Algorithmik welche bei der Implementierung zum Einsatz kam und ist auch der Grund, warum im Folgenden Instruktionen auch als Knoten bezeichnet werden. 
+Jedes spezifizierte Routing benötigt einen Ausgangspunkt, an dem es seinen Anfang nimmt. Dieser Anfangspunkt ist die Start-Instruktion, welche keinen Eingang und nur einen einzelnen Ausgang hat. Von hier aus wird eine Verbindung zu einer weiteren Instruktion gezogen, welche als erstes im Routing ausgeführt wird. Von hier aus wird nun mit den oben beschriebenen Bausteinen ein Netz von Instruktionen aufgebaut, die den zeitlichen Ablauf eines Konversationsroutings spezifizieren. Ein so spezifiziertes Konversationsrouting ist ein Modell der DSL. Ein simples Modell ist beispielhaft in Abb. [IMAGE] dargestellt: [IMAGE EXPLANATION]
+\newline
+Ein DSL-Modell kann auch vereinfacht als gerichteter Graph betrachtet werden, in dem die Instruktionen (Rechtecke) die Knoten und die Verbindungen (Pfeile) die Kanten darstellen. Diese Betrachtungsweise ist unter anderem bei der Algorithmik nützlich, welche bei der Implementierung zum Einsatz kam, und ist auch der Grund, warum im Folgenden Instruktionen auch als Knoten bezeichnet werden. 
 
 \section{Sprachelemente}
-TODO
+Wie oben beschrieben sind die Hauptelemente der DSL ihre Instruktionen und die Verbindungen zwischen ihnen. Auf welche einzelnen Instruktionen der Benutzer Zugriff hat und wie diese spezifiziert sind, ist im Folgenden beschrieben. 
 
 \subsection{Start}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Nein
+\item [Anzahl Ausgänge] 1
+\item [Parameter] keine
+\item [Beschreibung] Der Start-Knoten ist der Anfangspunkt eines Konversationsroutings. Der Programmfluss erreicht diese Instruktion, wenn ein eingehender Anruf von der Routing Engine angenommen wurde. Der Start-Knoten interagiert selbst nicht mit dem Anruf, sondern führt unmittelbar die im Ablauf vorgesehene folgende Instruktion aus. Die Start-Instruktion muss in jedem DSL-Modell vorhanden sein und ist ein notwendiges Kriterium für eine erfolgreiche Validierung des Modells. 
+\end{labeling}
+
+\subsection{Media Playback}
+\label{subsec:Media Playback}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 1
+\item [Parameter] Die abzuspielende Audiodatei
+\item [Beschreibung] Der Media Playback-Knoten kann vom Benutzer verwendet werden, um Audiodateien abzuspielen. Denkbare Anwendungsfälle sind das Abspielen von Begrüßungsansagen oder Musik-Einspieler. Der Kontrollfluss des Konversationsroutings hält solange bei dieser Instruktion an, wie die Audiodatei dauert und wird erst nach dem Abspielen fortgeführt.  Die abzuspielende Audiodatei muss über die Administration von MyContactCenter vor der Auswahl über einen eigenen Dialog eingespielt werden und wird nach Sprache und Wissensgebiet kategorisiert. Auf diese Weise kann mit dem gleichen Media Playback-Knoten für eine Konversation, die beispielsweise als Englisch kategorisiert ist, eine englische Ansage abgespielt werden während für eine spanische Konversation eine entsprechend spanische Audiodatei abgespielt wird.
+\end{labeling}
+
+\subsection{Background Playback}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 1
+\item [Parameter] Die abzuspielende Audiodatei
+\item [Beschreibung] Ähnlich wie Instruktion aus Abschnitt \ref{subsec:Media Playback} wird auch bei der Background Playback-Instruktion eine Audiodatei abgespielt. Im Gegensatz zu Media Playback blockiert Background Playback jedoch nicht: Das Konversationsrouting wird mit der nächsten Instruktion fortgeführt. Die abgespielte Audiodatei wird in einer Schleife und im Falle einer weiteren Audiowiedergabe mit geringerer Lautstärke abgespielt. Wird der Ruf an einen Agenten zugestellt wird jegliche Background Playback-Wiedergabe beendet. Background Playback ist vor allem dafür vorgesehen, Hintergrundmusik und ähnliches abzuspielen.
+\end{labeling}
+
+\subsection{DTMF Character}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 13
+\item [Parameter] \begin{itemize} \item Eine abzuspielende Audiodatei  \item Dauer des Eingabezeitfensters in Millisekunden \end{itemize}
+\item [Beschreibung] Das Mehrfrequenzwahlverfahren (engl. Dual-tone multi-frequency signaling, kurz DTMF) ist eine aus der analogen Telefontechnik stammende Technologie zur Abfrage von Benutzereingaben über eine Telefontastatur [CITATION]. Das Verfahren ist in seiner einfachsten Form daher auf die zwölf Symbole einer Telefontastatur beschränkt: Die Zahlen von null bis neun sowie die Raute und der Asterisk. DTMF ist auch im Session Initiation Protocol implementiert und kann in Konversationsroutings mit der DTMF Character-Instruktion benutzt werden. Wenn der Kontrollfluss auf diesen Knoten trifft, wartet das Routing für das per Parameter vorgesehene Zeitfenster ab, bevor die nächste Instruktion ausgeführt wird. Gibt der Anrufer in dieser Zeit eine Eingabe über seine Telefontastatur ein, wird einer von zwölf Ausgängen gewählt, dessen Bezeichner mit der eingegebenen Taste übereinstimmt. Der dreizehnte mit ``Timeout'' bezeichnete Ausgang wird gewählt, wenn die Zeit des Eingabezeitfenster verstrichen ist und der Benutzer in dieser Zeit keine Eingabe getätigt hat. Zusätzlich ist eine Audiodatei spezifizierbar, welche während des Eingabezeitfensters abgespielt wird.  
+\end{labeling}
+
+\subsection{Set Skill}
 TODO
 
-\subsection{MediaPlayback}
+\subsection{Set Language}
 TODO
 
-\subsection{DTMF-Abfrage}
+\subsection{Branch}
 TODO
 
-\subsection{Skills und Languages}
+\subsection{Script}
 TODO
 
-\subsection{Verzweigungen}
+\subsection{Deliver}
 TODO
 
-\subsection{Scripte}
-TODO
-
-\subsection{Zustellung}
-TODO
-
-\subsection{Terminierung}
+\subsection{Terminate}
 TODO
 
 \subsection{Variablen}
 TODO
 
 \subsection{Funktionen}
+TODO
+
+\subsection{Set Variables}
 TODO
 
 \section{Verarbeitungsschritte}
