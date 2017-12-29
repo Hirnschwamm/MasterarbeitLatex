@@ -94,6 +94,7 @@ Wie oben beschrieben sind die Hauptelemente der DSL ihre Instruktionen und die V
 \end{labeling}
 
 \subsection{Script}
+\label{subsec:Script}
 \begin{labeling}{Anzahl Ausgänge}
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] Variabel
@@ -102,33 +103,36 @@ Wie oben beschrieben sind die Hauptelemente der DSL ihre Instruktionen und die V
 \end{labeling}
 
 \subsection{Deliver}
+\label{subsec:Deliver}
 \begin{labeling}{Anzahl Ausgänge}
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] 0
 \item [Parameter] Sip-Uri des Zustellungsziels
-\item [Beschreibung] Ein Endpunkt in einem Konversationsrouting ist die Zustellung an einen Sip User Agent, zum Beispiel einen MyCC-Agenten. Dies wird mit dem Deliver-Knoten erreicht, welcher als Parameter einen United Resource Identifier (URI) als String erhält. URIs werden in SIP zur Identifizierung von User Agents benutzt. Der aktuelle Kontrollfluss des Konversationsroutings gibt an dieser Stelle die Kontrolle über die Konversation an den spezifizierten Teilnehmer ab. Daher besitzt die Deliver-Instruktion keinen Ausgang, mit dem man eine unmittelbare Nachfolgeinstruktion angeben könnte.
+\item [Beschreibung] Ein möglicher Endpunkt in einem Konversationsrouting ist die Zustellung an einen Sip User Agent, zum Beispiel einen MyCC-Agenten. Dies wird mit dem Deliver-Knoten erreicht, welcher als Parameter einen United Resource Identifier (URI) als String erhält. URIs werden in SIP zur Identifizierung von User Agents benutzt. Der aktuelle Kontrollfluss des Konversationsroutings gibt an dieser Stelle die Kontrolle über die Konversation an den spezifizierten Teilnehmer ab. Daher besitzt die Deliver-Instruktion keinen Ausgang, mit dem man eine unmittelbare Nachfolgeinstruktion angeben könnte.
 \end{labeling}
 
 \subsection{Terminate}
 \begin{labeling}{Anzahl Ausgänge}
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] 0
-\item [Parameter] -
-\item [Beschreibung] \blindtext   
+\item [Parameter] Grund der Terminierung
+\item [Beschreibung] Die Terminate-Instruktion ermöglicht das kontrollierte Beenden des Anrufs durch die Routing Engine. Ähnlich wie die Deliver-Instruktion aus Abschnitt \ref{subsec:Deliver} ist auch die Terminate-Instruktion ein Konversationsroutingendpunkt und besitzt daher keine Ausgänge. Als Parameter nimmt Terminate einen Grund für das Beenden des Rufs entgegen. Der Grund kann aus einer Aufzählung von vordefinierten Anlässen ausgewählt werden.
 \end{labeling}
 
 \subsection{Variablen}
-\blindtext
+\label{subsec:Variablen}
+Variablen unterstützen den Benutzer beim Schreiben von eigenem C\#-Code, wie zum Beispiel in Script- oder Branch-Knoten. Variablen können vom Benutzer deklariert werden und sind nicht für eine einzelne Instruktion angelegt, sondern auf Ebene des Konversationsroutings definiert. Sie erscheinen nicht als Rechteck in der Notation wie andere Instruktionen, sind über Dialoge in der grafischen Benutzeroberfläche konfigurierbar. Eine deklarierte Variable kann überall dort im Routing verwendet werden, wo der Benutzer eigenen C\#-Code schreibt. Zur Auswahl für den Variablentyp stehen die primitiven Datentypen int, float, double, bool, string und zusätzlich zur Abbildung von Daten und Zeitpunkten der Typ DateTime aus dem Standard C\#-Namespace System zur Verfügung. Zusätzlich zum Typ muss der Benutzer einen Bezeichner angeben, unter dem die Variable im Konversationsrouting referenziert werden kann. Der Wert einer Variable kann mit der Set Variable-Instruktion gesetzt werden, die in Abschnitt \ref{subsec:Set Variables} erläutert wird. 
 
 \subsection{Funktionen}
-\blindtext
+Zusätzlich zu Variablen kann der Benutzer eigene Funktionen deklarieren, welche ebenfalls in C\# definiert werden. Ähnlich wie Variablen sind Funktionsdeklarationen keine Instruktion die in der Notation als Rechteck symbolisiert sind, sondern Eigenschaften des Routings. Sie werden daher auch über gesonderte Dialoge der grafischen Benutzeroberfläche angelegt. Für eine Funktionsdeklaration gibt der Benutzer den Bezeichner, eine Liste von Parametern mit Typ und Bezeichner, den Rückgabetyp und den Funktionskörper an. Für alle Typen steht die gleiche Auswahl, die auch bei Variablen angeboten wird, zur Verfügung. Beim Rückgabetyp kann der Benutzer zusätzlich void angeben, um eine Funktion ohne Rückgabe zu definieren. Ist eine Funktion deklariert, kann sie im gesamten Konfigurationsrouting dort aufgerufen werden, wo der Benutzer eigenen C\#-Code angibt.  
 
 \subsection{Set Variables}
+\label{subsec:Set Variables}
 \begin{labeling}{Anzahl Ausgänge}
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] 1
 \item [Parameter] Eine Sammlung an Variablenzuweisungen
-\item [Beschreibung] \blindtext
+\item [Beschreibung] Wie in \ref{subsec:Variablen} beschrieben werden Variablen-Deklarationen auf Ebene des Konversationsroutings vollzogen und treten nicht als konkrete Instruktion in der grafischen Notation in Erscheinung. Wert-Zuweisungen werden jedoch mittels der Set Variables-Instruktion umgesetzt. Hier kann der Benutzer eine Liste von Zuweisungen hinterlegen. Jede Zuweisung enthält eine Variable aus der Liste der Deklarationen und einen frei programmierbaren C\#-Ausdruck. Führt der Programmfluss die Set Variables-Instruktion aus, werden die Wertzuweisungen ausgeführt.
 \end{labeling}
 
 \section{Verarbeitungsschritte}
