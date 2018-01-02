@@ -1,4 +1,5 @@
 \chapter{Entwurf}
+\label{chap:Entwurf}
 
 \section{Anforderungen}
 Eine Teilmenge der Anforderungen der domänenspezifischen Sprache wurde bereits in Kapitel \ref{sec:Motivation} in Form von User-Stories aufgeführt. Im Folgenden werden die Anforderungen in einer allgemeineren und umfassenderen Form wiedergegeben. Die zentrale Aussage die den Anforderungen zu Grunde liegt, ist die zusammenfassende Formulierung des zu lösenden Problems: ``Benutzer von MyContactCenter brauchen eine Möglichkeit, das Routing von Konversationsanfragen für eine automatische Kontaktverteilung frei programmieren zu können''. Die Umsetzung dieser Vision ist das langfristige Ziel, sprengt allerdings den Rahmen einer Masterarbeit und damit den der vorliegenden Ausarbeitung. Zwar wurde beim Entwurf Acht darauf gegeben, allen Arten von Konversationsanfragen gerecht zu werden. Für die vorliegende Implementierung beschränkt sich die Ausarbeitung aber lediglich auf das Routing von eingehenden Telefonanrufen. Die relevante Aufgabe lautet also: ``Benutzer von MyContactCenter brauchen eine Möglichkeit, das Routing eingehender Telefonanrufe für eine automatische Kontaktverteilung frei programmieren zu können''.
@@ -106,7 +107,7 @@ Wie oben beschrieben sind die Hauptelemente der DSL ihre Instruktionen und die V
 \label{subsec:Deliver}
 \begin{labeling}{Anzahl Ausgänge}
 \item [Eingang] Ja
-\item [Anzahl Ausgänge] 0
+\item [Anzahl Ausgänge] Keine
 \item [Parameter] Sip-Uri des Zustellungsziels
 \item [Beschreibung] Ein möglicher Endpunkt in einem Konversationsrouting ist die Zustellung an einen Sip User Agent, zum Beispiel einen MyCC-Agenten. Dies wird mit dem Deliver-Knoten erreicht, welcher als Parameter einen United Resource Identifier (URI) als String erhält. URIs werden in SIP zur Identifizierung von User Agents benutzt. Der aktuelle Kontrollfluss des Konversationsroutings gibt an dieser Stelle die Kontrolle über die Konversation an den spezifizierten Teilnehmer ab. Daher besitzt die Deliver-Instruktion keinen Ausgang, mit dem man eine unmittelbare Nachfolgeinstruktion angeben könnte.
 \end{labeling}
@@ -114,7 +115,7 @@ Wie oben beschrieben sind die Hauptelemente der DSL ihre Instruktionen und die V
 \subsection{Terminate}
 \begin{labeling}{Anzahl Ausgänge}
 \item [Eingang] Ja
-\item [Anzahl Ausgänge] 0
+\item [Anzahl Ausgänge] Keine
 \item [Parameter] Grund der Terminierung
 \item [Beschreibung] Die Terminate-Instruktion ermöglicht das kontrollierte Beenden des Anrufs durch die Routing Engine. Ähnlich wie die Deliver-Instruktion aus Abschnitt \ref{subsec:Deliver} ist auch die Terminate-Instruktion ein Konversationsroutingendpunkt und besitzt daher keine Ausgänge. Als Parameter nimmt Terminate einen Grund für das Beenden des Rufs entgegen. Der Grund kann aus einer Aufzählung von vordefinierten Anlässen ausgewählt werden.
 \end{labeling}
@@ -136,4 +137,5 @@ Zusätzlich zu Variablen kann der Benutzer eigene Funktionen deklarieren, welche
 \end{labeling}
 
 \section{Verarbeitungsschritte}
-Zwischen der Modellierung und der letztendlichen Ausführung eines DSL-Modells müssen einige Verarbeitungsschritte stattfinden. Abbildung [IMAGE] veranschaulicht den Vorgang, der ein Konversationsrouting von der Spezifikation bis zur Ausführung durchläuft. Am Anfang steht die Modellierung durch den Benutzer. Hier werden die Instruktionen in einem oben beschriebenen Graphen angeordnet und Verbindungen gezogen um einen Konversationsroutingablauf zu spezifizieren. Im Editor wird synchron zu der graphischen Repräsentation eine C\#-Datenstruktur erstellt, welche die abstrakte Syntax als .NET Objekt abbildet (Details zu diesem Vorgang folgen in Kapitel \ref{sec:Editor}). 
+\label{sec:Verarbeitungsschritte}
+Zwischen der Modellierung und der letztendlichen Ausführung eines DSL-Modells finden sechs Verarbeitungsschritte statt. Abbildung [IMAGE] veranschaulicht den Vorgang, der ein Konversationsrouting von der Spezifikation bis zur Ausführung durchläuft. Am Anfang steht die Modellierung durch den Benutzer. Hier werden die Instruktionen in einem oben beschriebenen Graphen angeordnet und Verbindungen gezogen, um einen Konversationsroutingablauf zu spezifizieren. Intern und für den Benutzer unsichtbar wird im Editor synchron zu der graphischen Repräsentation eine C\#-Datenstruktur erstellt, welche die abstrakte Syntax als .NET Objekt abbildet (Details zu diesem Vorgang folgen in Kapitel \ref{sec:Editor}). Diese Struktur wird beim Abspeichern des Modells im Protobuf-Format serialisiert und in einer Datenbank abgespeichert. Die serialisierten Daten werden von der Routing Engine abgerufen und deserialisiert. Das Resultat ist die vom Benutzer angelegte C\#-Objekt-Struktur. Die Struktur wird an den Transformator übergeben, welcher die Struktur in konkrete MSIL-Syntax transformiert (wie dies geschieht wird in Kapitel \ref{sec:Code-Generierung} erläutert). Die Routing Engine compiliert die MSIL-Syntax nun im Arbeitsspeicher mit der Hilfe von Roslyn, und erhält eine .NET-Assembly. Der Code in dieser Assembly wird anschließend für jeden eingehenden Anruf ausgeführt. 

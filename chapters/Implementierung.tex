@@ -3,12 +3,23 @@
 
 \section{Editor}
 \label{sec:Editor}
+Der Editor ist die Schnittstelle der DSL mit einem menschlichen Benutzer. Hier wird ein DSL-Modell durch Interaktion mit der konkreten Syntax erstellt oder bearbeitet. Die konkrete Syntax nimmt die Form eines Graphen an, der in Kapitel \ref{chap:Einleitung} beschrieben ist. Die Aufgabe des Editors ist es, die konkrete Syntax in abstrakte Syntax umzuwandeln. Während der Benutzer über die grafische Benutzeroberfläche mit der konkreten Syntax interagiert, also Instruktionen hinzufügt und Verbindungen zieht, wird Editor-intern die abstrakte Syntax geformt, welche der Benutzer nicht sieht (vgl. [CITATION Voelter, DSL Engineering, Abs 3.4, PDF Seite 68]. Die abstrakte Syntax ist durch eine C\#-Datenstruktur repräsentiert, welche für die weiteren Verarbeitungsschritte gespeichert wird (siehe Abschnitt \ref{sec:Verarbeitungsschritte}). In der Literatur wird die Datenstruktur, welche die abstrakte Syntax beinhaltet, auch semantisches Modell (engl. semantic model) genannt, vgl. [CITATION Martin Fowler, Domain Specific Languages] und wird daher im Folgenden auch so referenziert. Der Editor bildet also die abstrakte Syntax auf das semantische Modell ab. Diese Abbildung ist bidirektional: Wird das semantische Modell manipuliert, spiegelt die grafische Benutzeroberfläche dies in der konkreten Syntax wider.
+\newline
+Der Editor ist als eine Windows Forms-Anwendung umgesetzt und implementiert das Model-View-Viewmodel-Entwicklungsmuster (kurz MVVM). Ähnlich wie bei verwandten Entwurfsmustern wie zum Beispiel Model-View-Controller (MVC) geht es bei MVVM darum, die Darstellung einer Anwendung von ihrer Logik zu trennen. Dies geschieht durch eine Einteilung in drei verschiedene Schichten: Dem View, dem Viewmodel und dem Model. Die View-Schicht dient zur Darstellung der Anwendung und umfasst die Komponenten der grafischen Benutzeroberfläche. Sie erhält die nötigen Daten zur Darstellung vom Viewmodel über sogenannte Datenbindung (engl. Data Binding). Dabei werden Daten über ein Framework an einander gebunden und werden so vom System bei jeder Zustandsänderung synchron gehalten. Ändern sich also Daten im Viewmodel wird dies unverzüglich im View angezeigt. Das Viewmodel kümmert sich um die Präsentationslogik, das heißt es ist dafür zuständig, dem View Daten zur Verfügung zu stellen, welche über Datenbindungen angezeigt werden sollen. Dafür hat das Viewmodel Zugriff auf das Model, über dass die Daten zur Darstellung abgerufen werden. Im Model werden auch die Geschäftslogik sowie Speicher- und Lade-Aktionen ausgeführt. In .NET wird MVVM vor allem im Zuge der Windows Presentation Foundation eingesetzt, kann aber auch durch das Devexpress-Framework in Windows Forms-Anwendungen benutzt werden.
+\newline
+Im grafischen Editor der DSL werden die drei Schichten von MVVM durch verschiedene C\#-Klassen abgebildet, welche im Folgenden erläutert werden.
+\subsection{Die Model-Schicht: Flow, Connector, Variable, Function}
+Die Model-Schicht beinhaltet die C\#-Datenstruktur, welche auch als semantisches Modell bezeichnet wird: Also das Objekt, welches in der weiteren Verarbeitung die abstrakte Syntax beschreibt.  
+
+\subsection{Die Viewmodel-Schicht: FlowDiagramViewmodel}
 TODO
+
+\subsection{Die View-Schicht: FlowDiagramView, FlowDiagramControl, FlowDiagramItem}
+FlowDiagramControl kümmert sich um die unmittelbare Darstellung der abstrakten Syntax auf der grafischen Benutzeroberfläche. Es basiert auf der Devexpress-Klasse DiagramControl, welche es Benutzer ermöglicht, Diagramme mit geometrischen Formen und Verbindungen zu gestalten. FlowDiagramControl ist von der Klasse DiagramControl abgeleitet und erweitert diese um Möglichkeiten, die DSL per Datenbindung darzustellen. Dafür sind in FlowDiagramControl Listen vom .NET-Typ ObservableCollection hinzugefügt, welche die Elemente des aktuellen DSL-Modells enthalten. Diese Listen werden gepflegt, indem auf Events FlowDiagramControl auf Events der Basisklasse DiagramControl reagiert: 
+ 
 
 \section{Code-Generierung}
-TODO
-
-\subsection{Semantisches Modell}
+\label{sec:Code-Generierung}
 TODO
 
 \subsection{Herausforderungen}
