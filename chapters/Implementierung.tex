@@ -37,7 +37,7 @@ Für ein Devexpress-DiagramControl kann eine Auswahl von sogenannten Stencils, a
 \newline
 Wird nun vom Benutzer ein Stencil aus der Toolbox ausgewählt und in das Modellierungsfenster gezogen, erzeugt die zugehörige Instanz von FactoryItemTool ein FlowDiagramItem. Dieses FlowDiagramItem wird mit einer Referenz auf eine neu erstellte Instanz des Node-Subtyps der ausgewählten Instruktion initialisiert. DiagramControl löst dann ein Event aus, das signalisiert dass sich die Liste an Diagramm-Elementen verändert hat. FlowDiagramItem reagiert auf dieses Event seiner Basisklasse, indem es die Node-Referenz aus dem hinzugefügten FlowDiagramItem zu der Liste der Nodes hinzufügt, die per Datenbindung an das FlowDiagramViewModel gebunden sind. Umgekehrt reagiert FlowDiagramControl auch auf Events, die ausgelöst werden, wenn die Liste der Nodes durch das ViewModel verändert wird. In diesem Fall wird ein neues FlowDiagramItem mit einer Referenz auf die hinzugefügte Node erzeugt, sodass diese Node auf der Benutzeroberfläche zu sehen ist. Analog verhält sich das System wenn Nodes oder FlowDiagramItems gelöscht werden, nur dass in diesem Fall Elemente entfernt werden.
 \newline
-Um die Verbindungen zwischen Instruktionen zu modellieren, wird ein ähnlicher Ansatz eingesetzt.
+Um die Verbindungen zwischen Instruktionen zu modellieren, wird ein ähnlicher Ansatz wie für Instruktionen eingesetzt. 
 
 
 \section{Modell-Validierung} 
