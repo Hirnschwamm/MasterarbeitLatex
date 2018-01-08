@@ -44,10 +44,19 @@ Um die Verbindungen zwischen Instruktionen zu modellieren, wird ähnlich vorgega
 
 \section{Transformation}
 \label{sec:Transformation}
-Die Transformation ist der Schritt in der Verarbeitungskette, in der aus einem Modell, welches in der Form der C\#-Datenstruktur aus Abschnitt \ref{subsec:Die Model-Schicht} vorliegt, eine MSIL-Syntax generiert wird. Diese kann anschließend compiliert und ausgeführt werden. Die Grundidee, wie die
+Die Transformation ist der Schritt in der Verarbeitungskette, in der aus einem semantischen Modell, welches in der Form der C\#-Datenstruktur aus Abschnitt \ref{subsec:Die Model-Schicht} vorliegt, eine MSIL-Syntax generiert wird. Diese kann anschließend compiliert und ausgeführt werden. Ein einzelnes Modell wird auf die Syntax einer Klasse abgebildet, welche das gewünschte Verhalten des Modells implementiert. Diese Klasse erbt von einer abstrakten Basisklasse mit dem Namen ACDCallRoutingBehaviorBase, welche die abstrakte Methode StartAsync zur Verfügung stellt. Die vom Transformationsalgorithmus generierte Klasse implementiert StartAsync so, dass beim Aufruf das vom Benutzer spezifizierte Konversationsrouting abgespielt wird.
+\newline 
+Die Instruktionen des Konversationsroutings werden als Syntax für Membermethoden der Klasse abgebildet. In der generierten Klasse existiert für jede Instruktion eine eigene Methode, deren Syntax das gewünschte Verhalten der Instruktion umsetzt. Der Bezeichner der Methode trägt den Namen der Instruktion gefolgt von einer eindeutigen Identifikationsnummer, sodass mehrere Instruktionen des gleichen Typs bei der Generierung der zugehörigen Membermethoden nicht kollidieren. Manche Instruktionen müssen mit der zu routenden Konversation interagieren. Zu diesem Zweck steht der generierten Klasse eine API zur Verfügung, welche aus einer Instanz eines Interfaces namens IRoutedAcdCall besteht. Soll beispielsweise im Zuge einer Media Playback-Instruktion eine Audio-Datei abgespielt werden, kann Syntax generiert werden, welche die Methode PlayAudioAsync des Interfaces IRoutedAcdCall aufruft. 
+\newline
+Die Reihenfolge von Instruktionen in einem Konversationsrouting wird realisiert, indem generierte Methoden, welche Instruktionen abbilden, die Methoden ihrer Nachfolgeinstruktionen aufrufen. Angenommen, eine Branch-Instruktionen hat zwei Ausgänge: Der ''True``-Ausgang zeigt auf eine Media Playback-Instruktion während der ''False``-Ausgang auf die Terminate-Instruktion verweist. Aus diesen drei Instruktionen wird Syntax für drei Membermethoden generiert: Die Methode der Branch-Anweisung wertet den per Parameter übergebenen booleschen Ausdruck aus und ruft im True-Fall die Methode der Media Playback-Instruktion auf. Andernfalls wird die Methode der Terminate-Anweisung aufgerufen. Da die Terminate-Anweisung keine Ausgänge hat, erreicht das Konversationsrouting dort ihr Ende. Da es sich bei dem semantischen Modell um einen Graphen und keinen Baum handelt, kann es in Modellen zu Zyklen kommen. Solche potentiell endlose Konversationsroutings stellen ein Problem dar, denn sie führen zu einer endlosen Rekursion von Methodenaufrufen innerhalb der generierten Klasse. Das Problem wird gelöst indem eine Instruktion, die eine solche Rekursion starten würde, die nächste Instruktion in einem .NET-Task auf einem neuen Thread aufruft. Der aktuelle  Thread terminiert an der Stelle, an der der neue gestartet wird und es wird eine endlose Rekursion vermieden.
+\newline
+Ein Modell kann vom Benutzer geschriebenen C\#-Code enthalten. Dieser muss in die generierte Klasse integriert werden, um ausgeführt zu werden. Benutzerdefinierten Code jedoch einfach in die Syntax für Membermethoden, die aus Instruktionen generiert werden,  einzufügen birgt Risiken. Denn so hat der Benutzer in seinem Code Zugriff auf alle Elemente der generierten Klasse, was zu Problemen führen kann, wenn der Methoden aufruft, die der generierten Klasse vorbehalten sind. Code des Benutzers wird stattdessen in einer verschachtelten privaten Klasse gekapselt. 
 
-\subsection{Herausforderungen}
+\subsection{Beispiel}
 TODO
+
+\subsection{Umsetzung}
+Die Grundidee der Transformationsumsetzung orientiert sich an dem Verfahren, das in [CITATION Voelter S. 272] als ''klassische Modell-Transformierung`` (engl. classical model transformation) bezeichnet wird: Das semantische Modell wird als Graph traversiert, während mit der Roslyn-API anhand des aktuell besuchten Knotens passende Syntax generiert wird.
 
 \subsubsection{Programmablauf}
 TODO
@@ -56,9 +65,6 @@ TODO
 TODO
 
 \subsubsection{Nebenläufigkeit}
-TODO
-
-\subsection{Algorithmus}
 TODO
 
 \subsection{Einbindung von generiertem Code}
