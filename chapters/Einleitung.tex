@@ -54,7 +54,56 @@ MyContactCenter kommt in einem umfangreichen Ökosystem von Drittanbieter-Softwa
 MyContactCenter und die DSL ist mit dem Microsoft .NET Software Framework entwickelt worden. Hauptbestandteile von .NET ist die Microsoft Intermediate Language (MSIL), auch genannt Common Intermediate Langugage (CIL), und die Common Intermediate Runtime (CLR), welche Sprachinteroperabilität zwischen unterschiedlichen Universalsprachen (wie zum Beispiel C\# oder Visual Basic) ermöglicht. Benutzer des .NET Frameworks schreiben Code in einer vom Framework unterstützen Sprache, welcher vom Compiler in vom Menschen größtenteils unlesbaren MSIL-Bytecode übersetzt wird. Dieser Bytecode wird von der CLR mittels eines Just-In-Time-Compilers in Maschinencode transformiert und ausgeführt. Zusätzlich stellt das .NET Framework eine große Anzahl an Bibliotheken mit grundlegenden Funktionen zur Verfügung. [CITATION ganzer Absatz]
 
 \subsection{Roslyn}
-Roslyn ist eine .NET Compiler-Plattform welche Entwicklern die Werkzeuge eines Compilers für C\#- und Visual Basic-Code über eine API im eigenen Programmcode zur Verfügung stellt. So kann Code selbst analysiert, generiert und kompiliert werden. Die Implementierung der domänenspezifischen Sprache benutzt Roslyn um über eine Codegenerierungs-API einen MSIL-Syntaxbaum zu generieren und diesen zu einem .NET-Assembly zu kompilieren.
+Roslyn ist eine .NET Compiler-Plattform welche Entwicklern die Werkzeuge eines Compilers für C\#- und Visual Basic-Code über eine API im eigenen Programmcode zur Verfügung stellt. So kann Code selbst analysiert, generiert und kompiliert werden [CITATION]. Die Implementierung der domänenspezifischen Sprache benutzt Roslyn um über eine Codegenerierungs-API einen MSIL-Syntaxbaum zu generieren und diesen zu einem .NET-Assembly zu kompilieren. Über die API können einem bestehenden Syntaxbaum neue Syntaxknoten hinzugefügt werden, welche sich nach den Regeln der Microsoft Intermediate Language schachteln lassen. Syntaxknoten und -Bäume sind unveränderlich (engl. immutable), das heißt wenn ein Syntaxbaum einmal angelegt ist, kann dieser nicht mehr verändert, sondern nur noch kopiert werden. In der vorliegenden Ausarbeitung wird der Syntaxbaum mit Roslyn daher ''Bottom-up`` generiert: Anstatt zuerst den Syntaxbaum zu instanzieren und anschließend die Knoten und Baumblätter hinzuzufügen, werden zuerst die Blätter und Knoten erzeugt, welche nacheinander zu einem Baum zusammengesetzt werden. Sei beispielsweise die Syntax für folgenden Code zu generieren:
+\vspace{1cm}
+\noindent
+\begin{minipage}{1.0\textwidth} \small
+\begin{lstlisting}
+public class RoslynTest
+{
+    public int Return5()
+    {
+        return 2 + 3;
+    }
+}
+\end{lstlisting}
+\end{minipage}
+\vskip 1em
+Dann ließe sich dies durch folgenden Code-Ausschnitt realisieren:
+\newline
+\vspace{1cm}
+\noindent
+\begin{minipage}{1.0\textwidth} \small
+\begin{lstlisting}
+var workSpace = new AdhocWorkspace();
+
+var generator = SyntaxGenerator(workSpace, LanguageNames.CSharp);
+
+var literal2 = generator.LiteralExpression(2);
+
+var literal3 = generator.LiteralExpression(3);
+
+var addExpression = generator.AddExpression(literal2, literal3);
+
+var returnStatement = generator.ReturnStatement(addExpression);
+
+var returnType = generator.TypeExpression(SpecialType.System_Int32);
+
+var methodDeclaration = generator.MethodDeclaration("Return5", null, null, 
+returnType, Accessibility.Public, DeclarationModifiers.None, returnStatement);
+
+var methodDeclarationArray = new SyntaxNode[] { methodDeclaration };
+
+var classDeclaration = generator.ClassDeclaration("RoslynTest", null, 
+Accessibility.Public, DeclarationModifiers.None, null, null, 
+methodDeclarationArray);
+
+var classDeclarationArray = new SyntaxNode[]{ classDeclaration };
+
+var syntaxTree = generator.CompilationUnit(classDeclarationArray).SyntaxTree;
+\end{lstlisting}
+\end{minipage}
+\vskip 1em
 
 \subsection{Asynchrone Methodenausführung in .NET}
 Einige Operationen innerhalb eines Konversationsroutings erfordern Thread-blockierende Operationen (zum Beispiel das Abspielen von Audiodateien). Um solche Blockaden zu verhindern, werden diese mittels asynchroner Methodenausführung auf anderen Threads ausgeführt. Dies findet in .NET über eine das Async/Await-Sprachkonstrukt statt, welches anhand des unten stehenden Codes erklärt werden soll.
