@@ -80,6 +80,7 @@ Wie oben beschrieben sind die Hauptelemente der DSL ihre Instruktionen und die V
 \end{labeling}
 
 \subsection{Set Language}
+\label{subsec:Set Language}
 \begin{labeling}{Anzahl Ausgänge}
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] 1
@@ -136,6 +137,9 @@ Zusätzlich zu Variablen kann der Benutzer eigene Funktionen deklarieren, welche
 \item [Parameter] Eine Sammlung an Variablenzuweisungen
 \item [Beschreibung] Wie in \ref{subsec:Variablen} beschrieben werden Variablen-Deklarationen auf Ebene des Konversationsroutings vollzogen und treten nicht als konkrete Instruktion in der grafischen Notation in Erscheinung. Wert-Zuweisungen werden jedoch mittels der Set Variables-Instruktion umgesetzt. Hier kann der Benutzer eine Liste von Zuweisungen hinterlegen. Jede Zuweisung enthält eine Variable aus der Liste der Deklarationen und einen frei programmierbaren C\#-Ausdruck. Führt der Programmfluss die Set Variables-Instruktion aus, werden die Wertzuweisungen ausgeführt.
 \end{labeling}
+
+\subsection{Vordefinierte Variablen}
+Neben den selbst angelegten Variablen hat der Benutzer in seinen Scripten auch Zugriff auf Variablen die schon von der DSL vorgegeben sind. Dies sind die Variablen Skill und Language, welche jeweils als String verfügbar sind. Diese kann der Benutzer in seinem eigenen Code auslesen, oder setzen. In letzterem Fall wird so die gleiche Funktion erfüllt, die sonst die Instruktionen aus Abschnitt \ref{subsec:Set Skill} und \ref{subsec:Set Language} übernehmen. Setzt der Benutzer die Sprache auf oder den Wissensbereich auf einen Wert, der nicht existiert, wird die Variable nicht verändert. 
 
 \section{Verarbeitungsschritte}
 \label{sec:Verarbeitungsschritte}

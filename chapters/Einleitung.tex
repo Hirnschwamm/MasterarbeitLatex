@@ -89,14 +89,11 @@ var returnStatement = generator.ReturnStatement(addExpression);
 
 var returnType = generator.TypeExpression(SpecialType.System_Int32);
 
-var methodDeclaration = generator.MethodDeclaration("Return5", null, null, 
-returnType, Accessibility.Public, DeclarationModifiers.None, returnStatement);
+var methodDeclaration = generator.MethodDeclaration("Return5", null, null, returnType, Accessibility.Public, DeclarationModifiers.None, returnStatement);
 
 var methodDeclarationArray = new SyntaxNode[] { methodDeclaration };
 
-var classDeclaration = generator.ClassDeclaration("RoslynTest", null, 
-Accessibility.Public, DeclarationModifiers.None, null, null, 
-methodDeclarationArray);
+var classDeclaration = generator.ClassDeclaration("RoslynTest", null, Accessibility.Public, DeclarationModifiers.None, null, null, methodDeclarationArray);
 
 var classDeclarationArray = new SyntaxNode[]{ classDeclaration };
 
