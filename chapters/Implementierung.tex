@@ -9,7 +9,7 @@ Der Editor ist als eine Windows Forms-Anwendung umgesetzt und implementiert das 
 \newline
 Im grafischen Editor der DSL werden die drei Schichten von MVVM durch verschiedene C\#-Klassen abgebildet, welche im Folgenden erläutert werden.
 
-\subsection{Die Model-Schicht: Flow, Node, Input, Output, Connector, Variable, Function}
+\subsection[Die Model-Schicht]{Die Model-Schicht: Flow, Node, Input, Output, Connector, Variable, Function}
 \label{subsec:Die Model-Schicht}
 Die Model-Schicht beinhaltet die C\#-Datenstruktur, welche auch als semantisches Modell bezeichnet wird: Also das Objekt, welches in der weiteren Verarbeitung die abstrakte Syntax beschreibt. Das semantische Modell selbst weist kein programmitisches Verhalten auf, sondern ist eine reine Datenstruktur. Es besteht aus Instanzen von Klassen, welche die einzelnen Elemente der DSL modellieren und im Namespace ilogixx.ConversationFlow.Core definiert sind. Die Klassenstruktur der Model-Schicht ist in Abbildung \ref{fig:UML:Model-Schicht} als UML-Diagramm aufgeführt und wird im Folgenden erläutert.
 \newline
@@ -33,7 +33,7 @@ Benutzerdefinierte Variablen und Funktionen sind über eigene Klassen abgebildet
 	\label{fig:UML:Node-Hierarchy}
 \end{figure}
 
-\subsection{Die Viewmodel-Schicht: FlowDiagramViewmodel, CodeEditorViewModel, FunctionCollectionEditorViewModel}
+\subsection[Die Viewmodel-Schicht]{Die Viewmodel-Schicht: FlowDiagramViewmodel, CodeEditorViewModel, FunctionCollectionEditorViewModel}
 \label{subsec:Die Viewmodel-Schicht}
 In der Viewmodel-Schicht werden die Klasseninstanzen der Model-Schicht so aufbereitet, dass die View-Schicht sie per Datenbindung repräsentieren kann. Die Viewmodel-Schicht reagiert auch auf Eingaben des Benutzers und manipuliert das zu Grunde liegende Model nach dessen Wünschen. 
 \newline
@@ -45,7 +45,7 @@ Damit der Benutzer die selbst definierten Funktionen verwalten kann, existiert z
 
 
 
-\subsection{Die View-Schicht: FlowDiagramView, FlowDiagramControl, FlowDiagramItem}
+\subsection[Die View-Schicht]{Die View-Schicht: FlowDiagramView, FlowDiagramControl, FlowDiagramItem}
 Die View-Schicht übernimmt alle Elemente der grafischen Benutzeroberfläche, die der Benutzer unmittelbar sieht und mit denen er interagiert. Das Hauptelement der View-Schicht ist die Klasse FlowDiagramView, welche von der Framework-Klasse UserControl erbt. FlowDiagramView umfasst alle Windows Forms-Controls, die zum Darstellen des Editors benötigt werden und übernimmt zusätzlich die Konfiguration des MVVM-Frameworks während der Initialisierungsphase, in der die Benutzeroberfläche geladen wird.
 \newline  
 Das wichtigste Element der Benutzeroberfläche ist das Control FlowDiagramControl, welches  die abstrakte Syntax des Konversationsroutings darstellt. Es basiert auf der Devexpress-Klasse DiagramControl, die es Benutzern ermöglicht, Diagramme mit geometrischen Formen und Verbindungen zu gestalten. FlowDiagramControl ist von von dieser Klasse abgeleitet und erweitert sie um die Fähigkeit, ein Modell der DSL per Datenbindung darzustellen. Dafür sind in FlowDiagramControl Listen vom Typ ObservableCollection als Membervariablen angelegt, welche die Elemente des aktuellen DSL-Modells enthalten. Diese Listen existieren analog zur Klasse FlowDiagramViewModel aus Abschnitt \ref{subsec:Die Viewmodel-Schicht}. Durch die Datenbindung zwischen FlowDiagramControl und FlowDiagramViewModel werden die Inhalte aller Listen synchron gehalten. Die Aufgabe von FlowDiagramControl ist es, auf Interaktionen des Benutzers so zu reagieren, dass die Listen entsprechend aktualisiert werden. Zu diesem Zweck ist diese Klasse in einigen Aspekten gegenüber DiagramControl wie folgt angepasst und spezialisiert.
