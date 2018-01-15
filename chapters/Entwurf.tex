@@ -114,6 +114,15 @@ Wie oben beschrieben sind die Hauptelemente der DSL ihre Instruktionen und die V
 \item [Beschreibung] Ein möglicher Endpunkt in einem Konversationsrouting ist die Zustellung an einen Sip User Agent, zum Beispiel einen MyCC-Agenten. Dies wird mit dem Deliver-Knoten erreicht, welcher als Parameter einen United Resource Identifier (URI) als String erhält. URIs werden in SIP zur Identifizierung von User Agents benutzt. Der aktuelle Kontrollfluss des Konversationsroutings gibt an dieser Stelle die Kontrolle über die Konversation an den spezifizierten Teilnehmer ab. Daher besitzt die Deliver-Instruktion keinen Ausgang, mit dem man eine unmittelbare Nachfolgeinstruktion angeben könnte.
 \end{labeling}
 
+\subsection{Queue}
+\label{subsec:Queue}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] Keine
+\item [Parameter] Keine
+\item [Beschreibung] Neben der direkten Zustellung an einen Agenten kann ein Anruf auch in der Warteschlange platziert werden, welche dann die automatische Verteilung an einen freien Agenten übernimmt. Dies kann über die Queue-Instruktion erreicht werden. Warteschlangen sind nach Sprache und Wissensbereich kategorisiert und beim Ausführen der Queue-Anweisung wird der eingehende Anruf entsprechend der aktuell eingestellten Sprache und des aktuellen Wissensbereich (siehe Instruktionen \ref{subsec:Set Language} und \ref{subsec:Set Skill}) in eine passende Warteschlange einsortiert. Ist ein Agent bereit den Anruf anzunehmen, wird der Anruf zu diesem Agenten durchgestellt.
+\end{labeling}
+
 \subsection{Terminate}
 \begin{labeling}{Anzahl Ausgänge}
 \item [Eingang] Ja
