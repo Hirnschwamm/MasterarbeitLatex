@@ -11,13 +11,27 @@ Im grafischen Editor der DSL werden die drei Schichten von MVVM durch verschiede
 
 \subsection{Die Model-Schicht: Flow, Node, Input, Output, Connector, Variable, Function}
 \label{subsec:Die Model-Schicht}
-Die Model-Schicht beinhaltet die C\#-Datenstruktur, welche auch als semantisches Modell bezeichnet wird: Also das Objekt, welches in der weiteren Verarbeitung die abstrakte Syntax beschreibt. Das semantische Modell selbst weist kein programmitisches Verhalten auf, sondern ist eine reine Datenstruktur. Es besteht aus Instanzen von Klassen, welche die einzelnen Elemente der DSL modellieren und im Namespace ilogixx.ConversationFlow.Core definiert sind. Die Klassenstruktur der Model-Schicht ist in Abbildung [IMAGE UML MODEL] als UML-Diagramm aufgeführt und wird im Folgenden erläutert.
+Die Model-Schicht beinhaltet die C\#-Datenstruktur, welche auch als semantisches Modell bezeichnet wird: Also das Objekt, welches in der weiteren Verarbeitung die abstrakte Syntax beschreibt. Das semantische Modell selbst weist kein programmitisches Verhalten auf, sondern ist eine reine Datenstruktur. Es besteht aus Instanzen von Klassen, welche die einzelnen Elemente der DSL modellieren und im Namespace ilogixx.ConversationFlow.Core definiert sind. Die Klassenstruktur der Model-Schicht ist in Abbildung \ref{fig:UML:Model-Schicht} als UML-Diagramm aufgeführt und wird im Folgenden erläutert.
 \newline
 Instruktionen werden durch die abstrakte Klasse Node modelliert. Node besitzt eine Liste von Referenzen auf Output-Objekte, welche die Ausgänge einer Intruktion modellieren. Node hat ebenfalls eine Referenz auf ein Objekt vom Typ Input, welches den Eingang eines Knotens symbolisiert. Jede Art von Instruktion hat ihre eigene Subklasse, welche die Instruktionen aus Abschnitt \ref{sec:Sprachelemente} abbilden. Pro Ausgang einer Instruktion fügt der Konstruktor des Subtypen eine Referenz vom Typen Output der Referenzliste der Basisklasse hinzu. Im Konstruktor wird ebenfalls der Input spezifiziert: Hat die Instruktion einen Eingang, wird die Input-Referenz instanziert, andernfalls bleibt sie null. Viele Instruktionen haben die gleiche Anzahl an Ausgängen und einen Eingang. Daher existieren Subtypen, welche diese Initialisierungsarbeit übernehmen: Inputnode, für Instruktionen die einen Eingang haben, SingleOutputNode für Instruktionen die einen einzelnen Ausgang haben, und SingleThroughputNode, für Instruktionen die einen Ein- und einen einzelnen Ausgang haben. Alle elf Subtypen für die Instruktionen erben von diesen drei Klassen und passen dort wo nötig ihre Konfiguration an. Beispielsweise erbt DTMFCharacterNode von InputNode, und fügt der Output-Referenzliste dreizehn neue Outputs hinzu.
 \newline
 Die Klasse Input ist simpel: Sie zeigt über eine Referenz vom Typen Node auf ihre besitzende Instruktion. Die Klasse Output hingegen besitzt einige mehrere Daten. Sie speichert den Bezeichner des Ausgangs als String, einen weiteren String namens DisplayString, welcher vom Benutzer editiert werden kann und auf der Benutzeroberfläche angezeigt wird, einen Boolean namens Visible, welcher bestimmt ob der Ausgang in dem Rechteck der beinhaltenden Instruktion angezeigt wird, und eine Referenz vom Typ Input auf einen Eingang, falls der Ausgang mit einem solchen verbunden sein sollte. Durch letztere Input-Referenz sind die Verbindungen im Konversationsrouting zwischen den Instruktionen implizit gegeben. Dennoch existiert eine weitere Klasse namens Connector, welche eine Verbindung explizit definiert. Sie besitzt Referenzen auf die Input- und die Output-Instanz, welche verbunden sind.
 \newline
 Benutzerdefinierte Variablen und Funktionen sind über eigene Klassen abgebildet: Variable und Function. Variable besitzen einen Namen vom Typen String und einen Typen, der über einen Enum namens VariableType abgebildet ist, welcher die in \ref{subsec:Variablen} aufgezählten Typen beinhaltet. Function speichert ebenfalls einen Namen vom Typen String und einen Rückgabetyp, welcher über einen Enum mit Namen FunctionReturnType abgebildet ist. Zusätzlich wird der Funktionskörper mit Namen Body als String gespeichert. Parameter einer Funktion werden über eine Liste von Referenzen auf Objekte des Type Parameter modelliert. Ein Parameter besitzt, ähnlich wie die Klasse Variable, einen Namen als String und einen Typen als VariableType. Die Klasse Flow vereint alle oben genannten Klassen: Sie beinhaltet Listen mit Referenzen auf alle Nodes, Connectors, Functions und Variables. 
+
+\begin{figure} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{img/FlowClassStructure.png}
+	\caption[Klassenstruktur der Model-Schicht]{Zu sehen ist ein Teil der Klassenstruktur der Model-Schicht. Diese ist zugleich auch das semantische Modell, welches in weiteren Verarbeitungsschritten übergeben wird.}
+	\label{fig:UML:Model-Schicht}
+\end{figure}
+
+\begin{figure} %[hbtp]
+	\centering
+		\includegraphics[width=\textwidth]{img/NodeHierarchy.png}
+	\caption[Klassenhierarchie der Klasse Node]{Abgebildet ist die Klasse Node und ihre Subtypen. Jede Instruktion der der DSL ist durch einen Subtyp von Node abgebildet. Ob die Klasse als Zwischenstufe von InputNode, SingleThroughputNode oder SingleOutputNode erbt ergibt sich aus der Anzahl an Inputs und Outputs der Instruktion.}
+	\label{fig:UML:Model-Schicht}
+\end{figure}
 
 \subsection{Die Viewmodel-Schicht: FlowDiagramViewmodel, CodeEditorViewModel, FunctionCollectionEditorViewModel}
 \label{subsec:Die Viewmodel-Schicht}
@@ -28,6 +42,7 @@ Der Hauptbestandteil dieser Schicht ist die Klasse FlowDiagramViewmodel. Diese b
 FlowDiagramViewModel befindet sich hinter der Ansicht, in der der Benutzer sein Konversationsrouting modelliert. Einige Instruktionen benötigen jedoch die Möglichkeit, Code einzugeben. Zu diesem Zweck existiert ein weiteres ViewModel, welches dem eingebauten Code-Editor zu Grunde liegt. Das CodeEditorViewModel beinhaltet einen String, welcher den Code enthält. Dieser ist per Datenbindung an den Text des Code-Editors gebunden. Zusätzlich enthält das CodeEditorViewModel entweder eine Referenz auf die zu bearbeitende ScriptNode, oder die zu bearbeitende Function, welche den zu bearbeitenden Code enthält. Eine Aufgabe des CodeEditorViewmodels ist es den im Editor eingegebenen Code synchron mit dem code in der jeweiligen ScriptNode oder Function zu halten. 
 \newline
 Damit der Benutzer die selbst definierten Funktionen verwalten kann, existiert zusätzlich ein Funktions-Editor, in dem neue Funktionen angelegt, gelöscht oder bearbeitet werden können. Für diesen Editor existiert ebenfalls ein eigenes ViewModel: Das FunctionCollectionViewModel. Es beinhaltet eine Referenz auf die Liste der Funktionen, die sich im FlowDiagramViewModel befindet und wendet das Ändern, Löschen oder Hinzufügen von Funktionen auf diese Liste an.
+
 
 
 \subsection{Die View-Schicht: FlowDiagramView, FlowDiagramControl, FlowDiagramItem}
