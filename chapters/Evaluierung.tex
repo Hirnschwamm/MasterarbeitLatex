@@ -56,11 +56,30 @@ Ein Kandidat für ein Test-Routing mit dem die oben stehenden Schritte ausgefüh
 \end{figure}
 
 \section{Metriken}
-TODO
+Bei der Umsetzung der DSL entstehen zwei Arten von Code. Die eine Art von Quellcode setzt das System um: Es handelt sich hierbei um den Quellcode, der den Editor und den Transformator implementiert. Die andere Art von Code ist der vom System generierte Code, also der CIL-Bytecode, der ein Routing implementiert. Beide Code-Sorten müssen eine hohe Qualität aufweisen, damit das System als Produkt zum einen einsatzfähig und zum anderen wartbar ist. Die im Folgenden beschriebenen Metriken vermessen und evaluieren diese beide Arten von Code. Berechnet wurden diese mit der Entwicklungsumgebung Visual Studio 2017 Ultimate. Zum Einsatz kommen hier die "Lines of Code", die zyklomatische Komplexität, auch als McCabe-Metrik bekannt, und der "Maintainability Index". Während die ersten beiden Metriken im Feld der Software-Architektur bekannt sind (unter anderem unter [CITATION] nachzulesen), ist der Maintainability Index ein Aggregat, welches verschiedene andere Werte in sich vereint. Es handelt sich um einen Ganzzahl-Wert von null bis 100, bei dem hohe Werte als positiv zu bewerten sind. Laut [CITATION 
+\begin{comment}
+https://blogs.msdn.microsoft.com/zainnab/2011/05/26/code-metrics-maintainability-index/ 
+\end{comment}
+] wird der Maintainability-Index folgendermaßen berechnet: 
+\begin{dmath}
+   \\max \left( 0, \left( 171 \\ - 5,2 * \log{\left(Halstead\ Volumen  \right)} \\ - 0,23 * \left( zyklomatische\ Komplexit\ddot{a}t \right) \\ - 16,2 * \log{\left(Lines\ of\ Code\right )} \\ \right) * 100 / 171 \right)
+\end{dmath}
+Das Halstead Volumen, beschrieben in [CITATION], ist ein weiteres Maß zur Einschätzung der Komplexität von Code. Code mit einem Maintainability Index zwischen 20 und 100 gilt als besonders wartbar. Ein Index unter 20 zeigt entweder eine mittelmäßige oder schlechte Wartbarkeit an. 
 
 \subsection{Geschriebener Code}
-TODO
-
+In Tabelle \ref{tab:metrikenGeschriebenerCode} sind die gemessenen Metriken für den im Zuge der vorliegenden Arbeit händisch verfassten Code zu sehen.
+\begin{center}
+    \begin{tabular}{| l | l | l | l | l |}
+    \hline
+    Komponente & Namespace & LOC & zykl. Kompl. & Maint. Index\\ \hline
+    Semantisches Modell & ConversationFlow.Core & 183 & 141 & 92 \\ \hline
+    Editor & ConversationFlow.UI & 465 & 2818 & 78 \\ \hline
+    Transformator & ConversationFlow.Generation & 730 & 299 & 76 \\ \hline
+    Validator & ConversationFlow.Validation & 186 & 112 & 85 \\ \hline
+    \end{tabular}
+    \label{tab:metrikenGeschriebenerCode}
+\end{center}
+Das semantische Modell weist die niedrigste Komplexität auf. Dies ist nicht überraschend, da es sich um eine fast reine Datenstruktur handelt, die wenig programmatisches Verhalten aufweist. An zweiter Stelle kommt die Komponente der Modell-Validierung. Komplexe Strukturen, welche die Metriken negativ beeinflussen, konnten hier vermieden werden, da die meiste Arbeit, die solche Strukturen erfordert, an andere Komponenten ausgelagert wird. Eine deutlich höhere Komplexität weißt der Editor auf. Die Werte für diese Komponente lassen sich damit begründen, dass automatisch generierter Code des Devexpress-Framework in diesem Namespace enthalten ist. Devexpress benutzt einen sogenannten Component Designer, welcher "Boilerplate"-Code zum Erstellen von Windows Forms-Komponenten automatisch generiert. Dieser Code ist lang und dank seines Umfangs komplex. Zwar fallen die hohen Werte der Metriken dadurch auf, sind aber irrelevant, da der vom Component Designer generierte Code nicht von Hand lesbar oder editierbar sein soll und damit nicht die Komplexität des System widerspiegelt. Die laut dem Maintainability Index komplexeste Komponente ist der Transformator. 
 \subsection{Generierter Code}
 TODO
 
