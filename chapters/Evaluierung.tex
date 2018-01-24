@@ -141,3 +141,6 @@ Bei der Transformation eines DSL-Modells wird dieses wie ein Graph aufgefasst un
 Unter den oben genannten Voraussetzungen lässt sich der Aufwand für die Transformation eines DSL-Modells zu einer CIL-Syntax abschätzen als:
 $$ O( \left\vert{V_{dsl}}\right\vert + \left\vert{E_{dsl}}\right\vert + \left\vert{Var}\right\vert + \left\vert{Fun}\right\vert ) $$
 Die Summierung der Kardinaltiäten von $V_{dsl}$ und $E_{dsl}$ ergibt sich aus der Traversierung des DSL-Modells. Die beiden Summanden $\left\vert{Var}\right\vert$ und $\left\vert{Fun}\right\vert$ ergeben sich aus der Generierung der zugehörigen Syntax, für die durch diese Mengen iteriert werden muss. Außerdem sei angemerkt, dass die Traversierung des DSL-Modells für eine einzelne Transformation dreimal stattfinden muss (Zweimal für je zwei Klassendeklarationen und einmal zur Sammlung aller asynchronen Instruktionen, vergleiche Abs. \ref{subsubsec:Nebenlaeufigkeit}. Da es sich jedoch um einen konstanten Multiplikator handelt, kann dieser weggelassen werden (siehe [CITATION]). 
+
+\subsubsection{Zeitmessungen}
+TODO
