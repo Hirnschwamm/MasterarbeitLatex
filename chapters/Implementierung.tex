@@ -171,6 +171,7 @@ Zuerst wird die Build-Methode für die StartNode-Referenz eines Flows aufgerufen
 \end{figure}
 
 \subsubsection{Nebenläufigkeit}
+\label{subsubsec:Nebenlaeufigkeit}
 Wie in Abschnitt \ref{sec:Transformation} beschrieben, werden manche Instruktionen auf asynchrone Methoden abgebildet, deren Asynchronität sich durch ein Konversationsrouting ziehen kann. Zum Zeitpunkt der oben beschriebenen Generierung der Programmablauf-Syntax muss bekannt sein, welche Instruktionen auf asynchrone Methoden abgebildet werden müssen. Daher wird vor der eigentlichen Generierung ein Vorverarbeitungsschritt ausgeführt, in dem alle Instruktionen des Konversationsroutings gesammelt werden, die auf asynchrone Methoden abgebildet werden müssen. Dafür wird das Konversationsrouting traversiert und asynchrone Instruktionen, sowie Instruktionen über die solche erreicht werden können, werden in einer Liste vermerkt, welche anschließend FlowClassSyntaxBuilder zur Verfügung gestellt wird. Die Bestimmung, ob eine Instruktion über einen Pfad im Routing eine asynchrone Instruktion erreichen kann, wird über die Berechnung der reflexiv-transitiven Hülle des Konversationsroutings, also einer Liste der direkten und indirekten Vorgänger aller Instruktionen, erreicht. So ist eine Instruktion asynchron, wenn sie in der reflexiv-transitiven Hülle in Relation mit einer anderen asynchronen Instruktion steht.
 
 \subsubsection{Benutzerdefinierter Code}

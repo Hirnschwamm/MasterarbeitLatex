@@ -34,7 +34,58 @@ Auch bei der Klasse FlowDiagramControl fokussieren sich die Testfälle auf das V
 \end{itemize} 
 
 \subsubsection{Transformator}  
-TODO
+In den Tests für die Transformator-Komponenten werden die wichtigsten Klassen für die Bytecode-Generierung verifiziert. Dabei ist der Zuständigkeitsbereich einer Klasse zu beachten, und dementsprechend zu testen. Es macht zum Beispiel wenig Sinn, die Details der Syntax der generierten Klassen in den Testfällen für ConversationRoutingBehaviorGenerator zu verifizieren, da sich diese Klasse mit der Kompilierung der Syntax und Erstellung des Bytecodes beschäftigt. Die Syntax der generierten Klassen wird in den Modulen FlowClassSyntaxBuilder und UserCodeClassSyntaxBuilder erstellt und sollte dementsprechend in den dort zugehörigen Testfällen verifiziert werden. Auf diese Weise wird eine unnötige mehrfache Testüberdeckung vermieden. Vor diesem Hintergrund werden für die Klasse ConversationRoutingBehaviorGenerator folgende Aspekte mittels Unit Tests getestet: 
+
+\begin{itemize}
+\item Im Falle einer übergebenen korrekten Flow-Instanz wird in der Methode die CIL-Syntax erfolgreich erstellt, kompiliert und ein In-Memory-Assembly wird zurückgegeben, in der die erwartete Konversationsrouting-Klasse definiert ist
+\item Im Falle einer übergebenen Flow-Instanz, in der keine Start-Instruktion vorhanden ist, wird eine Exception geworfen
+\item Im Falle einer fehlgeschlagenen Kompilierung der generierten Syntax wird eine Exception geworfen, in der detaillierte Fehlermeldungen enthalten sind
+\item Im Falle einer korrekten Flow-Instanz wird von Roslyn ein semantisches Modell der CIL-Syntax generiert
+\end{itemize} 
+
+Die nächst niedrigere Stufe bei der Transformation ist die Erstellung des CIL-Syntaxbaums. Hierfür wird die Klasse ConversationRoutingSyntaxTreeBuilder folgendermaßen getestet:
+
+\begin{itemize}
+\item Im Falle einer übergebenen Start-Instruktion wird erfolgreich ein CIL-Syntaxbaum generiert, welcher auf der höchsten Ebene die Syntax für die erwartete Klassendeklarationen im erwarteten Namespace enthält
+\item Im Falle von ungenügenden übergebenen Parametern wird eine Exception geworfen
+\end{itemize}
+
+Der Syntaxbaum besteht zum größten Teil aus der Klassendeklaration der Klasse, welche das Konversationsrouting umsetzt. Die Syntax dieser Klasse wird von FlowClassSyntaxBuilder erstellt und im Zuge der zugehörigen Testfälle für diese Klasse verifiziert:
+
+\begin{itemize}
+\item Im Falle einer übergebenen Start-Instruktion eines korrekten DSL-Modells wird die Syntax für eine Klasse zurückgegeben, die von ACDCallRoutingBehaviorBase erbt, und für jede im Modell enthaltene Instruktion eine Membermethode beinhaltet. Zusätzlich existiert eine geschachtelte private Klassendeklaration für den benutzerspezifischen Code, welche als Instanz als Membervariable in der umfassenden Klasse vertreten ist
+\item Im Falle von fehlerhaften übergebenen Parametern wird eine Exception geworfen.
+\end{itemize}
+
+UserCodeClassSyntaxBuilder, welche für die Generierung der geschachtelten Klassendeklaration zuständig ist, wird auf folgende Anforderungen getestet:
+
+\begin{itemize}
+\item Im Falle einer übergebenen Start-Instruktion eines korrekten DSL-Modells wird die Syntax für eine Klasse zurückgegeben, in der alle Instruktionen des Modells, die benutzerspezifischen Code enthalten, mit einer Membermethode vertreten sind, die diesen Code ausführt. Zusätzlich existieren für benutzerdefinierte  Funktionen entsprechende Membermethoden und für benutzerdefinierte Variablen entsprechende Membervariablen. Die Klasse enthält weiterhin zwei Properties vom Typ String mit den Namen Skill und Language.
+\item Im Falle von fehlerhaften übergebenen Parametern wird eine Exception geworfen.
+\end{itemize}
+
+Ob die Syntax für generierte Methoden, die den Ablauf des Routings steuern, die richtige Struktur aufweist, wird in den Testfällen für die Klasse MethodFlowSyntaxBuilder wie folgt getestet:
+
+\begin{itemize}
+\item Wird eine Instruktion in Form einer Node-Instanz übergeben, wird eine Liste an Methodendeklarationen zusammengestellt, in der alle von der übergebenen Node erreichbaren Instruktionen abgebildet sind. In der Syntax für jeden Methodenkörper existieren die Methodenaufrufe für die im Modell jeweils nachfolgende Instruktion.
+\item Werden unzureichende Parameter übergeben, wird eine Exception geworfen
+\end{itemize}
+
+Die Methoden-Deklarationen für die Usercode-Klasse werden von UserCodeMethodSyntaxBuilder umgesetzt und folgendermaßen getestet:
+
+\begin{itemize}
+\item Wird eine Instruktion in Form einer Node-Instanz übergeben, wird eine Liste an Methodendeklarationen zusammengestellt, in der nur die Instruktionen abgebildet sind, in denen vom Benutzer geschriebener Code zum Einsatz kommt.
+\item Werden unzureichende Parameter übergeben, wird eine Exception geworfen
+\end{itemize}
+
+Zuletzt wird noch getestet, ob der Inhalt der generierten Methoden den Anforderungen entspricht. Dafür werden alle von NodeSyntaxBuilder abgeleiteten Typen getestet, da diese die instruktionsspezifische Syntax  für eine Methode generieren:
+
+\begin{itemize}
+\item Jeder Subtyp von NodeSyntaxBuilder erstellt für die ihm übergebene Instanz des zugehörigen Node-Subtyps die spezifische Syntax, die notwendig ist, um diese Instruktion umzusetzen. Die Syntax wird in Form einer Liste von SyntaxNode-Instanzen zurückgeliefert 
+\item Werden unzureichende Parameter übergeben, wie zum Beispiel eine Instanz eines falschen Node-Subtyps, wird eine Exception geworfen
+\end{itemize}
+
+Bei allen Tests, die als Parameter eine Flow-Instanz entgegennehmen, wird das Modell aus Abb. \ref{fig:TestRouting} verwendet. 
 
 \subsection{Manuelle Tests}
 Bei den manuellen Tests geht es darum, das korrekte Zusammenwirken der einzelnen Komponenten zu testen. Daher werden alle Schritte, die für die Inbetriebnahme eines Konversationsroutings von Nöten sind, ausgeführt und die korrekte Funktionsweise anschließend verifiziert. Zu diesem Zweck werden folgende Schritte in der beschriebenen Reihenfolge ausgeführt:
@@ -51,7 +102,7 @@ Ein Kandidat für ein Test-Routing mit dem die oben stehenden Schritte ausgefüh
 \begin{figure} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{img/TestRouting.png}
-	\caption[DSL-Modell für manuelle Tests]{Zu sehen ist das DSL-Modell, welches im Zuge von manuellen Tests zum Einsatz kommt.}
+	\caption[DSL-Modell für manuelle Tests]{Zu sehen ist das DSL-Modell, welches im Zuge von automatisierten und manuellen  Tests zum Einsatz kommt.}
 	\label{fig:TestRouting}
 \end{figure}
 
@@ -78,10 +129,15 @@ Die laut den oben stehenden Metriken komplexeste Komponente der DSL ist der Edit
 Erwähnenswert ist weiterhin, dass keine Komponente beim Median der zyklomatischen Komplexität den Wert eins überschreitet. In Verbindung mit dem geringen Mittelwert alle Komponenten spricht dies für eine hohe Gradlinigkeit während des Programmablaufs. 
 
 \section{Performanz}
-TODO
+Sowohl der generierte als auch der händisch verfasste Code muss eine hohe Leistungsfähigkeit aufweisen. Aber ähnlich wie im vorangegangen Kapitel gestaltet sich die Abschätzung der Performanz für den generierten Bytecode als schwierig: Der Code kann nur so effizient sein, wie der Benutzer ihn gestaltet. Zusätzlich haben Maße wie Zeitmessungen wenig Bedeutung, da ein Konversationsrouting an vielen Stellen gewünschter Maßen blockiert. Eine Laufzeitanalyse ist in diesem Fall ebenfalls wenig zielführend, da die Laufzeit des Algorithmus, der ein Konversationsroutings ausführt, von keiner Eingabe abhängig ist, sondern höchstens von der Interaktion mit einem Anrufer.
+\newline
+Aus diesem Grund konzentriert sich die folgende Analyse auf den Code, welcher die Transformation durchführt. Auch hier ist eine hohe Performanz wichtig, da dieser Code im Zuge der Modell-Validierung und damit laufend während der Modellierung ausgeführt wird. Leistungsfähiger Code kann hier also dafür sorgen, dass der Benutzer schnelles Feedback über etwaige Fehler bekommt und bei der Modellierung nicht lange auf die Transformation warten muss.
 
 \subsection{Geschriebener Code}
-TODO
 
-\subsection{Generierter Code}
-TODO
+\subsubsection{Abschätzung der Komplexität}
+Bei der Transformation eines DSL-Modells wird dieses wie ein Graph aufgefasst und entsprechend einer Depth-First-Vorgehensweise traversiert. Sei ein Graph definiert als $G = (V, E)$ mit $V$ als der Menge an Knoten und $E \subseteq V^{2}$ als die Menge an Kanten. Die Komplexität eines Depth-First-Algortihmus befindet sich dann in der Komplexitätsklasse $O(\left\vert{V}\right\vert + \left\vert{E}\right\vert)$ (siehe [CITATION]). Bei der Interpretation eines DSL-Modells als Graph werden alle Input-, Node- und Output-Instanzen wie die Knoten, und alle Referenzen zwischen diesen Instanzen wie die Kanten eines Graphen behandelt. Sei daher $V_{dsl}$ die Menge aller dieser Instanzen und $E_{dsl}$ die Menge aller Referenzen zwischen diesen Instanzen. Seien weiterhin $Var$ und $Fun$  je die Mengen aller benutzerdefinierten Variablen und Funktionen. Der Aufwand zur Erstellung der Syntax für eine Instruktion wird als konstant angenommen, da dieser nicht von der Eingabe abhängt. Dabei handelt es sich wohlgemerkt um eine Vereinfachung des Sachverhalts, da der Aufwand, den die Roslyn API betreibt, nicht an allen Stellen zuverlässig abgeschätzt werden kann. 
+\newline
+Unter den oben genannten Voraussetzungen lässt sich der Aufwand für die Transformation eines DSL-Modells zu einer CIL-Syntax abschätzen als:
+$$ O( \left\vert{V_{dsl}}\right\vert + \left\vert{E_{dsl}}\right\vert + \left\vert{Var}\right\vert + \left\vert{Fun}\right\vert ) $$
+Die Summierung der Kardinaltiäten von $V_{dsl}$ und $E_{dsl}$ ergibt sich aus der Traversierung des DSL-Modells. Die beiden Summanden $\left\vert{Var}\right\vert$ und $\left\vert{Fun}\right\vert$ ergeben sich aus der Generierung der zugehörigen Syntax, für die durch diese Mengen iteriert werden muss. Außerdem sei angemerkt, dass die Traversierung des DSL-Modells für eine einzelne Transformation dreimal stattfinden muss (Zweimal für je zwei Klassendeklarationen und einmal zur Sammlung aller asynchronen Instruktionen, vergleiche Abs. \ref{subsubsec:Nebenlaeufigkeit}. Da es sich jedoch um einen konstanten Multiplikator handelt, kann dieser weggelassen werden (siehe [CITATION]). 
