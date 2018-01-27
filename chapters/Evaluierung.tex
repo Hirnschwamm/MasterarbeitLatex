@@ -89,7 +89,11 @@ Zuletzt wird noch getestet, ob der Inhalt der generierten Methoden den Anforderu
 Die Modell-Validierung stellt eine eigene Komponente dar und wird daher auch in einer seperaten Sammlung an Unit-Tests verfiziert. Im Fokus stehen vor allem die ConstraintEvaluators, welche auf ihr Funktionstüchtigkeit geprüft werden. Im Detail werden folgende Tests durchgeführt:
 
 \begin{itemize}
-\item TODO
+\item Wird ein DSL-Modell ohne Start-Instruktion validiert, gibt StartNodeExistsEvaluator eine entsprechende Diagnostik aus
+\item Beinhaltet ein DSL-Modell eine Start-Instruktion, gibt StartNodeExists keine Diagnostik zurück
+\item Für jede unverbundene Instruktion in einem DSL-Modell gibt NoUnconnectedNodeExists eine Diagnostik zurück, die auf die entsprechende Instruktion verweist
+\item Für jeden ungültigen Instruktionsparameter gibt NodeParametersAreValidEvaluator eine Diagnostik mit Referenz auf die betroffene Instruktion zurück
+\item Für jeden Compiler-Fehler in benutzerdefiniertem Code gibt UserCodeCompilesEvaluator eine Diagnostik mit einer Referenz auf die betroffene Instruktion oder Funktion zurück
 \end{itemize} 
 
 Bei allen Tests, die als Parameter eine Flow-Instanz entgegennehmen, wird das Modell aus Abb. \ref{fig:TestRouting} verwendet. 
