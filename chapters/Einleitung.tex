@@ -89,7 +89,7 @@ public class RoslynTest
 }
 \end{lstlisting}
 \end{minipage}
-\vskip 1em
+
 Dann ließe sich dies durch folgenden Code-Ausschnitt realisieren:
 \newline
 \vspace{1cm}
@@ -118,7 +118,7 @@ var classDeclaration = generator.ClassDeclaration("RoslynTest", null, Accessibil
 
 var classDeclarationArray = new SyntaxNode[]{ classDeclaration };
 
-var syntaxTree = generator.CompilationUnit(classDeclarationArray).SyntaxTree;
+var tree = generator.CompilationUnit(classDeclarationArray).SyntaxTree;
 \end{lstlisting}
 \end{minipage}
 \vskip 1em
