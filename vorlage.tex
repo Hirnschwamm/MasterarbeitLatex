@@ -95,9 +95,16 @@
 \lstdefinestyle{sharpc}{language=[Sharp]C, frame=lr, rulecolor=\color{black}}
 \lstset{style=sharpc}
 
+\usepackage{afterpage}
+
 
 %--------------------------------------------------------------------------
 \begin{document}
+
+\newpage
+\thispagestyle{empty}
+
+
 %------------------------- Titelblatt -------------------------------------
 \title{Entwurf und Implementierung einer grafischen, domänenspezifischen Sprache zur Spezifizierung des Konversationsrouting in Contactcentern}
 \subtitle{Design and Implementation of a Graphical DSL (Domain-Specific Language) for the Conversation Routing in Contact Centers}
@@ -124,6 +131,29 @@
   \newpage
 \endgroup
 %--------------------------------------------------------------------------
+
+%-----------------------------------
+% Sperrvermerk
+%-----------------------------------
+\afterpage{%
+\thispagestyle{empty}
+
+\section*{Sperrvermerk}
+Die vorliegende Abschlussarbeit mit dem Titel ``Entwurf und Implementierung einer grafischen, domänenspezifischen Sprache zur Spezifizierung des Konversationsrouting in Contactcentern'' enthält unternehmensinterne Daten der Firma ilogixx. Daher ist sie nur zur Vorlage bei der Hochschule Trier sowie den Begutachtern der Arbeit bestimmt. Für die Öffentlichkeit und dritte Personen darf sie nicht zugänglich sein.
+
+\par\medskip
+\par\medskip
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \hspace{1.5cm} \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \\
+(Trier, den 06.02.2017)\hspace{1.5cm}
+(David Wichter)
+
+\newpage
+
+}
+
+%--------------------------------------------------------------------------
+
 \frontmatter 
 %--------------------------------------------------------------------------
 \input{chapters/Vorwort}				% Vorwort (optional)
