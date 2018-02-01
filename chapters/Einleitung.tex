@@ -74,7 +74,7 @@ MyContactCenter und die DSL ist mit dem Microsoft .NET Software Framework entwic
 \subsection{Roslyn}
 Roslyn ist eine .NET Compiler-Plattform welche Entwicklern die Werkzeuge eines Compilers für C\#- und Visual Basic-Code über eine API im eigenen Programmcode zur Verfügung stellt. So kann Code von Dritt-Anwendungen analysiert, generiert und kompiliert werden (siehe dazu den frei zugänglichen Quellcode und die Dokumenation \cite{Roslyn}). Die Implementierung der domänenspezifischen Sprache benutzt Roslyn, um über eine Codegenerierungs-API einen MSIL-Syntaxbaum zu generieren und diesen zu einem .NET-Assembly zu kompilieren. Über die API können einem bestehenden Syntaxbaum neue Syntaxknoten hinzugefügt werden, welche sich nach den Regeln der Microsoft Intermediate Language schachteln lassen. Syntaxknoten und -Bäume sind unveränderlich (engl. immutable), das heißt wenn ein Syntaxbaum einmal angelegt ist, kann dieser nicht mehr verändert, sondern nur noch kopiert werden. In der vorliegenden Ausarbeitung wird der Syntaxbaum mit Roslyn daher ''Bottom-up`` generiert: Anstatt zuerst den Syntaxbaum zu instanzieren und anschließend die Knoten und Baumblätter hinzuzufügen, werden zuerst die Blätter und Knoten erzeugt, welche nacheinander zu einem Baum zusammengesetzt werden. Sei beispielsweise die Syntax für folgenden Code zu generieren:
 \noindent
-\begin{lstlisting}
+\begin{lstlisting}[language=custom]
 public class RoslynTest
 {
     public int Return5()
@@ -86,7 +86,7 @@ public class RoslynTest
 
 Dann ließe sich dies durch folgenden Code-Ausschnitt realisieren:
 \noindent
-\begin{lstlisting}
+\begin{lstlisting}[language=custom]
 var workSpace = new AdhocWorkspace();
 
 var generator = SyntaxGenerator(workSpace, LanguageNames.CSharp);
@@ -117,11 +117,9 @@ var tree = generator.CompilationUnit(classDeclarationArray).SyntaxTree;
 \subsection{Asynchrone Methodenausführung in .NET}
 \label{subsec:Asynchrone Methodenausfuehrung}
 Einige Operationen innerhalb eines Konversationsroutings erfordern Thread-block\-ie\-ren\-de Operationen (zum Beispiel das Abspielen von Audiodateien). Um solche Blockaden zu verhindern, werden diese mittels asynchroner Methodenausführung auf anderen Threads ausgeführt. Dies findet in .NET über eine das Async/Await-Sprachkonstrukt statt, welches anhand des unten stehenden Codes erklärt wird.
-
-\vspace{1cm}
 \noindent
-\begin{minipage}{1.0\textwidth} \small
-\begin{lstlisting}
+\newline
+\begin{lstlisting}[language=custom]
 async Task<int> A ()
 {
 	int temp = await B();
@@ -133,9 +131,6 @@ Task<int> B ()
 	return Task.Run<int>( () => DoWork() );
 }
 \end{lstlisting}
-\end{minipage}
-\vskip 1em
-
 
 Eine Methode, hier genannt Methode A, kann mit dem Schlüsselwort ``async'' gekennzeichnet werden. Dies signalisiert, dass A eine asynchrone Methode ist, welche in ihrem Methoden-Körper mittels des ``await''-Schlüsselworts auf die andere Methode B warten kann. Trifft der Programmfluss auf dieses ``await'', wird die Kontrolle an den Aufrufer von A zurückgegeben, während auf das Ergebnis von B gewartet wird. Der Aufrufer von A kann nun mit seiner Arbeit weitermachen, oder gemäß des Musters mittels ``await'' auf A warten. Bs Arbeit wird mit der Methode ``Task.Run'' gestartet, welche die zu verrichtende Arbeit auf einem anderen Thread startet und ein Task-Objekt zurückliefert. Ist der Thread mit seiner Arbeit fertig (in diesem Fall mit der Methode ``DoWork'') wird das Ergebnis in dem Task-Objekt gespeichert, von dem ``await''-Operator abgeholt, und in die Variable ``temp'' geschrieben. ``temp'' wird nun zurückgeliefert, was bedeutet, dass der von A zurückgelieferte Task nun das gewünschte Ergebnis enthält. Auf diese Weise wurde der Hauptprogrammfluss nicht blockiert, obwohl eine potentiell rechenintensive Operation in B ausgeführt wurde.
 

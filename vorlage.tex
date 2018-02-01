@@ -39,6 +39,8 @@
 \usepackage[utf8]{inputenc}  	% Ermöglicht Umlaute-Darstellung unter Linux (je nach verwendetem Format)
 
 %-----------------------------------------------------
+\definecolor{red}{rgb}{0.6,0,0}
+
 \usepackage{listings} 			% Code-Darstellung
 \lstset
 {
@@ -46,8 +48,7 @@
 	keywordstyle=\color{blue}\bfseries,
 								% underlined bold black keywords
 	identifierstyle=, 			% nothing happens
-	commentstyle=\color{red}, 	% white comments
-	stringstyle=\ttfamily, 		% typewriter type for strings
+	commentstyle=\color{green}, 	% white comments	
 	showstringspaces=false, 	% no special string spaces
 	framexleftmargin=7mm, 
 	tabsize=3,
@@ -58,6 +59,34 @@
 	linewidth=146mm,
 	xleftmargin=8mm
 }
+
+\lstdefinelanguage{custom}
+{
+morekeywords= { abstract, event, new, struct,
+                as, explicit, null, switch,
+                base, extern, object, this,
+                bool, false, operator, throw,
+                break, finally, out, true,
+                byte, fixed, override, try,
+                case, float, params, typeof,
+                catch, for, private, uint,
+                char, foreach, protected, ulong,
+                checked, goto, public, unchecked,
+                class, if, readonly, unsafe,
+                const, implicit, ref, ushort,
+                continue, in, return, using,
+                decimal, int, sbyte, virtual,
+                default, interface, sealed, volatile,
+                delegate, internal, short, void,
+                do, is, sizeof, while,
+                double, lock, stackalloc,
+                else, long, static,
+                enum, namespace, string, var, await, async, get, set },
+morestring = *[d]{"},
+stringstyle=\ttfamily\color{red}
+}
+
+
 \usepackage{textcomp} 			% Celsius-Darstellung
 \usepackage{amssymb,amsfonts,amstext,amsmath}	% Mathematische Symbole
 \usepackage[german, ruled, vlined]{algorithm2e}
@@ -96,6 +125,8 @@
 \lstset{style=sharpc}
 
 \usepackage{afterpage}
+
+
 
 
 %--------------------------------------------------------------------------
