@@ -9,7 +9,7 @@ Neben der Interaktion mit dem Benutzer ist die andere Aufgabe des Editors, die k
 \newline
 Der Editor ist als eine Windows Forms-Anwendung umgesetzt und implementiert das Model-View-Viewmodel-Entwicklungsmuster (kurz MVVM). Ähnlich wie bei verwandten Entwurfsmustern wie zum Beispiel Model-View-Controller (MVC) geht es bei MVVM darum, die Darstellung einer Anwendung von ihrer Logik zu trennen. Dies geschieht durch eine Einteilung in drei verschiedene Schichten: Dem View, dem Viewmodel und dem Model. Die View-Schicht dient zur Darstellung der Anwendung und umfasst die Komponenten der grafischen Benutzeroberfläche. Sie erhält die nötigen Daten zur Darstellung vom Viewmodel über sogenannte Datenbindung (engl. Data Binding). Dabei werden Daten über ein Framework an einander gebunden und werden so vom System bei jeder Zustandsänderung synchronisiert. Ändern sich also Daten im Viewmodel wird dies unverzüglich im View angezeigt. Das Viewmodel kümmert sich um die Präsentationslogik. Das heißt es ist dafür zuständig Daten so aufzubereiten, dass diese dem View per Datenbindung zur Verfügung gestellt werden können. Dafür hat das Viewmodel Zugriff auf das Model, welches die Daten speichert. Im Viewmodel wird auch die Geschäftslogik sowie Speicher- und Lade-Aktionen ausgeführt. In .NET wird MVVM vor allem im Zuge der Windows Presentation Foundation eingesetzt, kann aber durch das Devexpress-Framework auch in Windows Forms-Anwendungen benutzt werden. 
 \newline
-Im grafischen Editor der DSL werden die drei Schichten von MVVM durch verschiedene C\#-Klassen abgebildet, welche im Folgenden erläutert werden.
+Im grafischen Editor der DSL werden die drei Schichten von MVVM durch verschiedene Klassen abgebildet, welche im Folgenden erläutert werden.
 
 \begin{figure} %[hbtp]
 	\centering
@@ -77,7 +77,7 @@ Damit der Benutzer die selbst definierten Funktionen verwalten kann, existiert z
 \begin{figure} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{img/MVVMSequence.png}
-	\caption[Kommunikationsablauf zwischen View- und ViewModel-Schicht]{Der Ablauf der Kommunikation zwischen der View- und der ViewModel-Schicht. Interagiert der Benutzer mit dem View, zum Beispiel durch das Hinzufügen von Nodes oder Connectors, werden entsprechende Events ausgelöst. Auf diese reagiert die abgeleitete View-Klasse FlowDiagramControl und aktualisiert ihre Daten mit den Objekten. Das ViewModel erhält die aktualisierten Daten über die Datenbindung des Frameworks und kann so, wenn der Benutzer das Konversationsrouting speichern möchte, die Klasse Flow der Model-Schicht instanzieren.}
+	\caption[Kommunikationsablauf zwischen View- und ViewModel-Schicht]{Der Ablauf der Kommunikation zwischen der View- und der ViewModel-Schicht. Interagiert der Benutzer mit dem View, zum Beispiel durch das Hinzufügen von \texttt{Node}- oder \texttt{Connector}-Instanzen, werden entsprechende Events ausgelöst. Auf diese reagiert die abgeleitete View-Klasse \texttt{FlowDiagramControl} und aktualisiert ihre Daten mit den Objekten. Das ViewModel erhält die aktualisierten Daten über die Datenbindung des Frameworks und kann so, wenn der Benutzer das Konversationsrouting speichern möchte, die Klasse \texttt{Flow} der Model-Schicht instanzieren.}
 	\label{fig:UML:MVVMSequence}
 \end{figure}
 
@@ -95,7 +95,7 @@ Um die Verbindungen zwischen Instruktionen zu modellieren, wird ähnlich vorgega
 \begin{figure} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{img/FlowViewUML.png}
-	\caption[Klassenstruktur der View-Schicht]{Abgebildet ist ein Teil der View-Schicht. Zu sehen ist FlowDiagramView, welche über eine Instanz von FlowDiagramControl verfügt. FlowDiagramControl beinhaltet die Klassen FlowDiagramItem und FlowDiagramConnector, welche die Node- und Connector-Instanzen der Model-Schicht visualisieren. Über das ViewModel erhält FlowDiagramControl per Datenbindung Zugriff die zu visualisierenden Daten.}
+	\caption[Klassenstruktur der View-Schicht]{Abgebildet ist ein Teil der View-Schicht. Zu sehen ist \texttt{FlowDiagramView}, welche über eine Instanz von \texttt{FlowDiagramControl} verfügt. \texttt{FlowDiagramControl} beinhaltet die Klassen \texttt{FlowDiagramItem} und \texttt{FlowDiagramConnector}, welche die \texttt{Node}- und \texttt{Connector}-Instanzen der Model-Schicht visualisieren. Über das ViewModel erhält \texttt{FlowDiagramControl} per Datenbindung Zugriff die zu visualisierenden Daten.}
 	\label{fig:UML:FlowView}
 \end{figure}
 
@@ -105,7 +105,7 @@ Um die Verbindungen zwischen Instruktionen zu modellieren, wird ähnlich vorgega
 
 \subsection{Konzept}
 \label{subsec:Konzept}
-Die Transformation ist der Schritt in der Verarbeitungskette, in der aus einem semantischen Modell, welches in der Form der C\#-Datenstruktur aus Abschnitt \ref{subsec:Die Model-Schicht} vorliegt, die CIL-Syntax generiert wird. Diese kann anschließend kompiliert und ausgeführt werden. Ein Modell wird auf eine zu generierende Klasse abgebildet, welche das gewünschte Verhalten des Modells implementiert. Diese Klasse erbt von einer abstrakten Basisklasse mit dem Namen \texttt{ACDCallRoutingBehaviorBase}, welche die abstrakte Methode \texttt{StartAsync} zur Verfügung stellt. Die vom Transformationsalgorithmus generierte Klasse implementiert \texttt{StartAsync} so, dass beim Aufruf das vom Benutzer spezifizierte Konversationsrouting ausgeführt wird.
+Die Transformation ist der Schritt in der Verarbeitungskette, in der aus einem semantischen Modell, welches in der Form eines Objekt-Graphen aus Abschnitt \ref{subsec:Die Model-Schicht} vorliegt, die CIL-Syntax generiert wird. Diese kann anschließend kompiliert und ausgeführt werden. Ein Modell wird auf eine zu generierende Klasse abgebildet, welche das gewünschte Verhalten des Modells implementiert. Diese Klasse erbt von einer abstrakten Basisklasse mit dem Namen \texttt{ACDCallRoutingBehaviorBase}, welche die abstrakte Methode \texttt{StartAsync} zur Verfügung stellt. Die vom Transformationsalgorithmus generierte Klasse implementiert \texttt{StartAsync} so, dass beim Aufruf das vom Benutzer spezifizierte Konversationsrouting ausgeführt wird.
 \newline 
 Die Instruktionen des Konversationsroutings werden als Membermethoden der Klasse abgebildet. In der generierten Klasse existiert für jede Instruktion eine eigene Methode, deren Syntax das gewünschte Verhalten der Instruktion umsetzt. Der Bezeichner der Methode trägt den Namen der Instruktion, gefolgt von einer eindeutigen Identifikationsnummer, sodass mehrere Instruktionen des gleichen Typs bei der Generierung der zugehörigen Membermethoden nicht kollidieren. Manche Instruktionen müssen mit der zu routenden Konversation interagieren. Zu diesem Zweck steht der generierten Klasse eine API zur Verfügung. Der Zugang zu  dieser API ist eine Membervariable der Klasse \texttt{RoutedAcdCall}, welche in der Basisklasse \texttt{ACDCallRoutingBehaviorBase} angelegt ist und ein Interfaces namens \texttt{IRoutedAcdCall} implementiert. Soll beispielsweise im Zuge einer Media Playback-Instruktion eine Audio-Datei abgespielt werden, kann Syntax generiert werden, welche die Methode \texttt{PlayAudioAsync} des Interfaces \texttt{IRoutedAcdCall} auf dieser Membervariable aufruft. 
 \newline
@@ -124,7 +124,7 @@ Folgendes Beispiel soll die Transformation eines Konversationsroutings zu CIL-Sy
 \begin{figure} %[hbtp]
 	\centering
 		\includegraphics[width=0.7\textwidth]{img/FlowToCodeExample.png}
-	\caption[Beispielhaftes Konversationsrouting zur Veranschaulichung der Transformation zu C\#-Syntax]{Beispielhaftes Konversationsrouting zur Veranschaulichung der Transformation zu CIL-Syntax.}
+	\caption[Beispielhaftes Konversationsrouting zur Veranschaulichung der Transformation zu CIL-Syntax]{Beispielhaftes Konversationsrouting zur Veranschaulichung der Transformation zu CIL-Syntax.}
 	\label{fig:FlowToCode}
 \end{figure}
 
@@ -186,7 +186,7 @@ Eine Aufgabe der DSL ist die Unterstützung des Benutzers, indem Fehler vermiede
 \newline
 Die Modell-Validierung findet im Editor statt. Dort steht dem ViewModel eine Instanz des Interfaces \texttt{IFlowValidator} zur Verfügung, dessen Klassenstruktur im Diagramm \ref{fig:UML:FlowValidatorClassStructure} abgebildet ist. Die Klasse \texttt{FlowValidator} implementiert \texttt{IFlowValidator}, welche die Methode \texttt{Validate} zur Verfügung stellt. \texttt{Validate} nimmt ein semantisches Modell in Form einer \texttt{Flow}-Instanz entgegen und liefert eine Liste von \texttt{FlowDiagnostics} zurück, in denen Details zu auftretenden Fehlern wie zum Beispiel eine Fehlernachricht oder die betroffene Instruktion gespeichert sind. Zur Implementierung des Interfaces benutzt \texttt{FlowValidator} eine Liste von Klasseninstanzen, die das Interface \texttt{IConstraintEvaluator} implementieren. Diese Interface stellt die Methode \texttt{Evaluate} bereit. \texttt{Evaluate} nimmt eine \texttt{Flow}-Instanz entgegen und überprüft diese auf einen einzelnen Constraint. Verletzt das semantische Modell diesen Constraint, liefert \texttt{Evaluate} eine Liste mit \texttt{FlowDiagnostic}-Instanzen zurück. In der vorliegenden Implementierung sind vier \texttt{ConstraintEvaluator} implementierende Klassen umgesetzt: 
 \begin{description}
-\item[StartNodeExistsEvaluator] \hfill \\
+\item[\texttt{StartNodeExistsEvaluator}] \hfill \\
 Diese Implementierung von \texttt{IConstraintEvaluator} überprüft, ob im semantischen Modell eine einzelne Start-Instruktion vorhanden ist.
 \item[\texttt{NoUnconnectedNodeExistsEvaluator}] \hfill \\
 Hier wird überprüft, ob Instruktionen existieren, deren Eingang mit dem Rest des Konversationsroutings unverbunden ist. Für jede unverbundene Instruktion wird eine Instanz von \texttt{FlowDiagnostic} zurückgeliefert, in der die entsprechenden \texttt{Node}-Subtyp-Instanzen referenziert sind.
