@@ -13,8 +13,8 @@ Aus dieser Aufgabe ergeben sich folgende Anforderungen für die DSL:
 	\item Entgegennehmen eines Anrufs
 	\item Abspielen von Audiodateien 
 	\item Abrufen von Eingaben des Anrufers über Mehrfrequenzwahlverfahren
-	\item Ausführen von Benutzerscripten. Bei Bedarf soll ein Benutzer über die Programmiersprache C\# eigene Scripte programmieren können, welche dann im Routing ausgeführt werden.
-	\item Einordnen von Anrufen in die Kategorien ``Sprache'' und ``Wissensbereich''. Die Einordnung eines Anrufes in diese Kategorien bestimmt, welche Agenten den Anruf entgegen nehmen können.
+	\item Ausführen von Benutzerskripten. Bei Bedarf soll ein Benutzer über die Programmiersprache C\# eigene Skripte programmieren können, welche dann im Routing ausgeführt werden.
+	\item Zuordnen einer Sprache und eines Wissensbereichs zu einem Anruf.
 	\item Terminieren eines Anrufs
 	\item Zustellung eines Anrufs an einen Agenten
 	\end{itemize}
@@ -36,12 +36,12 @@ Ein DSL-Modell kann auch vereinfacht als gerichteter Graph betrachtet werden, in
 \begin{figure} %[hbtp]
 	\centering
 		\includegraphics[width=0.8\textwidth]{img/SingleNodeWithAnnotations.png}
-	\caption[Beschriftung einer DSL-Instruktion]{Eine einzelne Instruktion wie sie (ohne die Beschriftung) in einem Konversationsrouting dargestellt wird. Abgebildet ist die Branch-Instruktion, welche über einen Eingang und zwei Ausgänge verfügt. Die If-Bedingung, welche den zu nehmenden Ausgang bestimmt, ist nicht in der Instruktion dargestellt, sondern wird auf als Eigenschaft in einem separaten Fenster der Benutzeroberfläche konfiguriert.}
+	\caption[Beschriftung einer DSL-Instruktion]{Eine einzelne Instruktion wie sie (ohne die Beschriftung) in einem Konversationsrouting dargestellt wird. Abgebildet ist die Branch-Instruktion, welche über einen Eingang und zwei Ausgänge verfügt. Die If-Bedingung, welche den zu nehmenden Ausgang bestimmt, ist nicht in der Instruktion dargestellt, sondern wird als Eigenschaft in einem separaten Fenster der Benutzeroberfläche konfiguriert.}
 	\label{fig:SingleNode}
 \end{figure}
 
 \subsection{Beispiel}
-Ein Beispiel soll im Folgenden die Anwendung der domänenspezifischen Sprache näher veranschaulichen. In Abbildung \ref{fig:ExampleRouting} ist ein Konversationsrouting durch ein Modell der DSL spezifiziert. Hier wird für den eingehenden Anruf zu erst eine Fallunterscheidung durchgeführt: Mittels eines C\#-Ausdrucks (dargestellt in der Abbildung durch einen Code-Editor), der per System-Aufruf den aktuellen Wochentag ermittelt, wird entschieden, ob das Routing an einem Sonntag ausgeführt wird. Ist dies der Fall, wird der Ruf terminiert, da es sich um einen Ruhetag handelt. Andernfalls wird eine DTMF-Abfrage gestartet, bei der dem Anrufer in einer abgespielten Audiodatei ein Menü vorgelesen wird. Braucht der Benutzer zu lange, um eine Eingabe zu machen, wird der Timeout-Ausgang gewählt, welcher wieder zurück in die DTMF-Abfrage führt. Bis der Anrufer also eine Eingabe macht oder auflegt, befindet er sich in einer Endlosschleife. Wählt er eine Eins, wird er an ein direktes Ziel weitergeleitet. Wählt er dagegen eine Null, wird eine Hintergrundmusik gestartet und er wird in die Warteschlange eingereiht. Nun verbleibt der Anrufer solange in der Warteschleife, bis er auflegt oder ein Agent seinen Anruf entgegennimmt.  
+Ein Beispiel soll im Folgenden die Anwendung der domänenspezifischen Sprache näher veranschaulichen. In Abbildung \ref{fig:ExampleRouting} ist ein Konversationsrouting durch ein Modell der DSL spezifiziert. Hier wird für den eingehenden Anruf zuerst eine Fallunterscheidung durchgeführt: Mittels eines in C\# programmierten booleschen Ausdrucks (dargestellt in der Abbildung durch einen Code-Editor), der per .NET-Framework-Aufruf den aktuellen Wochentag ermittelt, wird entschieden, ob das Routing an einem Sonntag ausgeführt wird. Ist dies der Fall, wird der Ruf terminiert, da es sich um einen Ruhetag handelt. Andernfalls wird eine DTMF-Abfrage gestartet, bei der dem Anrufer in einer abgespielten Audiodatei ein Menü vorgelesen wird. Braucht der Benutzer zu lange, um eine Eingabe zu machen, wird der Timeout-Ausgang gewählt, welcher wieder zurück in die DTMF-Abfrage führt. Bis der Anrufer also eine Eingabe macht oder auflegt, befindet er sich in einer Endlosschleife. Wählt er eine Eins, wird er an ein direktes Ziel weitergeleitet. Wählt er dagegen eine Null, wird eine Hintergrundmusik gestartet und er wird in die Warteschlange eingereiht. Nun verbleibt der Anrufer solange in der Warteschleife, bis er auflegt oder ein Agent seinen Anruf entgegennimmt.  
 
 \begin{figure} %[hbtp]
 	\centering
@@ -54,7 +54,18 @@ Ein Beispiel soll im Folgenden die Anwendung der domänenspezifischen Sprache n�
 \label{sec:Sprachelemente}
 Die Hauptelemente der DSL sind ihre Instruktionen und die Verbindungen zwischen diesen. Auf welche einzelnen Instruktionen der Benutzer Zugriff hat und wie diese spezifiziert sind, ist im Folgenden beschrieben. 
 
+\subsection{Variablen}
+\label{subsec:Variablen}
+Variablen unterstützen den Benutzer beim Schreiben von eigenem C\#-Code, wie zum Beispiel in Skript- oder Branch-Instruktionen. Variablen können vom Benutzer deklariert werden und sind nicht für eine einzelne Instruktion angelegt, sondern auf Ebene des Konversationsroutings definiert. Sie erscheinen nicht als Rechteck in der Notation wie andere Instruktionen, sondern sind über Dialoge in der grafischen Benutzeroberfläche konfigurierbar. Eine deklarierte Variable kann überall dort im Routing verwendet werden, wo der Benutzer eigenen C\#-Code schreibt. Zur Auswahl für den Variablentyp stehen die primitiven Datentypen int, float, double, bool, string und zusätzlich zur Abbildung von Daten und Zeitpunkten der Typ DateTime aus dem Standard C\#-Namespace zur Verfügung. Zusätzlich zum Typ muss der Benutzer einen Bezeichner angeben, unter dem die Variable im Konversationsrouting referenziert werden kann. Der Wert einer Variable kann mit der Set Variable-Instruktion gesetzt werden, die in Abschnitt \ref{subsec:Set Variables} erläutert wird. 
+
+\subsection{Funktionen}
+Zusätzlich zu Variablen kann der Benutzer eigene Funktionen deklarieren, welche ebenfalls in C\# definiert werden. Ähnlich wie Variablen sind Funktionsdeklarationen keine Instruktion, die in der Notation als Rechteck symbolisiert sind, sondern Eigenschaften des Routings. Sie werden daher auch über gesonderte Dialoge der grafischen Benutzeroberfläche angelegt. Für eine Funktionsdeklaration gibt der Benutzer den Bezeichner, eine Liste von Parametern mit Typ und Bezeichner, den Rückgabetyp und den Funktionskörper an. Für alle Typen steht die gleiche Auswahl, die auch bei Variablen angeboten wird, zur Verfügung. Beim Rückgabetyp kann der Benutzer zusätzlich void angeben, um eine Funktion ohne Rückgabe zu definieren. Ist eine Funktion deklariert, kann sie im gesamten Konfigurationsrouting dort aufgerufen werden, wo der Benutzer eigenen C\#-Code angibt.  
+
+\subsection{Vordefinierte Variablen}
+Neben den selbst angelegten Variablen hat der Benutzer in seinen Scripten auch Zugriff auf Variablen, die schon von der DSL vorgegeben sind. Dies sind die Variablen Skill und Language, welche jeweils als String verfügbar sind. Diese kann der Benutzer in seinem eigenen Code auslesen, oder setzen. In letzterem Fall wird so die gleiche Funktion erfüllt, die sonst die Instruktionen aus Abschnitt \ref{subsec:Set Skill} und \ref{subsec:Set Language} übernehmen. Setzt der Benutzer die Sprache oder den Wissensbereich auf einen Wert, der nicht existiert, wird die Variable nicht verändert. 
+
 \subsection{Start}
+\label{subsec:start}
 \begin{labeling}{Anzahl Ausgänge}
 \item [Eingang] Nein
 \item [Anzahl Ausgänge] 1
@@ -68,7 +79,7 @@ Die Hauptelemente der DSL sind ihre Instruktionen und die Verbindungen zwischen 
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] 1
 \item [Parameter] Die abzuspielende Audiodatei
-\item [Beschreibung] Der Media Playback-Knoten kann vom Benutzer verwendet werden, um Audiodateien abzuspielen. Denkbare Anwendungsfälle sind das Abspielen von Begrüßungsansagen oder Musik-Einspieler. Der Kontrollfluss des Konversationsroutings hält solange bei dieser Instruktion an, wie die Audiodatei dauert und wird erst nach dem Abspielen fortgeführt.  Die abzuspielende Audiodatei muss über die Administration von MyContactCenter vor der Auswahl über einen eigenen Dialog eingespielt werden und wird nach Sprache und Wissensgebiet kategorisiert. Auf diese Weise kann mit dem gleichen Media Playback-Knoten für eine Konversation, die beispielsweise als Englisch kategorisiert ist, eine englische Ansage abgespielt werden während für eine spanische Konversation eine entsprechend spanische Audiodatei abgespielt wird.
+\item [Beschreibung] Der Media Playback-Knoten kann vom Benutzer verwendet werden, um Audiodateien abzuspielen. Denkbare Anwendungsfälle sind das Abspielen von Begrüßungsansagen oder Musik-Einspieler. Der Kontrollfluss des Konversationsroutings hält solange bei dieser Instruktion an, wie die Audiodatei dauert und wird erst nach dem Abspielen fortgeführt.
 \end{labeling}
 
 \subsection{Background Playback}
@@ -76,7 +87,7 @@ Die Hauptelemente der DSL sind ihre Instruktionen und die Verbindungen zwischen 
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] 1
 \item [Parameter] Die abzuspielende Audiodatei
-\item [Beschreibung] Ähnlich wie Instruktion aus Abschnitt \ref{subsec:Media Playback} wird auch bei der Background Playback-Instruktion eine Audiodatei abgespielt. Im Gegensatz zu Media Playback blockiert Background Playback jedoch nicht: Das Konversationsrouting wird mit der nächsten Instruktion fortgeführt. Die abgespielte Audiodatei wird in einer Schleife und im Falle einer weiteren Audiowiedergabe mit geringerer Lautstärke abgespielt. Wird der Ruf an einen Agenten zugestellt wird jegliche Background Playback-Wiedergabe beendet. Background Playback ist vor allem dafür vorgesehen, Hintergrundmusik und Ähnliches abzuspielen.
+\item [Beschreibung] Ähnlich wie Instruktion aus Abschnitt \ref{subsec:Media Playback} wird auch bei der Background Playback-Instruktion eine Audiodatei abgespielt. Im Gegensatz zu Media Playback blockiert Background Playback jedoch nicht: Das Konversationsrouting wird mit der nächsten Instruktion fortgeführt. Die abgespielte Audiodatei wird in einer Endlosschleife abgespielt. Werden weitere Audiosignale zusätzlich an den Anrufer übertragen, werden diese gemischt, wobei Background Playback die geringste Lautstärke unter den Signalen annimmt. Wird der Ruf an einen Agenten zugestellt, wird jegliche Background Playback-Wiedergabe beendet. Background Playback ist vor allem dafür vorgesehen, Hintergrundmusik und Ähnliches abzuspielen.
 \end{labeling}
 
 \subsection{DTMF Character}
@@ -84,7 +95,7 @@ Die Hauptelemente der DSL sind ihre Instruktionen und die Verbindungen zwischen 
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] 13
 \item [Parameter] \begin{itemize} \item Eine abzuspielende Audiodatei  \item Dauer des Eingabezeitfensters in Millisekunden \end{itemize}
-\item [Beschreibung] Das Mehrfrequenzwahlverfahren (engl. Dual-tone multi-frequency signaling, kurz DTMF) ist eine aus der analogen Telefontechnik stammende Technologie zur Abfrage von Benutzereingaben über eine Telefontastatur. Das Verfahren ist auf 16 Symbole beschränkt, die mit einer Telefontastatur abgedeckt werden können: Die Zahlen von null bis neun, die Buchstaben A bis D, sowie die Raute und der Asterisk (vgl. \cite{Durda:06}). DTMF ist auch im Session Initiation Protocol implementiert und kann in Konversationsroutings mit der DTMF Character-Instruktion benutzt werden. Wenn der Kontrollfluss auf diesen Knoten trifft, wartet das Routing für das per Parameter vorgesehene Zeitfenster ab, bevor die nächste Instruktion ausgeführt wird. Gibt der Anrufer in dieser Zeit eine Eingabe über seine Telefontastatur ein, wird einer von zwölf Ausgängen gewählt, dessen Bezeichner mit der eingegebenen Taste übereinstimmt. Die zwölf Ausgänge bilden die Ziffern 0 bis 9, die Raute und den Asterisk ab. Die Buchstaben A bis D wurden für die Instruktion ausgelassen, da diese Symbole für typische Anrufer, welche meistens eine Standard-Telefontastatur benutzen, nicht relevant sind. Der dreizehnte mit ``Timeout'' bezeichnete Ausgang wird gewählt, wenn die Zeit des Eingabezeitfenster verstrichen ist und der Benutzer in dieser Zeit keine Eingabe getätigt hat. Zusätzlich ist eine Audiodatei spezifizierbar, welche während des Eingabezeitfensters abgespielt wird.  
+\item [Beschreibung] DTMF ist im Session Initiation Protocol implementiert und kann in Konversationsroutings mit der DTMF Character-Instruktion benutzt werden. Wenn der Kontrollfluss auf diesen Knoten trifft, wartet das Routing für das per Parameter vorgesehene Zeitfenster ab, bevor die nächste Instruktion ausgeführt wird. Gibt der Anrufer in dieser Zeit eine Eingabe über seine Telefontastatur ein, wird einer von zwölf Ausgängen gewählt, dessen Bezeichner mit der eingegebenen Taste übereinstimmt. Die zwölf Ausgänge bilden die Ziffern 0 bis 9, die Raute und den Asterisk ab. Die Buchstaben A bis D werden für die Instruktion ausgelassen, da diese Symbole für typische Anrufer, welche meistens eine Standard-Telefontastatur benutzen, nicht relevant sind. Der dreizehnte mit ``Timeout'' bezeichnete Ausgang wird gewählt, wenn die Zeit des Eingabezeitfenster verstrichen ist und der Benutzer in dieser Zeit keine Eingabe getätigt hat. Zusätzlich ist eine Audiodatei spezifizierbar, welche während des Eingabezeitfensters abgespielt wird.  
 \end{labeling}
 
 \subsection{Set Skill}
@@ -93,7 +104,7 @@ Die Hauptelemente der DSL sind ihre Instruktionen und die Verbindungen zwischen 
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] 1
 \item [Parameter] Der zu setzende Wissensbereich
-\item [Beschreibung] Damit die automatische Kontaktverteilung von MyContactCenter funktioniert, müssen Konversationen in Sprachen (engl. languages) und Wissensbereiche (engl. Skills) eingeteilt werden. Die Kategorisierung dieser Konversationen ist auch innerhalb eines Konversationsroutings möglich. Dazu dient die Set Skill-Instruktion, welche der Konversation ein dem System bekannten Wissensbereich zuweist. Der Benutzer kann so aus einer Liste der verfügbaren Wissensbereiche einen Bereich wählen, in den die aktuelle Konversation passt.
+\item [Beschreibung] Damit die automatische Kontaktverteilung von MyContactCenter funktioniert, müssen Konversationen eine Sprache und ein Wissensbereich (engl. Skills) zugewiesen werden. Diese Zuweisung ist auch innerhalb eines Konversationsroutings möglich. Dazu dient die Set Skill-Instruktion, welche der Konversation einen solchen Wissensbereich zuteilt.
 \end{labeling}
 
 \subsection{Set Language}
@@ -102,58 +113,8 @@ Die Hauptelemente der DSL sind ihre Instruktionen und die Verbindungen zwischen 
 \item [Eingang] Ja
 \item [Anzahl Ausgänge] 1
 \item [Parameter] Die zu setzende Sprache
-\item [Beschreibung] Verhält sich für Spachen analog zur Instruktion aus \ref{subsec:Set Skill}.
+\item [Beschreibung] Verhält sich für Sprachen analog zur Instruktion aus \ref{subsec:Set Skill}.
 \end{labeling}
-
-\subsection{Branch}
-\begin{labeling}{Anzahl Ausgänge}
-\item [Eingang] Ja
-\item [Anzahl Ausgänge] 2
-\item [Parameter] Ein C\#-Ausdruck der bei Auswertung einen booleschen Wert zurückgibt
-\item [Beschreibung] Verzweigungen im Konversationsrouting machen es dem Benutzer möglich, komplexere Abläufe durch Fallunterscheidungen zu modellieren und so mehr Anwendungsszenarien für das Konversationsrouting abzubilden. Solche Verzweigungen werden durch die  Branch-Instruktion möglich. Diese besitzt als Parameter einen frei programmierbaren C\#-Ausdruck, welcher als Boolean auswertbar sein muss. Bei Ausführung einer Branch-Instruktion wird der Ausdruck ausgewertet und je nach Ergebnis einer der beiden mit ``True'' und ``False'' bezeichneten  Ausgänge für die folgende Instruktion ausgewählt.
-\end{labeling}
-
-\subsection{Script}
-\label{subsec:Script}
-\begin{labeling}{Anzahl Ausgänge}
-\item [Eingang] Ja
-\item [Anzahl Ausgänge] Variabel
-\item [Parameter] C\#-Quellcode
-\item [Beschreibung] Ein Ziel der domänenspezifischen Sprache ist zwar, dem Benutzer das langwierige Programmieren mit einer Universalsprache zu ersparen. Aber auf diese Weise können nicht alle relevanten Anwendungsfälle abgedeckt werden. In den Fällen, in denen die Sammlung an grundlegenden Instruktionen nicht ausreicht, wird es dem Benutzer ermöglicht, mittels der Script-Instruktion eigenen C\#-Code im Zuge eines Konversationsroutings auszuführen. Der Skript-Code wird direkt als Parameter der Instruktion übergeben und unterliegt gewissen Rahmen-Bedingungen. Es wird nur Code zugelassen, der laut den C\#-Vorschriften in einem Methoden-Körper möglich ist. Damit entfallen Operationen wie das Definieren von eigenen Typen oder Funktionen. Ebenfalls wird vom Benutzer verlangt, am Ende seines Skripts einen String zurückzuliefern. Dieser String muss identisch mit dem Bezeichner eines der Ausgänge der Skript-Instruktion sein, deren Anzahl und Bezeichner durch den Benutzer festgelegt werden. Auf diese Weise hat der Benutzer innerhalb seines C\#-Skripts die Kontrolle darüber, welcher Ausgang und somit welche Instruktion als nächstes im Konversationsrouting ausgeführt werden. Für eine erfolgreiche Validierung eines Modells muss jeglicher vom Benutzer geschriebene Code compilierbar sein.   
-\end{labeling}
-
-\subsection{Deliver}
-\label{subsec:Deliver}
-\begin{labeling}{Anzahl Ausgänge}
-\item [Eingang] Ja
-\item [Anzahl Ausgänge] Keine
-\item [Parameter] Sip-Uri des Zustellungsziels
-\item [Beschreibung] Ein möglicher Endpunkt in einem Konversationsrouting ist die Zustellung an einen Sip User Agent, zum Beispiel einen MyCC-Agenten. Dies wird mit dem Deliver-Knoten erreicht, welcher als Parameter einen United Resource Identifier (URI) als String erhält. URIs werden in SIP zur Identifizierung von User Agents benutzt. Der aktuelle Kontrollfluss des Konversationsroutings gibt an dieser Stelle die Kontrolle über die Konversation an den spezifizierten Teilnehmer ab. Daher besitzt die Deliver-Instruktion keinen Ausgang, mit dem man eine unmittelbare Nachfolgeinstruktion angeben könnte.
-\end{labeling}
-
-\subsection{Queue}
-\label{subsec:Queue}
-\begin{labeling}{Anzahl Ausgänge}
-\item [Eingang] Ja
-\item [Anzahl Ausgänge] Keine
-\item [Parameter] Keine
-\item [Beschreibung] Neben der direkten Zustellung an einen Agenten kann ein Anruf auch in der Warteschlange platziert werden, welche dann die automatische Verteilung an einen freien Agenten übernimmt. Dies kann über die Queue-Instruktion erreicht werden. Warteschlangen sind nach Sprache und Wissensbereich kategorisiert und beim Ausführen der Queue-Anweisung wird der eingehende Anruf entsprechend der aktuell eingestellten Sprache und des aktuellen Wissensbereich (siehe Instruktionen \ref{subsec:Set Language} und \ref{subsec:Set Skill}) in eine passende Warteschlange einsortiert. Ist ein Agent bereit den Anruf anzunehmen, wird dieser zu ihm durchgestellt.
-\end{labeling}
-
-\subsection{Terminate}
-\begin{labeling}{Anzahl Ausgänge}
-\item [Eingang] Ja
-\item [Anzahl Ausgänge] Keine
-\item [Parameter] Grund der Terminierung
-\item [Beschreibung] Die Terminate-Instruktion ermöglicht das kontrollierte Beenden des Anrufs durch die Routing Engine. Ähnlich wie die Deliver-Instruktion aus Abschnitt \ref{subsec:Deliver} ist auch die Terminate-Instruktion ein Konversationsroutingendpunkt und besitzt daher keine Ausgänge. Als Parameter nimmt Terminate einen Grund für das Beenden des Rufs entgegen. Der Grund kann aus einer Aufzählung von vordefinierten Anlässen ausgewählt werden.
-\end{labeling}
-
-\subsection{Variablen}
-\label{subsec:Variablen}
-Variablen unterstützen den Benutzer beim Schreiben von eigenem C\#-Code, wie zum Beispiel in Script- oder Branch-Knoten. Variablen können vom Benutzer deklariert werden und sind nicht für eine einzelne Instruktion angelegt, sondern auf Ebene des Konversationsroutings definiert. Sie erscheinen nicht als Rechteck in der Notation wie andere Instruktionen, sondern sind über Dialoge in der grafischen Benutzeroberfläche konfigurierbar. Eine deklarierte Variable kann überall dort im Routing verwendet werden, wo der Benutzer eigenen C\#-Code schreibt. Zur Auswahl für den Variablentyp stehen die primitiven Datentypen int, float, double, bool, string und zusätzlich zur Abbildung von Daten und Zeitpunkten der Typ DateTime aus dem Standard C\#-Namespace zur Verfügung. Zusätzlich zum Typ muss der Benutzer einen Bezeichner angeben, unter dem die Variable im Konversationsrouting referenziert werden kann. Der Wert einer Variable kann mit der Set Variable-Instruktion gesetzt werden, die in Abschnitt \ref{subsec:Set Variables} erläutert wird. 
-
-\subsection{Funktionen}
-Zusätzlich zu Variablen kann der Benutzer eigene Funktionen deklarieren, welche ebenfalls in C\# definiert werden. Ähnlich wie Variablen sind Funktionsdeklarationen keine Instruktion, die in der Notation als Rechteck symbolisiert sind, sondern Eigenschaften des Routings. Sie werden daher auch über gesonderte Dialoge der grafischen Benutzeroberfläche angelegt. Für eine Funktionsdeklaration gibt der Benutzer den Bezeichner, eine Liste von Parametern mit Typ und Bezeichner, den Rückgabetyp und den Funktionskörper an. Für alle Typen steht die gleiche Auswahl, die auch bei Variablen angeboten wird, zur Verfügung. Beim Rückgabetyp kann der Benutzer zusätzlich void angeben, um eine Funktion ohne Rückgabe zu definieren. Ist eine Funktion deklariert, kann sie im gesamten Konfigurationsrouting dort aufgerufen werden, wo der Benutzer eigenen C\#-Code angibt.  
 
 \subsection{Set Variables}
 \label{subsec:Set Variables}
@@ -164,12 +125,55 @@ Zusätzlich zu Variablen kann der Benutzer eigene Funktionen deklarieren, welche
 \item [Beschreibung] Wie in \ref{subsec:Variablen} beschrieben, werden Variablen-Deklarationen auf Ebene des Konversationsroutings vollzogen und treten nicht als konkrete Instruktion in der grafischen Notation in Erscheinung. Wert-Zuweisungen werden jedoch mittels der Set Variables-Instruktion umgesetzt. Hier kann der Benutzer eine Liste von Zuweisungen hinterlegen. Jede Zuweisung enthält eine Variable aus der Liste der Deklarationen und einen frei programmierbaren C\#-Ausdruck. Führt der Programmfluss die Set Variables-Instruktion aus, werden die Wertzuweisungen ausgeführt.
 \end{labeling}
 
-\subsection{Vordefinierte Variablen}
-Neben den selbst angelegten Variablen hat der Benutzer in seinen Scripten auch Zugriff auf Variablen, die schon von der DSL vorgegeben sind. Dies sind die Variablen Skill und Language, welche jeweils als String verfügbar sind. Diese kann der Benutzer in seinem eigenen Code auslesen, oder setzen. In letzterem Fall wird so die gleiche Funktion erfüllt, die sonst die Instruktionen aus Abschnitt \ref{subsec:Set Skill} und \ref{subsec:Set Language} übernehmen. Setzt der Benutzer die Sprache auf oder den Wissensbereich auf einen Wert, der nicht existiert, wird die Variable nicht verändert. 
+\subsection{Branch}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] 2
+\item [Parameter] Ein in C\# verfasster boolescher Ausdruck, der bei Auswertung ``True'' oder ``False'' zurückgibt
+\item [Beschreibung] Verzweigungen im Konversationsrouting machen es dem Benutzer möglich, komplexere Abläufe durch Fallunterscheidungen zu modellieren und so mehr Anwendungsszenarien für das Konversationsrouting abzubilden. Solche Verzweigungen werden durch die  Branch-Instruktion möglich. Diese besitzt als Parameter einen frei programmierbaren Ausdruck, welcher als Boolean auswertbar sein muss. Bei Ausführung einer Branch-Instruktion wird der Ausdruck ausgewertet und je nach Ergebnis einer der beiden mit ``True'' und ``False'' bezeichneten Ausgänge für die folgende Instruktion ausgewählt.
+\end{labeling}
+
+\subsection{Script}
+\label{subsec:Script}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] Variabel
+\item [Parameter] In C\# verfasster Quellcode
+\item [Beschreibung] Ein Ziel der domänenspezifischen Sprache ist zwar, dem Benutzer das langwierige Programmieren mit einer Universalsprache zu ersparen. Aber auf diese Weise können nicht alle relevanten Anwendungsfälle abgedeckt werden. In den Fällen, in denen die Sammlung an grundlegenden Instruktionen nicht ausreicht, wird es dem Benutzer ermöglicht, mittels der Script-Instruktion eigenen C\#-Code im Zuge eines Konversationsroutings auszuführen. Der Skript-Code wird direkt als Parameter der Instruktion übergeben und unterliegt gewissen Rahmen-Bedingungen. Es wird nur Code zugelassen, der laut den C\#-Vorschriften in einem Methoden-Körper möglich ist. Damit entfallen Operationen wie das Definieren von eigenen Typen oder Funktionen. Ebenfalls wird vom Benutzer verlangt, am Ende seines Skripts einen String zurückzuliefern. Dieser String muss identisch mit dem Bezeichner eines der Ausgänge der Skript-Instruktion sein, deren Anzahl und Bezeichner durch den Benutzer festgelegt werden. Auf diese Weise hat der Benutzer innerhalb seines C\#-Skripts die Kontrolle darüber, welcher Ausgang und somit welche Instruktion als nächstes im Konversationsrouting ausgeführt werden. Für eine erfolgreiche Validierung eines Modells muss jeglicher vom Benutzer geschriebene Code kompilierbar sein.   
+\end{labeling}
+
+\subsection{Deliver}
+\label{subsec:Deliver}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] Keine
+\item [Parameter] Sip-Uri des Zustellungsziels
+\item [Beschreibung] Ein möglicher Endpunkt in einem Konversationsrouting ist die Zustellung an einen Sip User Agent, zum Beispiel einen MyCC-Agenten. Dies wird mit dem Deliver-Knoten erreicht, welcher als Parameter einen Uniform Resource Identifier (URI) als String erhält. URIs werden in SIP zur Identifizierung von User Agents benutzt. Der aktuelle Kontrollfluss des Konversationsroutings gibt an dieser Stelle die Kontrolle über die Konversation an den spezifizierten Teilnehmer ab. Daher besitzt die Deliver-Instruktion keinen Ausgang, mit dem man eine unmittelbare Nachfolgeinstruktion angeben könnte.
+\end{labeling}
+
+\subsection{Queue}
+\label{subsec:Queue}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] Keine
+\item [Parameter] Keine
+\item [Beschreibung] Neben der direkten Zustellung an einen Agenten kann ein Anruf auch in der Warteschlange platziert werden, welche dann die automatische Verteilung an einen freien Agenten übernimmt. Dies kann über die Queue-Instruktion erreicht werden. In welche Warteschlange der Ruf eingereiht wird, ergibt sich aus der Sprache und dem Wissensbereich, die dem Ruf zugeteilt sind. Ist ein qualifizierter Agent bereit den Anruf anzunehmen, wird ihm dieser zugestellt.
+\end{labeling}
+
+\subsection{Terminate}
+\label{subsec:terminate}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Ja
+\item [Anzahl Ausgänge] Keine
+\item [Parameter] Grund der Terminierung
+\item [Beschreibung] Die Terminate-Instruktion ermöglicht das kontrollierte Beenden des Anrufs durch die Routing Engine. Ähnlich wie die Deliver-Instruktion aus Abschnitt \ref{subsec:Deliver} ist auch die Terminate-Instruktion ein Konversationsroutingendpunkt und besitzt daher keine Ausgänge. Als Parameter nimmt Terminate einen Grund für das Beenden des Rufs entgegen. Der Grund kann aus einer Aufzählung von vordefinierten Anlässen ausgewählt werden.
+\end{labeling}
+
+
 
 \section{Verarbeitungsschritte}
 \label{sec:Verarbeitungsschritte}
-Zwischen der Modellierung und der letztendlichen Ausführung eines DSL-Modells finden sieben Verarbeitungsschritte statt. Abbildung \ref{fig:Verarbeitungsschritte} veranschaulicht den Vorgang, den ein Konversationsrouting von der Spezifikation bis zur Ausführung durchläuft. Am Anfang steht die Modellierung durch den Benutzer. Hier werden die Instruktionen in einem oben beschriebenen Graphen angeordnet und Verbindungen gezogen, um einen Konversationsroutingablauf zu spezifizieren. Intern und für den Benutzer unsichtbar wird im Editor synchron zu der graphischen Repräsentation eine C\#-Datenstruktur erstellt, welche die abstrakte Syntax als .NET Objekt abbildet. Diese Struktur wird beim Abspeichern des Modells im Protobuf-Format serialisiert und in einer Datenbank abgespeichert. Die serialisierten Daten werden von der Routing Engine abgerufen und deserialisiert. Das Resultat ist das vom Benutzer angelegte C\#-Objekt. Die Struktur wird an den Transformator übergeben, welcher diese in abstrakte MSIL-Syntax umwandelt. Laut \cite[S. 72f]{Kleppe:09} handelt es sich dabei um eine strukturelle Transformation (engl. structural Transformation), da von der abstrakten Syntax der DSL in die abstrakte Syntax der Common Intermediate Language übersetzt wird. Die Routing Engine kompiliert die MSIL-Syntax nun im Arbeitsspeicher mit der Hilfe von Roslyn, und erhält eine .NET-Assembly. Der Code in dieser Assembly wird anschließend für jeden eingehenden Anruf ausgeführt. 
+Zwischen der Modellierung und der letztendlichen Ausführung eines DSL-Modells finden sieben Verarbeitungsschritte statt. Abbildung \ref{fig:Verarbeitungsschritte} veranschaulicht den Vorgang, den ein Konversationsrouting von der Spezifikation bis zur Ausführung durchläuft. Am Anfang steht die Modellierung durch den Benutzer. Hier werden die Instruktionen in einem oben beschriebenen Diagramm angeordnet und Verbindungen gezogen, um einen Konversationsrouting zu spezifizieren. Intern und für den Benutzer unsichtbar wird im Editor synchron zu der graphischen Repräsentation ein Objekt-Graph erstellt, welcher die abstrakte Syntax als Datenstruktur abbildet. Diese Struktur wird beim Abspeichern des Modells serialisiert und in einer Datenbank abgespeichert. Die serialisierten Daten werden von der Routing Engine abgerufen und deserialisiert. Das Resultat ist der vom Benutzer angelegte Objekt-Graph. Die Struktur wird an den Transformator übergeben, welcher diese in abstrakte MSIL-Syntax umwandelt. Laut \cite[S. 72f]{Kleppe:09} handelt es sich dabei um eine strukturelle Transformation (engl. structural Transformation), da von der abstrakten Syntax der DSL in die abstrakte Syntax von MSIL übersetzt wird. Die Routing Engine kompiliert die MSIL-Syntax nun im Arbeitsspeicher mit der Hilfe von Roslyn, und erhält eine .NET-Assembly. Der Code in dieser Assembly wird anschließend für jeden eingehenden Anruf ausgeführt. 
 
 \begin{figure} %[hbtp]
 	\centering
