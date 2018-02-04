@@ -63,7 +63,7 @@ In der Viewmodel-Schicht werden die Klasseninstanzen der Model-Schicht so aufber
 \begin{figure} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{img/FlowDiagramViewModelUML.png}
-	\caption[Klassenstruktur der ViewModelSchicht]{\textit{Zu sehen sind die beiden ViewModel \texttt{FlowDiagramViewModel} und \texttt{CodeEditorViewModel}. Ersteres verwaltet Listen mit \texttt{Node}-, \texttt{Con\-nec\-tor}-, \texttt{Variable}- und \texttt{Function}-Instanzen, die beim Instanzieren der Klasse \texttt{Flow} benötigt werden. Letzteres übernimmt die Präsentationslogik für den Code-Editor, indem es Referenzen auf die zu bearbeitenden \texttt{Node}- und \texttt{Function}-Instanzen verwaltet und den Code in Form eines Strings nach für die Datenbindung bereit stellt.}}
+	\caption[Klassenstruktur der Viewmodel-Schicht]{\textit{Zu sehen sind die beiden ViewModel \texttt{FlowDiagramViewModel} und \texttt{CodeEditorViewModel}. Ersteres verwaltet Listen mit \texttt{Node}-, \texttt{Con\-nec\-tor}-, \texttt{Variable}- und \texttt{Function}-Instanzen, die beim Instanzieren der Klasse \texttt{Flow} benötigt werden. Letzteres übernimmt die Präsentationslogik für den Code-Editor, indem es Referenzen auf die zu bearbeitenden \texttt{Node}- und \texttt{Function}-Instanzen verwaltet und den Code in Form eines Strings nach für die Datenbindung bereit stellt.}}
 	\label{fig:UML:FlowViewModel}
 \end{figure}
 Der Hauptbestandteil der Schicht ist die Klasse \texttt{FlowDiagramViewmodel}. Diese besitzt als Membervariablen Listen auf Referenzen der Model-Komponenten \texttt{Node}, \texttt{Connector}, \texttt{Variable} und \texttt{Function}. Diese Listen sind vom .NET-Listen-Typ \texttt{ObservableCollection}, welcher ein Event auslöst, falls Objekte hinzugefügt oder entfernt werden und sind per Devexpress-Datenbindung an die View-Schicht gekoppelt. Das heißt, wenn auf der View-Schicht Elemente des Modells wie zum Beispiel neue \texttt{Node}- oder \texttt{Connector}-Objekte hinzugefügt werden, aktualisieren sich die entsprechenden Listen im \texttt{FlowDiagramViewmodel}. Zusätzlich werden dadurch Events ausgelöst, auf die \texttt{FlowDiagramViewModel} in den Methoden \texttt{HandleNodesChanged} und \texttt{HandleConnectorsChanged} reagiert. Dies wird dazu genutzt, die Referenzen zwischen den Klassen \texttt{Input} und \texttt{Output} aktuell zu halten: Wird ein \texttt{Connector} der Liste hinzugefügt, löst das ein Event aus. Auf dieses Event wird reagiert, indem die Input-Membervariable der im \texttt{Connector} referenzierten \texttt{Output}-Instanz gesetzt wird. 
@@ -72,7 +72,7 @@ Der Hauptbestandteil der Schicht ist die Klasse \texttt{FlowDiagramViewmodel}. D
 \begin{figure} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{img/MVVMSequence.png}
-	\caption[Kommunikationsablauf zwischen View- und ViewModel-Schicht]{\textit{Der Ablauf der Kommunikation zwischen der View- und der ViewModel-Schicht. Interagiert der Benutzer mit dem View, zum Beispiel durch das Hinzufügen von \texttt{Node}- oder \texttt{Connector}-Instanzen, werden entsprechende Events ausgelöst. Auf diese reagiert die abgeleitete View-Klasse \texttt{FlowDiagramControl} und aktualisiert ihre Daten mit den Objekten. Das ViewModel erhält die aktualisierten Daten über die Datenbindung des Frameworks und kann so, wenn der Benutzer das Konversationsrouting speichern möchte, die Klasse \texttt{Flow} der Model-Schicht instanzieren.}}
+	\caption[Kommunikationsablauf zwischen View- und Viewmodel-Schicht]{\textit{Der Ablauf der Kommunikation zwischen der View- und der ViewModel-Schicht. Interagiert der Benutzer mit dem View, zum Beispiel durch das Hinzufügen von \texttt{Node}- oder \texttt{Connector}-Instanzen, werden entsprechende Events ausgelöst. Auf diese reagiert die abgeleitete View-Klasse \texttt{FlowDiagramControl} und aktualisiert ihre Daten mit den Objekten. Das ViewModel erhält die aktualisierten Daten über die Datenbindung des Frameworks und kann so, wenn der Benutzer das Konversationsrouting speichern möchte, die Klasse \texttt{Flow} der Model-Schicht instanzieren.}}
 	\label{fig:UML:MVVMSequence}
 \end{figure}
 \texttt{FlowDiagramViewModel} übernimmt mittels der beiden Kommandos \texttt{Write\-To\-Disk} und \texttt{Read\-From\-Disk} auch das Speichern und Laden von Konversationsroutings. Dafür wird mit den Listen der \texttt{Node}-, \texttt{Connector}-, \texttt{Variable}- und \texttt{Function}-Instanzen ein \texttt{Flow}-Objekt instanziert und serialisiert. Pfade für die zu schreibenden beziehungsweise lesenden Dateien werden über Dialoge vom Benutzer abgefragt.
@@ -159,7 +159,7 @@ Die Struktur der Klassen, die den obenstehenden Algorithmus umsetzen, ist in Abb
 \begin{figure} %[hbtp]
 	\centering
 		\includegraphics[width=\textwidth]{img/TransformationSequence.png}
-	\caption[Transformatinosablauf]{\textit{Grober Ablauf der Transformation als Sequenzdiagramm. Für den detailierten Ablauf in \texttt{MethodFlowSyntaxBuilder} siehe Abb. \ref{fig:UML:TransformationSequenceDetail} }}
+	\caption[Transformationsablauf]{\textit{Grober Ablauf der Transformation als Sequenzdiagramm. Für den detailierten Ablauf in \texttt{MethodFlowSyntaxBuilder} siehe Abb. \ref{fig:UML:TransformationSequenceDetail} }}
 	\label{fig:UML:TransformationSequence}
 \end{figure}
 
