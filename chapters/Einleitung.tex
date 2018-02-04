@@ -8,12 +8,15 @@ In vielen Bereichen modernen Lebens hat sich seit dem Anstoß des digitalen Zeit
 Laut einer Studie, die 450 Contact Center befragt hat (siehe \cite{Deloitte:17}), werden die Kommunikationsanforderungen von modernen Contact Centern nicht nur umfangreicher, sondern auch komplexer. Die von der Firma ilogixx hergestellte Software-Lösung MyContactCenter (im Folgenden mit MyCC abgekürzt) hat zum Ziel, Betreibern von Contact Center dabei zu unterstützen, diese wachsenden Anforderungen zu erfüllen. Dafür stellt das Produkt Werkzeuge zur Verfügung, die die Effizienz bei der Bearbeitung von Kundenanfragen erhöhen. Im Folgenden sollen die Elemente von MyContactCenter, die für die vorliegende Ausarbeitung relevant sind, kurz erläutert werden.
 
 \subsection{MyContactCenter Server}
+\label{subsec:MyContactCenterServer}
 MyContactCenter ist eine verteilte Anwendung. Die Hauptkomponente dieser Anwendung ist der MyCC-Server, welcher den Großteil der Verwaltungsaufgaben übernimmt und mit den anderen MyCC-Komponenten über das Transmission Control Protocol (TCP) in Verbindung steht. Der Server verwaltet unter anderem die angemeldeten Agenten sowie Daten über ein- und ausgehende Konversationen. Eine Konversation ist im Kontext von MyCC eine Kontaktaufnahme mit dem Contact Center durch einen Endkunden über einen beliebigen Kommunikationskanal wie zum Beispiel Telefon, Email etc. Konfiguriert wird der Server über einen Administrations-Client, in welchem der Administrator des Contact Centers alle für den Betrieb benötigten Einstellungen vornehmen kann. 
 
 \subsection{IP-Private Branch Exchange}
+\label{subsec:IP-Private Branch Exchange}
 Die Voice-Over-IP-Technologie, über die MyCC mit Anrufern interagiert, wird nicht von MyCC selber implementiert, sondern von Drittanbieter-Software in Form einer IP-Private Branch Exchange, im Folgenden mit PBX abgekürzt. Diese ist die Software-Implementierung einer Telefonanlage, an der mehrere Teilnehmer sich mit sogenannten Soft-Phones anmelden können, um untereinander Telefonsitzungen aufzubauen. Ein Soft-Phone ist eine Software, die die Funktionen eines klassischen Telefonapparats zur Verfügung stellt. Telefonate zwischen einem Teilnehmer der PBX und einem Sitzungspartner eines anderen Netzes, also zum Beispiel einer anderen Voice-Over-IP-Anlage oder dem ISDN-Telefonnetz, laufen über eine Netzwerk-Komponente namens Gateway ab, welche die benutzten Protokolle entsprechend für den jeweils anderen Sitzungsteilnehmer umwandelt. Die mit MyCC verwendete PBX kommuniziert mit ihren Teilnehmern über das Session Initiation Protokoll, kurz SIP, welches dafür benutzt wird Kommunikationssitzungen zwischen Teilnehmern auszuhandeln. Die PBX steht mit dem MyCC-Server über eine TCP-Verbindung in Kontakt und tauscht Informationen aus, zum Beispiel welcher Agent als nächstes für eine Konversationsanfrage frei ist. 
 
 \subsection{Agenten}
+\label{subsec:Agenten}
 Ein Agent ist im Kontext von MyContactCenter ein Teilnehmer des Contact Centers, welcher Konversationen aufnimmt und das Anliegen der Konversation bearbeitet. Agenten besitzen eine eigene Client-Anwendung, die sich für die Dauer der Nutzungszeit am MyCC-Server anmeldet.  Mit diesem Client kann der Agent seine Konversationen durchführen, also zum Beispiel eine Email beantworten oder sein Soft-Phone, welches an der PBX angemeldet ist, über eine API steuern. Abbildung \ref{fig:MyCCStructure}  bringt zum Ausdruck, wie der MyCC-Server, die MyCC-Agenten-Clients, der MyCC-Admin-Client, die PBX und die Soft-Phones in Verbindung stehen.
 \begin{figure} %[hbtp]
 	\centering
@@ -26,9 +29,11 @@ Jeder Agent besitzt eine Qualifikation in Sprachen und Wissensbereichen. Sprache
 \newpage
 
 \subsection{Automatische Kontaktverteilung}
-Eine Kernaufgabe von MyCC ist die Automatische Kontakt Verteilung, deren englischer Fachbegriff automatic contact distribution, kurz ACD, lautet und dafür zuständig ist, eingehende Konversationen automatisch an Agenten zu verteilen. Jeder Wissensbereich besitzt eine ACD, welche Konversationen, denen dieser Wissensbereich zugewiesen wird, dem nächsten freien qualifizierten Agenten zustellt. Ist im Moment des Konversationseingangs kein Agent frei, wird diese in eine Warteschlange eingereiht und zugestellt, sobald ein qualifizierter Agent frei wird.
+\label{subsec:Automatische Kontaktverteilung}
+Eine Kernaufgabe von MyCC ist die Automatische Kontakt Verteilung, deren englischer Fachbegriff automatic contact distribution, kurz ACD, lautet und dafür zuständig ist, eingehende Konversationen automatisch an Agenten zu verteilen. Jeder Wissensbereich besitzt eine ACD, welche Konversationen, denen dieser Wissensbereich zugewiesen wird, dem nächsten freien qualifizierten Agenten zustellt. Ist im Moment des Konversationseingangs kein Agent frei, wird diese in eine Warteschlange eingereiht und zugestellt, sobald ein qualifizierter Agent frei wird. Neben diesen herkömmlichen Warteschleifen existieren für Anrufe außerdem virtuelle Warteschleifen. Diese behalten einen Anruf in der Warteschleife, auch wenn der Anrufer aufgelegt hat. Damit wird der Anruf virtuell. Ist ein virtueller Anruf dazu bereit, einem Agenten zugestellt zu werden, nimmt MyCC aktiv Kontakt mit dem Anrufer auf, indem er entweder zurückgerufen wird oder der Anrufer von selber wieder anruft und seinen Platz in der Warteschlange wiedererlangt.
 
 \subsection{Routing Engine}
+\label{subsec:Routing Engine}
 In Version zehn von MyContactCenter kommt die Routing Engine als neue wichtige Software-Komponente hinzu. Diese nimmt eingehende Anrufe auf Ebene des Session Initiation Protocol (SIP) entgegen und kommuniziert an Stelle des MyCC-Servers mit der PBX. Die Routing Engine ist dafür als Teilnehmer an der PBX angemeldet und nimmt eingehende Konversationen des Contact Centers als erste MyCC-Komponente entgegen. Abbildung \ref{fig:InteractionIncomingCall} stellt den Kommunikationsablauf im Falle eines eingehenden Anrufes dar. 
 
 \begin{figure} %[hbtp]
@@ -37,7 +42,7 @@ In Version zehn von MyContactCenter kommt die Routing Engine als neue wichtige S
 	\caption[Behandlung eingehender Rufe in MyContactCenter]{\textit{Behandlung eingehender Anrufe in MyContactCenter.}}
 	\label{fig:InteractionIncomingCall}
 \end{figure}
-Ruft ein Endkunde das Contact Center an, wird über das Gateway die Schnittstelle zwischen dem anderen Telefonnetz und der PBX hergestellt. Die PBX baut über SIP eine Verbindung zur Routing Engine auf. Ist die Sitzung erfolgreich hergestellt, kann der Medienstrom zwischen dem Gateway und der Routing Engine ausgetauscht werden. Nun hat die Routing Engine Kontrolle über den Konversationsablauf und kann verschiedene Aktionen ausführen. Zum Beispiel kann ein Zustellung an einen freien Agenten über eine ACD initiiert werden. Dafür weist die Routing Engine dem Anruf einen Wissensbereich und eine Sprache zu und schickt dem MyCC-Server die Anweisung, den aktuellen Ruf in der Warteschleife einer ACD zu platzieren. Der Server antwortet mit der Information, welchem freien und qualifizierten Agenten der Ruf zugeteilt werden soll. Anschließend wird über die PBX eine Sitzung zwischen dem Agenten und der Routing Engine ausgehandelt. Die Routing Engine verschmilzt nun beide Medienströme, sodass die Medien des Agenten beim Anrufer ankommen und umgekehrt. 
+\noindent Ruft ein Endkunde das Contact Center an, wird über das Gateway die Schnittstelle zwischen dem anderen Telefonnetz und der PBX hergestellt. Die PBX baut über SIP eine Verbindung zur Routing Engine auf. Ist die Sitzung erfolgreich hergestellt, kann der Medienstrom zwischen dem Gateway und der Routing Engine ausgetauscht werden. Nun hat die Routing Engine Kontrolle über den Konversationsablauf und kann verschiedene Aktionen ausführen. Zum Beispiel kann ein Zustellung an einen freien Agenten über eine ACD initiiert werden. Dafür weist die Routing Engine dem Anruf einen Wissensbereich und eine Sprache zu und schickt dem MyCC-Server die Anweisung, den aktuellen Ruf in der Warteschleife einer ACD zu platzieren. Der Server antwortet mit der Information, welchem freien und qualifizierten Agenten der Ruf zugeteilt werden soll. Anschließend wird über die PBX eine Sitzung zwischen dem Agenten und der Routing Engine ausgehandelt. Die Routing Engine verschmilzt nun beide Medienströme, sodass die Medien des Agenten beim Anrufer ankommen und umgekehrt. 
 \newline
 Die Routing Engine hat eine hohe Kontrolle darüber, wie mit einem eingehenden Anruf umgegangen wird. So kann der Anruf zum Beispiel nicht zugestellt, sondern alternativ sofort aufgelegt werden. Auch die Manipulation des Medienstroms zwischen Anrufer und Agent ist denkbar. Die vorliegende Ausarbeitung beschäftigt sich mit dem Entwurf und der Implementierung einer domänenspezifischen Sprache, die es Benutzern von MyContactCenter ermöglicht, das Verhalten der Routing Engine frei zu spezifizieren. Die domänenspezifische Sprache dient dazu, den Ablauf aller von der Routing Engine auszuführenden Schritte zur Behandlung einer eingehenden Konversation zu modellieren. Sie wird im Folgenden entsprechend der Abkürzung des englischen Fachbegriffs ``domain-specific language'' als DSL betitelt. Ein einzelnes in der DSL verfasstes Modell, welches einen Ablauf spezifiziert, wird im Folgenden auch Konversationsrouting oder einfach DSL-Modell genannt.
  
@@ -81,9 +86,11 @@ Als Benutzer von MyContactCenter stehen die Anwender der DSL häufig in Kontakt 
 MyContactCenter kommt in einem umfangreichen Ökosystem von Drittanbieter-Software zum Einsatz. Für das weitere Verständnis der vorliegenden Arbeit werden die Prinzipien einiger Technologien und Themen erläutert, welche Einfluss auf die Implementierung der DSL nehmen. 
 
 \subsection{.NET}
+\label{subsec:DotNet}
 Das .NET Framework, kurz .NET, ist ein von Microsoft entwickeltes Software-Framework, welches unter anderem eine große Anzahl an Software-Bibliotheken zur Verfügung stellt. MyContactCenter und die DSL sind mit dem Microsoft .NET Software Framework entwickelt. Hauptbestandteile von .NET ist die Common Intermediate Language (kurz CIL), früher auch Microsoft Intermediate Langugage (kurz MSIL) genannt, und die Common Language Runtime (kurz CLR), welche Sprachinteroperabilität zwischen unterschiedlichen Universalsprachen (wie zum Beispiel C\# oder Visual Basic) ermöglicht. Benutzer des .NET Frameworks schreiben Code in einer vom Framework unterstützen Sprache, welcher vom Compiler in CIL-Bytecode übersetzt wird. Dieser Bytecode wird von der CLR mittels eines Just-In-Time-Compilers in Maschinencode transformiert und ausgeführt (vgl. \cite[S. 16ff]{Platt:03}).
 
 \subsection{Roslyn}
+\label{subsec:Roslyn}
 Roslyn ist eine .NET Compiler-Plattform welche Entwicklern die Werkzeuge eines Compilers für C\#- und Visual Basic-Code über eine API im eigenen Programmcode zur Verfügung stellt. So kann Code analysiert, generiert und kompiliert werden (siehe dazu den frei zugänglichen Quellcode und die Dokumenation \cite{Roslyn}). Die Implementierung der DSL benutzt Roslyn, um über eine Codegenerierungs-API einen CIL-Syntaxbaum zu generieren und diesen zu einem .NET-Bytecode-Assembly zu kompilieren. Über die API können einem bestehenden Syntaxbaum neue Syntaxknoten hinzugefügt werden, welche sich nach den Regeln der Microsoft Intermediate Language schachteln lassen. Syntaxknoten und -Bäume sind unveränderlich (engl. immutable), das heißt wenn ein Syntaxbaum einmal angelegt ist, kann dieser nicht mehr verändert, sondern nur noch kopiert werden. In der vorliegenden Ausarbeitung wird der Syntaxbaum mit Roslyn daher ''Bottom-up`` generiert: Anstatt zuerst den Syntaxbaum zu instanzieren und anschließend die Knoten und Baumblätter hinzuzufügen, werden zuerst die Blätter und Knoten erzeugt, welche nacheinander zu einem Baum zusammengesetzt werden. Sei beispielsweise die Syntax für folgenden Code zu generieren:
 \noindent
 \begin{lstlisting}[language=custom]
@@ -146,7 +153,8 @@ Task<int> B ()
 
 Eine Methode, hier genannt Methode \texttt{A}, kann mit dem Schlüsselwort \texttt{async} gekennzeichnet werden. Dies signalisiert, dass \texttt{A} eine asynchrone Methode ist, welche in ihrem Methoden-Körper mittels des \texttt{await}-Schlüsselworts auf die andere Methode \texttt{B} warten kann. Trifft der Programmfluss auf dieses \texttt{await}, wird die Kontrolle an den Aufrufer von \texttt{A} zurückgegeben, während auf das Ergebnis von \texttt{B} gewartet wird. Der Aufrufer von \texttt{A} kann nun mit seiner Arbeit weitermachen, oder gemäß des Musters mittels \texttt{await} auf \texttt{A} warten. \texttt{B}s Arbeit wird mit der Methode \texttt{Task.Run} gestartet, welche die zu verrichtende Arbeit auf einem anderen Thread startet und ein \texttt{Task}-Objekt zurückgibt. Ein Thread repräsentiert einen weiteren Programmablauf, welcher im aktuellen Prozess nebenläufig zu anderen Programmabläufen ausgeführt wird. Ein \texttt{Task}-Objekt bildet eine auszuführende Aufgabe ab, die asynchron zum aktuellen Hauptthread des Programmes abläuft. Ist der mit \texttt{Task.Run} gestartete Thread mit seiner Arbeit fertig (in diesem Fall mit der Methode \texttt{DoWork}) wird das Ergebnis in dem \texttt{Task}-Objekt gespeichert, von dem \texttt{await}-Operator abgeholt, und in die Variable \texttt{temp} geschrieben. \texttt{temp} wird nun zurückgeliefert, sodass das von A zurückgelieferte \texttt{Task}-Objekt nun das gewünschte Ergebnis enthält. Auf diese Weise wurde der Hauptprogrammfluss nicht blockiert, obwohl eine potentiell rechenintensive Operation in \texttt{B} ausgeführt wurde.
 
-\subsection{SIP}
+\subsection{Session Initiation Protocol}
+\label{subsec:Session Initiation Protocol}
 Die Kommunikation der Routing Engine mit der PBX findet über das Session Initiation Protocol statt. Es handelt sich hierbei um ein Klartext-Protokoll, welches in der Anwendungsschicht des OSI-Modells angesiedelt ist. Es wird dafür benutzt, Kommunikationssitzungen zwischen sogenannten User Agents zu initiieren. Solche User Agents können beispielsweise Soft-Phones sein, die an der PBX angemeldet sind. Die PBX agiert im Kontext von SIP als Proxy-Server, welcher die Vermittlung zwischen User Agents sicherstellt. Ist eine Kommunikationssitzung zustande gekommen, wird ein Medienstrom über das Real-Time Transport Protocol ausgetauscht. Die Routing Engine, also der Teil von MyContactCenter, der die DSL-Modelle ausführt, ist als User Agent an der PBX angemeldet und der Sitzungspartner einer eingehenden Konversation während des Verlaufs eines Konversationsroutings. Die Implementierung des Session Initiation Protocols ist an einer Drittanbieter-Bibliothek namens PJSIP ausgelagert. Diese übernimmt auch die Implementierung eines SIP User Agents. 
 
 \subsection{Windows Forms und Devexpress}
@@ -154,3 +162,85 @@ Die grafische Benutzeroberfläche von MyCC und damit auch des grafischen DSL-Edi
 
 \subsection{Abstrakte und konkrete Syntax}
 Im Bereich der Entwicklung von formalen Sprachen wird bei der Syntax einer Sprache oft zwischen abstrakter und konkreter Syntax unterschieden. Die abstrakte Syntax eines Programmes ist eine Repräsentation in Form einer Datenstruktur, welche die semantisch relevanten Informationen enthält (nach \cite[S. 26]{Voelter:13}). Bei Text-basierten Sprachen nimmt diese Datenstruktur oftmals die Form eines Baums an, der dann als abstrakter Syntaxbaum (engl. abstract syntax tree, kurz AST) bezeichnet wird. Die abstrakte Syntax enthält keine Informationen über die visuelle Darstellung der Programm-Syntax. Stattdessen sind diese in der konkreten Syntax enthalten, welche die Form annimmt, in der ein Endbenutzer ein Programm schreibt oder modelliert. Die Syntax eines Programmes kann auf viele verschiedene Arten und Weisen visualisiert werden, beispielsweise über Text oder eine grafische Repräsentation. Daher ist es für eine Sprache möglich, mehrere konkrete Syntaxen zu haben (vgl. \cite[S. 6f]{Kleppe:09}.
+
+\subsection{Kurzreferenz}
+Tabelle \ref{tab:kurzreferenz} fasst die für die vorliegende Ausarbeitung wichtigsten Begriffe noch einmal zusammen.
+
+\begin{table}[hbtp]
+\centering
+\settowidth\tymin{\textbf{Erklärung}}
+%\setlength\extrarowheight{2pt}
+\begin{tabulary}{1.0\textwidth}{L|L}
+\textbf{Begriff} & \textbf{Erklärung} \\
+\hline
+Abstrakte Syntax & Repräsentation einer Programmsyntax in Form einer Datenstruktur ohne Informationen über die Darstellung der Syntax.\\
+
+\hline
+
+ACD & Abk. für automatic call distribution. Beschreibt die automatische Verteilung von Konversation an qualifizierte Agenten. Siehe Abs. \ref{subsec:Automatische Kontaktverteilung} \\
+
+\hline
+
+Agent & Teilnehmer eines Contact Centers, der Konversationen führt. Ein Agent ist für eine oder mehrere Sprachen und Wissensbereiche qualifiziert. Siehe Abs. \ref{subsec:Agenten}. \\
+
+\hline
+
+CIL & Abk. für Common Intermediate Language. Die Sprache, in die Code von Benutzern des .NET-Frameworks übersetzt werden. \\
+
+\hline
+
+DSL & Abk. für domain-specific language, Fachbegriff für eine domänenspezifische Sprache zur Modellierung von Programmabläufen. Wird benutzt um die im Zuge der vorliegenden Arbeit implementierte Sprache zu referenzieren.\\
+
+\hline
+
+DSL-Modell & Ein in einer DSL spezifizierter Programmablauf.\\
+
+\hline
+    
+Konversationsrouting & Ein in der DSL modellierter Ablauf zur Behandlung von eingehenden Konversationen.\\
+
+\hline
+
+Konkrete Syntax & Repräsentation einer Programmsyntax inklusive der visuellen Darstellung dieser Syntax. Endbenutzer modellieren (im Fall einer DSL) oder Programmieren (im Fall einer Universalsprache) indem sie die konkrete Syntax gestalten.\\
+
+\hline
+
+Konversation & Ein Informationsaustausch zwischen zwei Teilnehmern über einen beliebigen Kommunikationskanal (z.B. Telefon, Email, Webchat etc.)\\
+
+\hline
+
+Konversationsrouting & Ein in der DSL spezifizierter Ablauf zu Bearbeitung einer eingehenden Konversation durch die Routing Engine. Jedes Konversationsrouting ist ein Modell der implementierten DSL.\\
+
+\hline
+
+MyCC & Abk. für MyContactCenter, einer Software zum Betreiben eines Contact Centers. Siehe Abs. \ref{sec:MyContactCenter}.\\
+
+\hline
+
+.NET & Von Microsoft entwickeltes Framework zur Entwicklung von Software. Siehe \ref{subsec:DotNet}.\\
+
+\hline
+
+Objekt-Graph & Datenstruktur von Objekt-Instanzen die durch gegenseitiges referenzieren einen Graph bilden. Wird in implementierten DSL zum Speichern der abstrakten Syntax benutzt.\\
+
+\hline
+
+PBX & Abk. für Private Branch Exchange, der Software welche eine Telefonanlage implementiert. Siehe \ref{subsec:IP-Private Branch Exchange}.\\
+
+\hline
+
+Rosyln & .NET-Compiler-Plattform, welche es erlaubt CIL-Syntax zu generieren und zu kompilieren. Siehe \ref{subsec:Roslyn}.\\
+
+\hline
+
+Routing Engine & MyCC-Komponente, die Konversationsroutings transformiert und den entstehenden CIL-Bytecode für eingehende Konversationen ausführt. Siehe \ref{subsec:Routing Engine}.\\
+
+\hline
+SIP & Abk. für Session Initiation Protocol, ein Protokoll zum Aushandeln von Kommunikationssitzungen. Wird zwischen der Routing Engine und der PBX benutzt. \ref{subsec:Session Initiation Protocol}.  \\
+
+\end{tabulary}
+\caption{Eine Kurzreferenz der verwendeten Begriffe}
+\label{tab:kurzreferenz}
+\end{table}
+
+

@@ -69,6 +69,15 @@ Neben den selbst angelegten Variablen hat der Benutzer in seinen Scripten auch Z
 \item [Beschreibung] Die Start-Instruktion ist der Anfangspunkt eines Konversationsroutings. Der Programmfluss erreicht diese Instruktion, wenn ein eingehender Anruf von der Routing Engine angenommen wurde. Die Start-Instruktion interagiert selbst nicht mit dem Anruf, sondern führt unmittelbar die im Ablauf vorgesehene folgende Instruktion aus. Die Start-Instruktion muss in jedem DSL-Modell vorhanden sein und ist ein notwendiges Kriterium für eine erfolgreiche Validierung des Modells. 
 \end{labeling}
 
+\subsection{Virtual Start}
+\label{subsec:virtual start}
+\begin{labeling}{Anzahl Ausgänge}
+\item [Eingang] Nein
+\item [Anzahl Ausgänge] 1
+\item [Parameter] keine
+\item [Beschreibung] Ein weiterer Einstiegspunkt für ein Konversationsrouting ist die Virtual Start-Instruktion. Diese wird ausgelöst, wenn ein virtueller Anruf im Zuge einer virtuellen Warteschlange zum Beispiel durch einen Rückruf aufgebaut wird (siehe Abs. \ref{subsec:Automatische Kontaktverteilung}). Damit die Routing Engine auf einen solchen Fall gesondert reagieren kann, besteht die Möglichkeit, ein Konversationsrouting mit einer Virtual Start-Instruktion zu modellieren, welche für virtuelle Anrufe an Stelle der Start-Instruktion das Konversationsrouting einleitet. Im Gegensatz zur Start Instruktion ist eine Virtual Start-Instruktion jedoch optional. Wird ein Konversationsrouting ohne eine Virtual Start-Instruktion für einen virtuellen Anruf ausgeführt, wird wie im Falle eines regulären Anrufs die Start-Instruktion ausgeführt.
+\end{labeling}
+
 \subsection{Media Playback}
 \label{subsec:Media Playback}
 \begin{labeling}{Anzahl Ausgänge}
@@ -156,6 +165,7 @@ Neben den selbst angelegten Variablen hat der Benutzer in seinen Scripten auch Z
 \item [Beschreibung] Neben der direkten Zustellung an einen Agenten kann ein Anruf auch in der Warteschlange platziert werden, welche dann die automatische Verteilung an einen freien Agenten übernimmt. Dies kann über die Queue-Instruktion erreicht werden. In welche Warteschlange der Ruf eingereiht wird, ergibt sich aus der Sprache und dem Wissensbereich, die dem Ruf zugeteilt sind. Ist ein qualifizierter Agent bereit den Anruf anzunehmen, wird ihm dieser zugestellt.
 \end{labeling}
 
+
 \subsection{Terminate}
 \label{subsec:terminate}
 \begin{labeling}{Anzahl Ausgänge}
@@ -165,7 +175,6 @@ Neben den selbst angelegten Variablen hat der Benutzer in seinen Scripten auch Z
 \item [Beschreibung] Die Terminate-Instruktion ermöglicht das kontrollierte Beenden des Anrufs durch die Routing Engine. Ähnlich wie die Deliver-Instruktion aus Abschnitt \ref{subsec:Deliver} ist auch die Terminate-Instruktion ein Konversationsroutingendpunkt und besitzt daher keine Ausgänge. Als Parameter nimmt Terminate einen Grund für das Beenden des Rufs entgegen. Der Grund kann aus einer Aufzählung von vordefinierten Anlässen ausgewählt werden.
 \end{labeling}
 
-\newpage
 
 \section{Verarbeitungsschritte}
 \label{sec:Verarbeitungsschritte}
