@@ -127,17 +127,24 @@ Bei der Umsetzung der DSL entstehen zwei Arten von Code. Die eine Art von Quellc
 
 \subsection{Geschriebener Code}
 Berechnet wurden die folgenden Metriken mit der Entwicklungsumgebung Visual Studio 2017 Ultimate. Zum Einsatz kommen die ``Executable Lines of Code'', bei der die ausführbaren Bytcode-Zeilen gemessen werden, um einen generellen Überblick über den Umfang der Code-Basis zu liefern, und die zyklomatische Komplexität, auch als McCabe-Metrik bekannt, welche den Grad an Verzweigungen im Programmfluss beschreibt. Beide Metriken sind im Feld der Software-Architektur verbreitete Maße, deren Ermittlung jeweils bei \cite[S. 35ff]{Laird:06} und \cite[S. 58ff]{Laird:06} nachgelesen werden kann. Da die Angaben für gesamte Namespaces gemacht werden, wird bei der zyklomatischen Komplexität der Mittelwert und der Median über alle Methoden dieses Namespaces angegeben. Alle der genannten Namespaces sind Unter-Namespaces von \texttt{ilogixx.ConversationFlow}. In Tabelle \ref{tab:metrikenGeschriebenerCode} sind die gemessenen Metriken für den im Zuge der vorliegenden Arbeit händisch verfassten Code zu sehen.
-\begin{center}
-    \begin{tabular}{| p{0.18\textwidth} | p{0.18\textwidth} | p{0.18\textwidth} | p{0.18\textwidth} | p{0.18\textwidth} |}
-    \hline
-    Komponente & Namespace & LOC & zykl. Kompl. (mittel) & zykl Kompl. (median)\\ \hline
-    Objekt-Graph & Core & 183 & 1,146341463 & 1 \\ \hline
-    Editor & UI & 2818 & 2,212669683 & 1 \\ \hline
-    Transformator & Generation & 742 & 1,715846995 & 1 \\ \hline
-    Validator & Validation & 186 & 1,806451613 & 1 \\ \hline
-    \end{tabular}
-    \label{tab:metrikenGeschriebenerCode}
-\end{center}
+
+\begin{table}[hbtp]
+\centering
+\settowidth\tymin{\textbf{Komponente}}
+\begin{tabulary}{1.0\textwidth}{L|L|C|C|C}
+\textbf{Komponente} & \textbf{Namespace} & \textbf{LOC} & \textbf{zykl. Kompl. (mittel)} & \textbf{zykl Kompl. (median)} \\ 
+\hline
+Objekt-Graph & Core & 183 & 1,146341463 & 1 \\ 
+\hline
+Editor & UI & 2818 & 2,212669683 & 1 \\ 
+\hline
+Transformator & Generation & 742 & 1,715846995 & 1 \\ 
+\hline
+Validator & Validation & 186 & 1,806451613 & 1 \\ 
+\end{tabulary}
+\caption{\textit{Code-Metriken des verfassten Quellcodes.}}
+\label{tab:metrikenGeschriebenerCode}
+\end{table}
 Die Klassenstruktur des Objekt-Graphen weist mit der geringsten Anzahl an Lines of Code und der kleinsten durchschnittlichen zyklomatischen Komplexität die niedrigste Komplexität auf. Dies ist nicht überraschend, da es sich um eine fast reine Datenstruktur handelt, die wenig programmatisches Verhalten aufweist. An zweiter Stelle kommt die Komponente der Modell-Validierung. Komplexe Abläufe und ein hoher Umfang an Code konnte hier vermieden werden, da die meiste Arbeit, welche die Metriken erhöhen könnte, an andere Komponenten ausgelagert wird, wie zum Beispiel den Transformator. Dieser weist eine höhere Verzweigung des Programmablaufs und einen größeren Umfang auf, wie die Metriken zum Ausdruck bringen. Dennoch bleibt auch hier die durchschnittliche McCabe-Metrik deutlich unter dem empfohlenen Wert von zehn, auch dank der rekursiven Vorgehensweise dieser Komponente. Durch diese werden Schleifen vermieden, welche einen hohen Einfluss auf die Anzahl an mögliche Programmpfaden haben. Der hohe Anteil an Lines of Code für den Transformator lässt sich durch den Gebrauch der Roslyn-API begründen, denn im Zuge des Aufbaus eines kompletten CIL-Syntaxbaums werden im Vergleich zu anderen Komponenten  viele API-Aufrufe benötigt. 
 \newline
 Die laut den oben stehenden Metriken komplexeste Komponente der DSL ist der Editor. Der im Vergleich extrem hohe LOC-Wert für diese Komponente lässt sich damit begründen, dass automatisch generierter Code des Devexpress-Framework in diesem Namespace enthalten ist. Devexpress benutzt einen sogenannten Component Designer, welcher ``Boilerplate''-Code zum Erstellen von Windows Forms-Komponenten automatisch generiert. Dieser Code ist sehr umfangreich, fällt aber wenig ins Gewicht, da der vom Component Designer generierte Code nicht von Hand lesbar oder editierbar sein soll und damit nicht die Komplexität des System widerspiegelt. Der hohe Mittelwert der zyklomatischen Komplexität ist auf die Fallunterscheidungen zurückzuführen, die auf View- und ViewModel-Ebene durchgeführt werden, wenn es um die Behandlung von Events geht, welche durch die Benutzung der grafischen Benutzeroberfläche ausgelöst werden.
