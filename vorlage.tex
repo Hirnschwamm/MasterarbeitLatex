@@ -129,6 +129,9 @@ stringstyle=\ttfamily\color{red}
 \usepackage{tabularx}
 \usepackage{tabulary}
 
+\usepackage[subfigure]{tocloft}
+%\setlength{\cftsubsecnumwidth}{4em}
+
 
 %--------------------------------------------------------------------------
 \begin{document}
@@ -199,7 +202,9 @@ Unterschrift der Kandidatin / des Kandidaten
 %--------------------------------------------------------------------------
 \input{chapters/Vorwort}				% Vorwort (optional)
 \input{chapters/Kurzfassung} 			% Kurzfassung Deutsch/English
+\newpage
 \tableofcontents 						% Inhaltsverzeichnis
+\newpage
 \listoffigures 							% Abbildungsverzeichnis (optional)
 %\listoftables 							% Tabellenverzeichnis (optional)
 %--------------------------------------------------------------------------
