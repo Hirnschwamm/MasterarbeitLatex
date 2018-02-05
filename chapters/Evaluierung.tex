@@ -15,19 +15,19 @@ In der Editor-Komponente werden zwei Klassen getestet: \texttt{FlowDiagramViewMo
 \item Beim Hinzufügen von \texttt{Connector}-Instanzen werden die zugehörigen \texttt{Input}-Referenzen in betroffenen Outputs korrekt gesetzt
 \item Beim Entfernen von \texttt{Connector}-Instanzen werden die zugehörigen \texttt{Input}-Re\-fe\-ren\-zen in betroffenen \texttt{Output}-Referenzen auf null gesetzt
 \item Beim Setzen einer \texttt{Input}-Referenz in einer \texttt{Output}-Instanz wird eine entsprechende \texttt{Connector}-Instanz hinzugefügt
-\item Beim Setzen einer \texttt{Input}-Referenz auf null in einer \texttt{Output}-Instanz wird die entsprechende \texttt{Connector}-Instanz entfernt
+\item Beim Setzen der \texttt{Input}-Referenz in einer \texttt{Output}-Instanz auf null wird die entsprechende \texttt{Connector}-Instanz entfernt
 \item Beim Verändern einer \texttt{Input}-Referenz in einem Output auf eine andere \texttt{Input}-Instanz wird die entsprechende \texttt{Connector}-Instanz aktualisiert 
 \end{itemize}
 
-Auch bei der Klasse \texttt{FlowDiagramControl} fokussieren sich die Testfälle auf das Verhalten im Fall einer Veränderung der Daten, die per Datenbindung zur Verfügung stehen. Die Hauptaufgabe von \texttt{FlowDiagramControl} ist es, diese Daten auf Instanzen der Klasse \texttt{FlowDiagramItem} abzubilden. Da die eigentliche Darstellung der \texttt{FlowDiagramItem}-Instanzen von der Basisklasse und damit vom Devexpress-Framework übernommen wird, wird dies nicht getestet. Stattdessen prüfen die Testfälle, ob es für jede \texttt{Connector}- und jede \texttt{Node}-Subtyp-Instanz eine entsprechende \texttt{DiagramItem}-Instanz gibt. Die Testfälle verifizieren daher folgende Anforderungen:
+\noindent Auch bei der Klasse \texttt{FlowDiagramControl} fokussieren sich die Testfälle auf das Verhalten im Fall einer Veränderung der Daten, die per Datenbindung zur Verfügung stehen. Die Hauptaufgabe von \texttt{FlowDiagramControl} ist es, diese Daten auf Instanzen der Klasse \texttt{FlowDiagramItem} abzubilden. Da die eigentliche Darstellung der \texttt{FlowDiagramItem}-Instanzen von der Basisklasse und damit vom Devexpress-Framework übernommen wird, wird dies nicht getestet. Stattdessen prüfen die Testfälle, ob es für jede \texttt{Connector}- und jede \texttt{Node}-Subtyp-Instanz eine entsprechende \texttt{DiagramItem}-Instanz gibt. Die Testfälle verifizieren daher folgende Anforderungen:
 
 \begin{itemize}
-\item Das Hinzufügen einer \texttt{Node}-Subtyp-Instanz fügt dem Diagramm eine entsprechende \texttt{Flow}\-Diagram\-Item-In\-stanz hinzu
-\item Das Entfernen einer \texttt{Node}-Subtyp-Instanz entfernt auch die entsprechende \texttt{Flow}\-Diagram\-Item-In\-stanz
+\item Das Hinzufügen einer \texttt{Node}-Subtyp-Instanz fügt dem Diagramm eine entsprechende \texttt{Flow\-Dia\-gram\-Item}-In\-stanz hinzu
+\item Das Entfernen einer \texttt{Node}-Subtyp-Instanz entfernt auch die entsprechende \texttt{Flow\-Dia\-gram\-Item}-In\-stanz
 \item Das Hinzufügen einer \texttt{FlowDiagramItem}-Instanz fügt eine entsprechende \texttt{Node}-Subtyp-Instanz hinzu
 \item Das Entfernen einer \texttt{FlowDiagramItem}-Instanz entfernt eine entsprechende \texttt{Node}-Subtyp-Instanz
-\item Das Hinzufügen einer \texttt{Connector}-Instanz fügt dem Diagramm eine entsprechende \texttt{Flow}\-Dia\-gram\-Con\-nec\-tor-In\-stanz hinzu
-\item Das Entfernen einer \texttt{Connector}-Instanz entfernt auch die entsprechende \texttt{Flow}\-Dia\-gram\-Con\-nec\-tor-In\-stanz
+\item Das Hinzufügen einer \texttt{Connector}-Instanz fügt dem Diagramm eine entsprechende \texttt{Flow\-Dia\-gram\-Con\-nec\-tor}-In\-stanz hinzu
+\item Das Entfernen einer \texttt{Connector}-Instanz entfernt auch die entsprechende \texttt{Flow\-Dia\-gram\-Con\-nec\-tor}-In\-stanz
 \item Das Hinzufügen einer \texttt{FlowDiagramConnector}-Instanz fügt auch eine entsprechende \texttt{Connector}-Instanz hinzu
 \item Das Entfernen einer \texttt{FlowDiagramConnector}-Instanz entfernt auch die entsprechende \texttt{Connector}-Instanz
 \item Das Ändern der Endpunkte einer \texttt{FlowDiagramConnector}-Instanz passt auch die entsprechende \texttt{Connector}-Instanz an
@@ -43,42 +43,42 @@ In den Tests für die Transformator-Komponenten werden die wichtigsten Klassen f
 \item Im Falle einer übergebenen korrekten \texttt{Flow}-Instanz wird von Roslyn ein semantisches Modell der CIL-Syntax zurückgegeben
 \end{itemize} 
 
-Die nächst niedrigere Stufe bei der Transformation ist die Erstellung des CIL-Syntaxbaums. Hierfür wird die Klasse \texttt{ConversationRoutingSyntaxTreeBuilder} folgendermaßen getestet:
+\noindent Die nächstniedrigere Stufe bei der Transformation ist die Erstellung des CIL-Syntaxbaums. Hierfür wird die Klasse \texttt{ConversationRoutingSyntaxTreeBuilder} folgendermaßen getestet:
 
 \begin{itemize}
 \item Im Falle einer übergebenen Start-Instruktion wird erfolgreich ein CIL-Syn\-tax\-baum generiert, welcher auf der höchsten Ebene die Syntax für die erwartete Klassendeklarationen im erwarteten Namespace enthält
 \item Im Falle von ungenügenden übergebenen Parametern wird eine Exception geworfen
 \end{itemize}
 
-Der Syntaxbaum besteht zum größten Teil aus der Deklaration der Klasse, die das Konversationsrouting umsetzt. Die Syntax dieser Klasse wird von \texttt{FlowClassSyntaxBuilder} erstellt und im Zuge der zugehörigen Testfälle verifiziert:
+\noindent Der Syntaxbaum besteht zum größten Teil aus der Deklaration der Klasse, die das Konversationsrouting umsetzt. Die Syntax dieser Klasse wird von \texttt{FlowClassSyntaxBuilder} erstellt und im Zuge der zugehörigen Testfälle verifiziert:
 
 \begin{itemize}
 \item Im Falle einer übergebenen Start-Instruktion eines korrekten DSL-Modells in Form einer \texttt{StartNode}-Instanz wird die Syntax für eine Klasse zurückgegeben, die von \texttt{ACDCallRoutingBehaviorBase} erbt, und für jede im Modell enthaltene Instruktion eine Membermethode beinhaltet. Zusätzlich existiert eine geschachtelte private Klassendeklaration für den benutzerspezifischen Code, welche auch als Membervariable in der umfassenden Klasse vertreten ist
 \item Im Falle von fehlerhaften übergebenen Parametern wird eine Exception geworfen.
 \end{itemize}
 
-\texttt{UserCodeClassSyntaxBuilder}, welche für die Generierung der geschachtelten Klassendeklaration zuständig ist, wird auf folgende Anforderungen getestet:
+\noindent \texttt{UserCodeClassSyntaxBuilder}, welche für die Generierung der geschachtelten Klassendeklaration zuständig ist, wird auf folgende Anforderungen getestet:
 
 \begin{itemize}
 \item Im Falle einer übergebenen Start-Instruktion eines korrekten DSL-Modells in Form einer \texttt{StartNode}-Instanz wird die Syntax für eine Klasse zurückgegeben, in der alle Instruktionen des Modells, die benutzerspezifischen Code enthalten, mit einer Membermethode vertreten sind. Diese Membermethoden führen den vom Benutzer geschriebenen Code aus. Zusätzlich existieren für benutzerdefinierte  Funktionen entsprechende Membermethoden und für benutzerdefinierte Variablen entsprechende Membervariablen. Die Klasse enthält weiterhin zwei Properties vom Typ String mit den Namen \texttt{Skill} und \texttt{Language}.
 \item Im Falle von fehlerhaften übergebenen Parametern wird eine Exception geworfen.
 \end{itemize}
 
-Ob die Syntax für generierte Methoden, die den Ablauf des Routings steuern, die richtige Struktur aufweist, wird in den Testfällen für die Klasse \texttt{Meth\-od\-Flow\-Syn\-tax\-Buil\-der} wie folgt getestet:
+\noindent Ob die Syntax für generierte Methoden, die den Ablauf des Routings steuern, die richtige Struktur aufweist, wird in den Testfällen für die Klasse \texttt{Meth\-od\-Flow\-Syn\-tax\-Buil\-der} wie folgt getestet:
 
 \begin{itemize}
 \item Wird eine Instruktion in Form einer \texttt{Node}-Subtyp-Instanz übergeben, wird eine Liste an Methodendeklarationen zusammengestellt, in der alle von der übergebenen \texttt{Node}-Subtyp-Instanz erreichbaren Instruktionen abgebildet sind. In der Syntax für jeden Methodenkörper existieren die Methodenaufrufe für die im Modell jeweils nachfolgende Instruktion.
 \item Werden unzureichende Parameter übergeben, wird eine Exception geworfen
 \end{itemize}
 
-Die Methoden-Deklarationen für die Klasse \texttt{UserCode} werden von \texttt{User\-Code\-Meth\-od\-Syn\-tax\-Buil\-der} umgesetzt und folgendermaßen getestet:
+\noindent Die Methoden-Deklarationen für die Klasse \texttt{UserCode} werden von \texttt{User\-Code\-Meth\-od\-Syn\-tax\-Buil\-der} umgesetzt und folgendermaßen getestet:
 
 \begin{itemize}
 \item Wird eine Instruktion in Form einer \texttt{Node}-Subtyp-Instanz übergeben, wird eine Liste an Methodendeklarationen zusammengestellt, in der nur die Instruktionen abgebildet sind, in denen vom Benutzer geschriebener Code zum Einsatz kommt.
 \item Werden unzureichende Parameter übergeben, wird eine Exception geworfen
 \end{itemize}
 
-Zuletzt wird noch getestet, ob der Inhalt der generierten Methoden den Anforderungen entspricht. Dafür werden alle von \texttt{NodeSyntaxBuilder} abgeleiteten Typen getestet, da diese die instruktionsspezifische Syntax  für eine Methode generieren:
+\noindent Zuletzt wird noch getestet, ob der Inhalt der generierten Methoden den Anforderungen entspricht. Dafür werden alle von \texttt{NodeSyntaxBuilder} abgeleiteten Typen getestet, da diese die instruktionsspezifische Syntax  für eine Methode generieren:
 
 \begin{itemize}
 \item Jeder Subtyp von \texttt{NodeSyntaxBuilder} erstellt für die ihm übergebene Instanz des zugehörigen \texttt{Node}-Subtyps die spezifische Syntax, die notwendig ist, um diese Instruktion umzusetzen. Die Syntax wird in Form einer Liste von \texttt{SyntaxNode}-Instanzen zurückgeliefert 
@@ -98,7 +98,7 @@ Die Modell-Validierung stellt eine eigene Komponente dar und wird daher auch in 
 \item Jeder von \texttt{U\-ser\-Code\-Com\-piles\-E\-val\-u\-a\-tor} bemängelte Compiler-Fehler besitzt eine korrekte Stellenangabe, die anzeigt, wo im Benutzer-Code der Fehler liegt
 \end{itemize} 
 
-Bei allen Tests, die als Parameter eine Flow-Instanz entgegennehmen, wird das Modell aus Abb. \ref{fig:TestRouting} verwendet. 
+\noindent Bei allen Tests, die als Parameter eine Flow-Instanz entgegennehmen, wird das Modell aus Abb. \ref{fig:TestRouting} verwendet. 
 
 \subsection{Manuelle Tests}
 Bei den manuellen Tests geht es darum, das korrekte Zusammenwirken der einzelnen Komponenten zu testen. Daher werden alle Schritte, die für die Inbetriebnahme eines Konversationsroutings von Nöten sind, ausgeführt und die korrekte Funktionsweise anschließend verifiziert. Zu diesem Zweck werden folgende Schritte in der beschriebenen Reihenfolge ausgeführt:
@@ -118,10 +118,10 @@ Ein Kandidat für ein Test-Routing, mit dem die oben stehenden Schritte ausgefü
 	\caption[DSL-Modell für Tests]{\textit{Zu sehen ist das DSL-Modell, welches im Zuge von automatisierten und manuellen  Tests zum Einsatz kommt.}}
 	\label{fig:TestRouting}
 \end{figure}
-\noindent Neben dem Kriterium, alle Instruktionen zu beinhalten, bietet es eine überschaubare Anzahl an Pfaden die durch das Routing  führen und kann so mit wenigen Anrufen ganz abgedeckt werden. Auf der Abbildung sind die Skripte sowie die benutzerdefinierten Variablen und Funktionen, die zum Einsatz kommen, nicht zu sehen. Angelegt ist die Integer-Variable \texttt{Count}, welche in der Set Variables-Instruktion mit null (in Ziffern: 0) initialisiert wird. Anschließend wird in der Branch-Instruktion abgefragt, ob \texttt{Count} größer als zehn ist und ob es sich um eine gerade Zahl handelt. Letzteres wird mit einer benutzerdefinierten Funktion \texttt{IsEven} überprüft. Die Branch-Instruktion nimmt also zuerst den False-Ausgang, welcher in das erste Skript führt. Dort wird die \texttt{Count}-Variable um eins inkrementiert und führt zurück in die Branch-Instruktion. Diese Schleife wird solange ausgeführt, bis die Branch-Instruktion den True-Ausgang nimmt. Dieser führt zum zweiten Skript, in der die benutzerdefinierte Funktion \texttt{PrintTime} aufgerufen wird, welche die aktuelle Systemzeit auf der Konsole ausgibt.
+\noindent Neben dem Kriterium, alle Instruktionen zu beinhalten, bietet es eine überschaubare Anzahl an Pfaden, die durch das Konversationsrouting  führen und kann so mit wenigen Anrufen ganz abgedeckt werden. Auf der Abbildung sind die Skripte sowie die benutzerdefinierten Variablen und Funktionen, die zum Einsatz kommen, nicht zu sehen. Angelegt ist die Integer-Variable \texttt{Count}, welche in der Set Variables-Instruktion mit null (in Ziffern: 0) initialisiert wird. Anschließend wird in der Branch-Instruktion abgefragt, ob \texttt{Count} größer als zehn ist und ob es sich um eine gerade Zahl handelt. Letzteres wird mit einer benutzerdefinierten Funktion \texttt{IsEven} überprüft. Die Branch-Instruktion nimmt also zuerst den False-Ausgang, welcher in das erste Skript führt. Dort wird die \texttt{Count}-Variable um eins inkrementiert und führt zurück in die Branch-Instruktion. Diese Schleife wird solange ausgeführt, bis die Branch-Instruktion den True-Ausgang nimmt. Dieser führt zum zweiten Skript, in der die benutzerdefinierte Funktion \texttt{PrintTime} aufgerufen wird, welche die aktuelle Systemzeit auf der Konsole ausgibt.
 
 \section{Metriken}
-Bei der Umsetzung der DSL entstehen zwei Arten von Code. Die eine Art von Quellcode setzt das System um: Es handelt sich hierbei um den Quellcode, der den Editor, den Transformator und die Modell-Validierung implementiert. Die andere Art von Code ist der vom System generierte Code, also der CIL-Bytecode, der ein Routing umsetzt. Die erste Code-Art ist für den weiteren Lebenszyklus der DSL von unmittelbarer Bedeutung und muss daher vor allem wartbar sein. Daher folgt eine Einschätzung zum vermessenen Umfang und Komplexität dieses Code-Anteils. Diese Messungen für den generierten Byte-Code durchzuführen, wäre  wenig aussagekräftig, da sowohl Umfang als auch Komplexität stark vom transformierten Modell abhängt: Je komplexer und umfangreicher das Konversationsrouting, desto komplexer ist der Code, der dieses Konversationsrouting umsetzt. Die Grenzen sind vor allem nach oben nicht abschätzbar, da der Benutzer in Script-Instruktionen und eigenen Funktionen ``unvorhersehbaren'' Code einfügen kann. Da außerdem aus der erstellten Syntax für Benutzer unleserlicher Bytecode generiert wird, welcher nicht dafür gedacht ist per Hand gewartet zu werden, ist das Berechnen von detaillierten Metriken für den so erstellten Code wenig zielführend. 
+Bei der Umsetzung der DSL entstehen zwei Arten von Code. Die eine Art von Quellcode setzt das System um: Es handelt sich hierbei um den Quellcode, der den Editor, den Transformator und die Modell-Validierung implementiert. Die andere Art von Code ist der vom System generierte Code, also der CIL-Bytecode, der ein Konversationsrouting umsetzt. Die erste Code-Art ist für den weiteren Lebenszyklus der DSL von unmittelbarer Bedeutung und muss daher vor allem wartbar sein. Daher folgt eine Einschätzung zum vermessenen Umfang und Komplexität dieses Code-Anteils. Diese Messungen für den generierten Byte-Code durchzuführen, wäre  wenig aussagekräftig, da sowohl Umfang als auch Komplexität stark vom transformierten Modell abhängt: Je komplexer und umfangreicher das Konversationsrouting, desto komplexer ist der Code, der dieses Konversationsrouting umsetzt. Die Grenzen sind vor allem nach oben nicht abschätzbar, da der Benutzer in Script-Instruktionen und eigenen Funktionen ``unvorhersehbaren'' Code einfügen kann. Da außerdem aus der erstellten Syntax für Benutzer unleserlicher Bytecode generiert wird, welcher nicht dafür gedacht ist per Hand gewartet zu werden, ist das Berechnen von detaillierten Metriken für den so erstellten Code wenig zielführend. 
 
 \subsection{Geschriebener Code}
 Berechnet wurden die folgenden Metriken mit der Entwicklungsumgebung Visual Studio 2017 Ultimate. Zum Einsatz kommen die ``Executable Lines of Code'', bei der die ausführbaren Bytcode-Zeilen gemessen werden, um einen generellen Überblick über den Umfang der Code-Basis zu liefern, und die zyklomatische Komplexität, auch als McCabe-Metrik bekannt, welche den Grad an Verzweigungen im Programmfluss beschreibt. Beide Metriken sind im Feld der Software-Architektur verbreitete Maße, deren Ermittlung jeweils bei \cite[S. 35ff]{Laird:06} und \cite[S. 58ff]{Laird:06} nachgelesen werden kann. Da die Angaben für gesamte Namespaces gemacht werden, wird bei der zyklomatischen Komplexität der Mittelwert und der Median über alle Methoden dieses Namespaces angegeben. Alle der genannten Namespaces sind Unter-Namespaces von \texttt{ilogixx.ConversationFlow}. In Tabelle \ref{tab:metrikenGeschriebenerCode} sind die gemessenen Metriken für den im Zuge der vorliegenden Arbeit händisch verfassten Code zu sehen.
@@ -176,4 +176,4 @@ Der folgende Versuch soll eine ungefähre Vorstellung davon geben, wie lange die
 \newline
 Bei der Datenreihe der Kompilierungsdauer ist die Entscheidung schwieriger: Zwar werden die besten $R^{2}$-Werte auch mit Polynomen höheren Grades erzielt. Allerdings werden die Faktoren dieser Polynome, die über den linearen Anteil hinaus gehen, sehr klein (der quadratische Faktor bei einem Polynom zweiten Grades ist beispielsweise 0,0005). Außerdem sind die so erzielten $R^{2}$-Werte nicht signifikant besser als für eine rein lineare Funktion. Erklärbar ist dies durch den ``Ausreißer'' der Datenreihe ab einer Instruktionsanzahl von 600: Ab hier erhöht sich die durchschnittliche Dauer um über 100 Millisekunden. Dieser Ausschlag ist vermutlich ein Messfehler bedingt durch äußere Einflusse der Testumgebung und der Grund, warum eine polynomielle Funktion einen besseren $R^{2}$-Wert erzielt als eine intuitiv nahe liegende lineare Funktion.
 \newline
-Ebenfalls erkennbar ist bei der Messung der Punkt, an dem die Generierung der Syntax länger dauert als die eigentliche Kompilierung: Ab einer Anzahl von ca. 260 Instruktionen ist dies der Fall.  Zusammengenommen dauert der gesamte Vorgang der Assembly-Generierung dann im Schnitt ca. 400 Millisekunden. Zu bemerken ist allerdings, dass in einem normalen Anwendungsfall der DSL eine Anzahl von 260 Instruktionen die zu erwartende Instruktionsanzahl eines DSL-Modells weit übersteigt. Ein Konversationsrouting mit derart vielen Instruktionen erreicht das Modell ein Level an Komplexität, das durch den Endbenutzer nur noch schwer nachvollziehbar ist. Daher sind Konversationsroutings in einem solchen Umfang unwahrscheinlich.  
+Ebenfalls erkennbar ist bei der Messung der Punkt, an dem die Generierung der Syntax länger dauert als die eigentliche Kompilierung: Ab einer Anzahl von ca. 260 Instruktionen ist dies der Fall.  Zusammengenommen dauert der gesamte Vorgang der Assembly-Generierung dann im Schnitt ca. 400 Millisekunden. Anzumerken ist allerdings, dass in einem normalen Anwendungsfall der DSL eine Anzahl von 260 Instruktionen die zu erwartende Instruktionsanzahl eines DSL-Modells weit übersteigt. Ein Konversationsrouting mit derart vielen Instruktionen erreicht das Modell ein Level an Komplexität, das durch den Endbenutzer nur noch schwer nachvollziehbar ist. Daher sind Konversationsroutings in einem solchen Umfang unwahrscheinlich.  
