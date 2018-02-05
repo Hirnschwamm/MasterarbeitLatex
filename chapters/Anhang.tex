@@ -1,0 +1,32 @@
+\chapter{Anhang}
+
+\section{Beigefügter Quellcode}
+Der vorliegenden Arbeit ist der im Zuge des Projektes durch den Autor entwickelte Quellcode beigefügt. Für jeden im Code enthaltenen Namespace ist in der Beilage ein Ordner angelegt, in dem die Dateien mit dem Quellcode dieses Namespaces zu finden sind. Dateinamen, die mit ``.Designer.cs''  enden, enthalten automatisch generierten Code des Windows Forms-Framework und sind der Vollständigkeit halber beigefügt. Die Namespaces und ihr Bezug zu den Komponenten der implementierten DSL ist in der untenstehenden Tabelle aufgelistet. Alle aufgeführten Namespaces sind Unter-Namespaces von \texttt{ilogixx.ConversationFlow}.
+
+\begin{table}[hbtp]
+\centering
+\settowidth\tymin{\textbf{ilogixx.ConversationFlow.PropertyEditors}}
+%\setlength\extrarowheight{2pt}
+\begin{tabulary}{1.0\textwidth}{L|L}
+\textbf{Namespace} & \textbf{Inhalt} \\
+\hline
+
+Core & Enthält die Klassendefinitionen für den Objekt-Graphen \\
+\hline
+
+Generation & Enthält Quellcode zur Transformation eines Objekt-Graphen in CLI-Syntax \\
+\hline
+
+PropertyEditors & Enthält Hilfsklassen, die verwendet werden, um grafische Benutzeroberflächen zur Spezifizierung von Instruktionsparametern anzuzeigen \\
+\hline
+
+UI & Enthält den Quellcode des Editors \\
+\hline
+
+Validation & Enthält den Quellcode, der die Modell-Validierung umsetzt \\
+\hline
+
+\end{tabulary}
+\caption{\textit{Die Namespaces des beigefügten Codes und was sie beinhalten.}}
+\label{tab:namespaces}
+\end{table}

@@ -50,7 +50,7 @@ In den Tests für die Transformator-Komponenten werden die wichtigsten Klassen f
 \item Im Falle von ungenügenden übergebenen Parametern wird eine Exception geworfen
 \end{itemize}
 
-\noindent Der Syntaxbaum besteht zum größten Teil aus der Deklaration der Klasse, die das Konversationsrouting umsetzt. Die Syntax dieser Klasse wird von \texttt{FlowClassSyntaxBuilder} erstellt und im Zuge der zugehörigen Testfälle verifiziert:
+\noindent Der Syntaxbaum besteht zum größten Teil aus der Deklaration der Klasse, die das Konversationsrouting umsetzt. Die Syntax dieser Klasse wird von \texttt{Flow\-Class\-Syn\-tax\-Buil\-der} erstellt und im Zuge der zugehörigen Testfälle verifiziert:
 
 \begin{itemize}
 \item Im Falle einer übergebenen Start-Instruktion eines korrekten DSL-Modells in Form einer \texttt{StartNode}-Instanz wird die Syntax für eine Klasse zurückgegeben, die von \texttt{ACDCallRoutingBehaviorBase} erbt, und für jede im Modell enthaltene Instruktion eine Membermethode beinhaltet. Zusätzlich existiert eine geschachtelte private Klassendeklaration für den benutzerspezifischen Code, welche auch als Membervariable in der umfassenden Klasse vertreten ist
