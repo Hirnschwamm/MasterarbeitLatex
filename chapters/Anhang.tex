@@ -41,3 +41,88 @@ Validation.Tests & Enthält Modultests für die Modell-Validierung \\
 \caption{\textit{Die Namespaces des beigefügten Codes und was sie beinhalten.}}
 \label{tab:namespaces}
 \end{table}
+
+
+
+
+
+\section{Kurzreferenz}
+\label{sec:Kurzreferenz}
+Tabelle \ref{tab:kurzreferenz} fasst die wichtigsten Begriffe der vorliegenden Ausarbeitung zusammen.
+
+\begin{table}[hbtp]
+\centering
+\settowidth\tymin{\textbf{Erklärung}}
+%\setlength\extrarowheight{2pt}
+\begin{tabulary}{1.0\textwidth}{L|L}
+\textbf{Begriff} & \textbf{Erklärung} \\
+\hline
+Abstrakte Syntax & Repräsentation einer Programmsyntax ohne Informationen über die Darstellung der Syntax.\\
+
+\hline
+
+ACD & Abk. für automatic conversation distribution. Beschreibt die automatische Verteilung von Konversation an qualifizierte Agenten. Siehe Abs. \ref{subsec:Automatische Kontaktverteilung} \\
+
+\hline
+
+Agent & Teilnehmer eines Contactcenters, der Konversationen führt. Ein Agent ist für eine oder mehrere Sprachen und Wissensbereiche qualifiziert. Siehe Abs. \ref{subsec:Agenten}. \\
+
+\hline
+
+CIL & Abk. für Common Intermediate Language. Die Sprache, in die Code von Benutzern des .NET-Frameworks übersetzt wird. \\
+
+\hline
+
+DSL & Abk. für domain-specific language, Fachbegriff für eine domänenspezifische Sprache zur Modellierung von Programmabläufen. Wird benutzt, um die im Zuge der vorliegenden Arbeit implementierte Sprache zu referenzieren.\\
+
+\hline
+
+DSL-Modell & Ein in einer DSL spezifizierter Programmablauf.\\
+
+\hline
+
+Instruktion & Bestandteil eines DSL-Modells in der implementierten DSL. Eine Instruktion führt eine bestimmte Operation auf einer eingehenden Konversation aus. Instruktionen werden auf Objekt-Graph auf \texttt{Node}-Subtyp-Instanzen abgebildet. \\
+
+\hline
+
+Konkrete Syntax & Visuelle Darstellung der Programmsyntax. Endbenutzer modellieren (im Fall einer DSL) oder programmieren (im Fall einer Universalsprache), indem sie die konkrete Syntax gestalten.\\
+
+\hline
+
+Konversation & Ein Informationsaustausch zwischen zwei Teilnehmern über einen beliebigen Kommunikationskanal (z.B. Telefon, Email, Web Chat etc.)\\
+
+\hline
+
+Konversationsrouting & Ein in der DSL spezifizierter Ablauf zu Bearbeitung einer eingehenden Konversation durch die Routing Engine. Jedes Konversationsrouting ist ein Modell der implementierten DSL.\\
+
+\hline
+
+MyCC & Abk. für MyContactCenter, einer Software zum Betreiben eines Contactcenters. Siehe Abs. \ref{sec:MyContactCenter}.\\
+
+\hline
+
+.NET & Von Microsoft entwickeltes Framework zur Entwicklung von Software. Siehe \ref{subsec:DotNet}.\\
+
+\hline
+
+Objekt-Graph & Datenstruktur von Objekt-Instanzen die durch gegenseitiges referenzieren einen Graph bilden. Wird in der implementierten DSL zum Speichern der abstrakten Syntax benutzt.\\
+
+\hline
+
+PBX & Abk. für Private Branch Exchange, der Software welche eine Telefonanlage implementiert. Siehe \ref{subsec:IP-Private Branch Exchange}.\\
+
+\hline
+
+Roslyn & .NET-Compiler-Plattform, welche es erlaubt CIL-Syntax zu generieren und zu kompilieren. Siehe \ref{subsec:Roslyn}.\\
+
+\hline
+
+Routing Engine & MyCC-Komponente, die Konversationsroutings transformiert und den entstehenden CIL-Bytecode für eingehende Konversationen ausführt. Siehe \ref{subsec:Routing Engine}.\\
+
+\hline
+SIP & Abk. für Session Initiation Protocol, ein Protokoll zum Aushandeln von Kommunikationssitzungen. Wird für die Kommunikation zwischen der Routing Engine und der PBX benutzt. \ref{subsec:Session Initiation Protocol}.  \\
+
+\end{tabulary}
+\caption{\textit{Eine Kurzreferenz der verwendeten Begriffe}}
+\label{tab:kurzreferenz}
+\end{table}

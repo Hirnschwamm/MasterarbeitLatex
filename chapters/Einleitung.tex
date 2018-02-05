@@ -9,7 +9,7 @@ Laut einer Studie, die 450 Contactcenter befragt hat (siehe \cite{Deloitte:17}),
 
 \subsection{MyContactCenter Server}
 \label{subsec:MyContactCenterServer}
-MyCC ist eine verteilte Anwendung. Die Hauptkomponente dieser Anwendung ist der MyCC-Server, welcher den Großteil der Verwaltungsaufgaben übernimmt und mit anderen MyCC-Komponenten über das Transmission Control Protocol (TCP) in Verbindung steht. Der Server verwaltet unter anderem die angemeldeten Agenten sowie Daten über ein- und ausgehende Konversationen. Eine Konversation ist im Kontext von MyCC eine Kontaktaufnahme mit dem Contactcenter durch einen Endkunden über einen beliebigen Kommunikationskanal wie zum Beispiel Telefon, Email etc. Konfiguriert wird der Server über einen Administrations-Client, in welchem der Administrator des Contactcenters alle für den Betrieb benötigten Einstellungen vornehmen kann. 
+MyCC ist eine verteilte Anwendung. Die Hauptkomponente dieser Anwendung ist der MyCC-Server, welcher den Großteil der Verwaltungsaufgaben übernimmt und mit anderen MyCC-Komponenten über das Transmission Control Protocol (TCP) in Verbindung steht. Der Server verwaltet unter anderem die angemeldeten Agenten sowie Daten über ein- und ausgehende Konversationen. Eine Konversation ist im Kontext von MyCC ein Informationsaustausch einer Komponente oder Teilnehmers des Contactcenters mit einem Endkunden über einen beliebigen Kommunikationskanal wie zum Beispiel Telefon, Email etc. Konfiguriert wird der Server über einen Administrations-Client, in welchem der Administrator des Contactcenters alle für den Betrieb benötigten Einstellungen vornehmen kann. 
 
 \subsection{IP-Private Branch Exchange}
 \label{subsec:IP-Private Branch Exchange}
@@ -28,9 +28,9 @@ Jeder Agent besitzt eine Qualifikation in Sprachen und Wissensbereichen. Sprache
 
 \newpage
 
-\subsection{Automatische Kontaktverteilung}
+\subsection{Automatische Konversationsverteilung}
 \label{subsec:Automatische Kontaktverteilung}
-Eine Kernaufgabe von MyCC ist die Automatische Kontakt Verteilung, deren englischer Fachbegriff automatic contact distribution, kurz ACD, lautet und dafür zuständig ist, eingehende Konversationen automatisch an Agenten zu verteilen. Jeder Wissensbereich besitzt eine ACD, welche Konversationen, denen dieser Wissensbereich zugewiesen wird, dem nächsten freien qualifizierten Agenten zustellt. Ist im Moment des Konversationseingangs kein Agent frei, wird diese in eine Warteschlange eingereiht und zugestellt, sobald ein qualifizierter Agent frei wird. Neben diesen herkömmlichen Warteschleifen existieren für Anrufe außerdem virtuelle Warteschleifen. Diese behalten einen Anruf in der Warteschleife, auch wenn der Anrufer aufgelegt hat. Damit wird der Anruf virtuell. Ist ein virtueller Anruf dazu bereit, einem Agenten zugestellt zu werden, nimmt MyCC Kontakt mit dem Anrufer auf, indem er entweder zurückgerufen wird oder der Anrufer von selber wieder anruft und seinen Platz in der Warteschlange wiedererlangt.
+Eine Kernaufgabe von MyCC ist die Automatische Konversationsverteilung, deren englischer Fachbegriff automatic conversation distribution, kurz ACD, lautet und dafür zuständig ist, eingehende Konversationen automatisch an Agenten zu verteilen. Jeder Wissensbereich besitzt eine ACD, welche Konversationen, denen dieser Wissensbereich zugewiesen wird, dem nächsten freien qualifizierten Agenten zustellt. Ist im Moment des Konversationseingangs kein Agent frei, wird diese in eine Warteschlange eingereiht und zugestellt, sobald ein qualifizierter Agent frei wird. Neben diesen herkömmlichen Warteschleifen existieren für Anrufe außerdem virtuelle Warteschleifen. Diese behalten einen Anruf in der Warteschleife, auch wenn der Anrufer aufgelegt hat. Damit wird der Anruf virtuell. Ist ein virtueller Anruf dazu bereit, einem Agenten zugestellt zu werden, nimmt MyCC Kontakt mit dem Anrufer auf, indem er entweder zurückgerufen wird oder der Anrufer von selber wieder anruft und seinen Platz in der Warteschlange wiedererlangt.
 
 \newpage
 
@@ -86,7 +86,7 @@ Als Benutzer von MyCC stehen die Anwender der DSL häufig in Kontakt mit dem Her
 \newpage
 
 \section{Benötigtes Vorwissen}
-MyCC kommt in einem umfangreichen Ökosystem von Drittanbieter-Software zum Einsatz. Für das weitere Verständnis der vorliegenden Arbeit werden die Prinzipien einiger Technologien und Themen erläutert, welche Einfluss auf die Implementierung der DSL nehmen. 
+MyCC kommt in einem umfangreichen Ökosystem von Drittanbieter-Software zum Einsatz. Für das weitere Verständnis der vorliegenden Arbeit werden die Prinzipien einiger Technologien und Themen erläutert, welche Einfluss auf die Implementierung der DSL nehmen. Im Anhang (siehe \ref{sec:Kurzreferenz}) ist zusätzlich eine Kurzreferenz zu finden, in der die in der vorliegenden Arbeit verwendeten Begriffe noch einmal kurz zusammengefasst werden.
 
 \subsection{.NET}
 \label{subsec:DotNet}
@@ -165,81 +165,3 @@ Die grafische Benutzeroberfläche von MyCC und damit auch des grafischen DSL-Edi
 
 \subsection{Abstrakte und konkrete Syntax}
 Im Bereich der Entwicklung von formalen Sprachen wird bei der Syntax einer Sprache oft zwischen abstrakter und konkreter Syntax unterschieden. Die abstrakte Syntax eines Programmes ist eine Repräsentation in Form einer Datenstruktur, welche die semantisch relevanten Informationen enthält (nach \cite[S. 26]{Voelter:13}). Bei Text-basierten Sprachen nimmt diese Datenstruktur oftmals die Form eines Baums an, der dann als abstrakter Syntaxbaum (engl. abstract syntax tree, kurz AST) bezeichnet wird. Die abstrakte Syntax enthält keine Informationen über die visuelle Darstellung der Programm-Syntax. Stattdessen sind diese in der konkreten Syntax enthalten, welche die Form annimmt, in der ein Endbenutzer ein Programm schreibt oder modelliert. Die Syntax eines Programmes kann auf viele verschiedene Arten und Weisen visualisiert werden, beispielsweise über Text oder eine grafische Repräsentation. Daher ist es für eine Sprache möglich, mehrere konkrete Syntaxen zu haben (vgl. \cite[S. 6f]{Kleppe:09}.
-
-\subsection{Begriffsüberischt}
-Tabelle \ref{tab:kurzreferenz} fasst die für die vorliegende Ausarbeitung wichtigsten Begriffe noch einmal zusammen.
-
-\begin{table}[hbtp]
-\centering
-\settowidth\tymin{\textbf{Erklärung}}
-%\setlength\extrarowheight{2pt}
-\begin{tabulary}{1.0\textwidth}{L|L}
-\textbf{Begriff} & \textbf{Erklärung} \\
-\hline
-Abstrakte Syntax & Repräsentation einer Programmsyntax ohne Informationen über die Darstellung der Syntax.\\
-
-\hline
-
-ACD & Abk. für automatic contact distribution. Beschreibt die automatische Verteilung von Konversation an qualifizierte Agenten. Siehe Abs. \ref{subsec:Automatische Kontaktverteilung} \\
-
-\hline
-
-Agent & Teilnehmer eines Contactcenters, der Konversationen führt. Ein Agent ist für eine oder mehrere Sprachen und Wissensbereiche qualifiziert. Siehe Abs. \ref{subsec:Agenten}. \\
-
-\hline
-
-CIL & Abk. für Common Intermediate Language. Die Sprache, in die Code von Benutzern des .NET-Frameworks übersetzt wird. \\
-
-\hline
-
-DSL & Abk. für domain-specific language, Fachbegriff für eine domänenspezifische Sprache zur Modellierung von Programmabläufen. Wird benutzt, um die im Zuge der vorliegenden Arbeit implementierte Sprache zu referenzieren.\\
-
-\hline
-
-DSL-Modell & Ein in einer DSL spezifizierter Programmablauf.\\
-
-\hline
-
-Konkrete Syntax & Visuelle Darstellung der Programmsyntax. Endbenutzer modellieren (im Fall einer DSL) oder programmieren (im Fall einer Universalsprache), indem sie die konkrete Syntax gestalten.\\
-
-\hline
-
-Konversation & Ein Informationsaustausch zwischen zwei Teilnehmern über einen beliebigen Kommunikationskanal (z.B. Telefon, Email, Web Chat etc.)\\
-
-\hline
-
-Konversationsrouting & Ein in der DSL spezifizierter Ablauf zu Bearbeitung einer eingehenden Konversation durch die Routing Engine. Jedes Konversationsrouting ist ein Modell der implementierten DSL.\\
-
-\hline
-
-MyCC & Abk. für MyContactCenter, einer Software zum Betreiben eines Contactcenters. Siehe Abs. \ref{sec:MyContactCenter}.\\
-
-\hline
-
-.NET & Von Microsoft entwickeltes Framework zur Entwicklung von Software. Siehe \ref{subsec:DotNet}.\\
-
-\hline
-
-Objekt-Graph & Datenstruktur von Objekt-Instanzen die durch gegenseitiges referenzieren einen Graph bilden. Wird in der implementierten DSL zum Speichern der abstrakten Syntax benutzt.\\
-
-\hline
-
-PBX & Abk. für Private Branch Exchange, der Software welche eine Telefonanlage implementiert. Siehe \ref{subsec:IP-Private Branch Exchange}.\\
-
-\hline
-
-Roslyn & .NET-Compiler-Plattform, welche es erlaubt CIL-Syntax zu generieren und zu kompilieren. Siehe \ref{subsec:Roslyn}.\\
-
-\hline
-
-Routing Engine & MyCC-Komponente, die Konversationsroutings transformiert und den entstehenden CIL-Bytecode für eingehende Konversationen ausführt. Siehe \ref{subsec:Routing Engine}.\\
-
-\hline
-SIP & Abk. für Session Initiation Protocol, ein Protokoll zum Aushandeln von Kommunikationssitzungen. Wird für die Kommunikation zwischen der Routing Engine und der PBX benutzt. \ref{subsec:Session Initiation Protocol}.  \\
-
-\end{tabulary}
-\caption{\textit{Eine Kurzreferenz der verwendeten Begriffe}}
-\label{tab:kurzreferenz}
-\end{table}
-
-
