@@ -135,6 +135,8 @@ stringstyle=\ttfamily\color{red}
 \tocloftpagestyle{empty}
 %\setlength{\cftsubsecnumwidth}{4em}
 
+\usepackage{pdfpages}
+
 
 %--------------------------------------------------------------------------
 \begin{document}
@@ -173,31 +175,29 @@ stringstyle=\ttfamily\color{red}
 %-----------------------------------
 % Sperrvermerk
 %-----------------------------------
-\afterpage{%
-\thispagestyle{empty}
+\includepdf[pages={1}]{img/PDFs/SignedPages.pdf}
+%\afterpage{%
+%\thispagestyle{empty}
 
-\section*{Sperrvermerk}
-Die vorliegende Abschlussarbeit mit dem Titel ``Entwurf und Implementierung einer grafischen, domänenspezifischen Sprache zur Spezifizierung des Konversationsrouting in Contactcentern'' enthält unternehmensinterne Daten der Firma ilogixx. Daher ist sie nur zur Vorlage bei der Hochschule Trier sowie den Begutachtern der Arbeit bestimmt. Für die Öffentlichkeit und dritte Personen darf sie nicht zugänglich sein.
+%\section*{Sperrvermerk}
+%Die vorliegende Abschlussarbeit mit dem Titel ``Entwurf und Implementierung einer grafischen, domänenspezifischen Sprache zur Spezifizierung des %Konversationsrouting in Contactcentern'' enthält unternehmensinterne Daten der Firma ilogixx. Daher ist sie nur zur Vorlage bei der Hochschule %Trier sowie den Begutachtern der Arbeit bestimmt. Für die Öffentlichkeit und dritte Personen darf sie nicht zugänglich sein.
 
-\par\medskip
-\par\medskip
+%\par\medskip
+%\par\medskip
 
-%\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \hspace{1.5cm} \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ \\
-%(Trier, den 06.02.2017)\hspace{1.5cm}
-%(David Wichter)
-\begin{minipage}[t]{3cm}
-\rule{4cm}{0.5pt}
-Datum
-\end{minipage}
-\hfill
-\begin{minipage}[t]{9cm}
-\rule{9cm}{0.5pt}
-Unterschrift der Kandidatin / des Kandidaten
-\end{minipage}
+%\begin{minipage}[t]{3cm}
+%\rule{4cm}{0.5pt}
+%Datum
+%\end{minipage}
+%\hfill
+%\begin{minipage}[t]{9cm}
+%\rule{9cm}{0.5pt}
+%Unterschrift der Kandidatin / des Kandidaten
+%\end{minipage}
 
-\newpage
+%\newpage
 
-}
+%}
 
 %--------------------------------------------------------------------------
 
@@ -230,7 +230,8 @@ Unterschrift der Kandidatin / des Kandidaten
 %--------------------------------------------------------------------------
 %\begin{appendix}						% Anhänge sind i.d.R. optional
    \include{chapters/Anhang}			% Glossar   
-   \include{chapters/Selbststaendigkeitserklaerung}	% Selbstständigkeitserklärung
+   \includepdf[pages={2}]{img/PDFs/SignedPages.pdf}
+   %\include{chapters/Selbststaendigkeitserklaerung}	% Selbstständigkeitserklärung
 %\end{appendix}
 
 \end{document}
