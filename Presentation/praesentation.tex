@@ -20,6 +20,9 @@
 % Englisch
 %\usepackage[english]{babel}
 
+\usepackage{calc}  
+\usepackage{enumitem}  
+
 \input{templatesetup}
 
 % Stil des Literaturverzeichnisses
@@ -48,8 +51,10 @@
 %}
 
 %Aktivieren, um alles Schritt-fuer-Schritt einzublenden
-\beamerdefaultoverlayspecification{<+->}
+%\beamerdefaultoverlayspecification{<+->}
 \setbeamercovered{invisible}
+
+\defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
 
 \begin{document}
 
@@ -57,38 +62,65 @@
 \titlepage
 \end{frame}
 
-\begin{frame}
-	\frametitle{Agenda}
-	\tableofcontents
-	%\tableofcontents[hideallsubsections] % Subsections ausblenden
-	%\tableofcontents[pausesections] %Sections Schritt-fuer-Schritt einblenden
-\end{frame}
+%\begin{frame}
+%	\frametitle{Agenda}
+%	\tableofcontents
+%	%\tableofcontents[hideallsubsections] % Subsections ausblenden
+%	%\tableofcontents[pausesections] %Sections Schritt-fuer-Schritt einblenden
+%\end{frame}
 
 \begin{frame}{Einführung}{Wer?}
 	\only<1->
-		{
-			\begin{figure}
-				\includegraphics[scale=0.08]{img/ilogixx_logo.png}
-			\end{figure}
-		}
+	{
+		\begin{figure}
+			\includegraphics[scale=0.08]{img/ilogixx_logo.png}
+		\end{figure}
+	}
 	\only<2->
-		{
-			\begin{figure}
-				\includegraphics[scale=0.65]{img/mycontactcenter_logo.jpeg}
-			\end{figure}
-		}
+	{
+		\begin{figure}
+			\includegraphics[scale=0.65]{img/mycontactcenter_logo.jpeg}
+		\end{figure}
+	}
 \end{frame}
 
 \begin{frame}{Einführung}{Was?}
-	\begin{columns}
-		\column{0.5\textwidth}
-			Blablabalbal
-		\column{0.5\textwidth}
-			\includegraphics[scale=0.5]{img/MyCC_logo.jpg}
-	\end{columns}
+	\begin{columns}[T]
+		\setbeamertemplate{description item}[align left]
+		\begin{column}{0.55\textwidth}
+			\only<2->
+			{
+				\begin{description}[leftmargin=!,labelwidth=\widthof{\bfseries Routing Engine}]
+					\item<2->[Konversation] Informationsaustausch über beliebigen Kanal
+					\item<3->[ACD] Automatic Conversation Distribution	
+					\item<4->[Agent] Contactcenter-Teilnehmer
+					\item<5->[MyCC-Server] Zentrale Verwaltungskomponente		
+					\item<6->[IP-PBX] IP-Private Branch Exchange
+					\item<7->[SIP] Session Initiation Protocol
+				\end{description}
+			}
+		\end{column}
+		\begin{column}{0.45\textwidth}
+				\only<1-7>
+				{
+					\vspace{0.5cm}
+        			\includegraphics[scale=0.4]{img/MyCC_logo.jpg}
+				}        		
+        		\only<8>
+				{
+					\vspace{0.5cm}
+					\includegraphics[scale=0.15]{img/MyCCStructure.png}
+				}
+    	\end{column}
+    \end{columns}
 \end{frame}
 
-\begin{frame}{Einführung}{Wie?}
+\begin{frame}{Einführung}{Was?}
+	\center
+	\includegraphics[width=0.9\textwidth]{img/RoutingEngineSipExplanation.png}
+\end{frame}
+
+\begin{frame}{Einführung}{Warum?}
 
 \end{frame}
 
