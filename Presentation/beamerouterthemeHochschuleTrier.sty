@@ -1,0 +1,84 @@
+\ProvidesPackage{beamerouterthemeHochschuleTrier}[2017/01/16 package beamerouterthemeHochschuleTrier]
+
+\useoutertheme{default}
+
+\RequirePackage{calc}
+\mode<presentation>
+
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{headline}{
+\leavevmode
+\usebeamercolor{headerrule}
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east] at ($(current page.north east) - (0.65cm,0.5cm)$) {\insertlogo};
+\draw[color=fg, line width=3pt] ($(current page.north west) - (0,2cm)$)--($(current page.north east) - (0,2cm)$);
+\end{tikzpicture}
+\vspace{1.9cm}
+\vfil
+}
+
+\setbeamertemplate{frametitle}{
+\leavevmode
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north west] at ($(current page.north west) + (0.8cm,-0.1cm)$) {
+\begin{minipage}[t][1.5cm][c]{\textwidth-4.5cm}
+\raggedright
+\usebeamercolor[fg]{titlelike}
+\insertframetitle{} \strut\\ \small \insertframesubtitle{} \strut
+\end{minipage}
+};
+\end{tikzpicture}
+\vspace{-0.575cm}
+}
+
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox%
+  {%
+  %\color{fhgray}\rule{\paperwidth}{0.5pt}\newline%
+  \begin{beamercolorbox}[wd=.3\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fill,rightskip=.3cm plus1fil]{footline}%
+    \usebeamerfont{footline} \insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.05\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fill,rightskip=.3cm plus1fil]{footline}%
+      $\vert$
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{footline}%
+    \usebeamerfont{} \textbf{\insertshorttitle}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.05\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fill,rightskip=.3cm plus1fil]{footline}%
+      $\vert$
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{footline}%
+    \centering \usebeamerfont{} \insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+
+\setbeamertemplate{sidebar right}{}
+
+\newcommand{\notelabel}{Notes for:}
+\addto\captionsngerman{%
+	\renewcommand{\notelabel}{Notizen zu: }%
+}
+
+\setbeamertemplate{note page}{
+	\begin{minipage}{0.2\paperwidth}
+		\insertslideintonotes{0.2}
+	\end{minipage}
+	\begin{minipage}{0.45\paperwidth}
+		\scriptsize
+		\textbf{\notelabel}\\\insertframetitle\\\insertframesubtitle
+	\end{minipage}
+	\usebeamercolor[fg]{headerrule}
+	\noindent\makebox[\linewidth]{\rule{\paperwidth}{3pt}}
+	\usebeamercolor[fg]{normal text}
+	\noindent
+	\begin{minipage}{\textwidth}
+	 	\insertnote
+	\end{minipage}
+}
+
+

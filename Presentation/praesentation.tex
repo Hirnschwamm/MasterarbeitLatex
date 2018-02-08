@@ -1,0 +1,83 @@
+%Praesentationsmodus
+\documentclass[t,aspectratio=169,divpsnames]{beamer}
+%Die Beameroption aspectratio legt das verwendete Seitenverhaeltnis fest
+%aspectratio=169	16:9 Seitenverhaeltnis
+%aspectratio=1610	16:10 Seitenverhaeltnis
+%aspectratio=43		4:3 Seitenverhaeltnis
+%Die Beameroption envcountsect nummeriert Umgebungen wie theorem pro section durch.
+%Die Beameroption divpsnames wird an das xcolor Paket durchgereicht.
+
+%Handout-Generierung mit Foliennotizen (statt obiger Zeile für den Präsentationsmodus verwenden)
+%\documentclass[t,handout,aspectratio=169]{beamer}
+%\setbeameroption{show notes}
+
+\usepackage[utf8]{inputenc}
+
+% Deutsch
+\usepackage[ngerman]{babel} 
+\usepackage{bibgerm}
+
+% Englisch
+%\usepackage[english]{babel}
+
+\input{templatesetup}
+
+% Stil des Literaturverzeichnisses
+%\bibliographystyle{geralpha}
+%\bibliographystyle{alpha}
+\bibliographystyle{abstract}
+
+%Bitte ausfuellen:
+\title{Haupttitel der Präsentation}
+\subtitle{Titelzusatz}
+\author{Author}
+\institute{Hochschule Trier}
+\date{Datum hier eintragen}
+\subject{Thema für PDF-Metadaten (optional)}
+
+%Inhaltsverzeichnisses bis auf subsubsection-Ebene:
+%\setcounter{tocdepth}{3}
+
+%Aktivieren, um am Anfang jeder Section ein Inhaltsverzeichnis zur Section anzuzeigen
+%\AtBeginSection[]
+%{
+%\begin{frame}<beamer>
+%\frametitle{Agenda}
+%\tableofcontents[currentsection,hideothersubsections,sectionstyle=show/hide,subsubsectionstyle=show/show]
+%\end{frame}
+%}
+
+%Aktivieren, um alles Schritt-fuer-Schritt einzublenden
+%\beamerdefaultoverlayspecification{<+->}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Agenda}
+\tableofcontents
+%\tableofcontents[hideallsubsections] % Subsections ausblenden
+%\tableofcontents[pausesections] %Sections Schritt-fuer-Schritt einblenden
+\end{frame}
+
+
+
+\section*{Schluss}
+\begin{frame}
+	\begin{center}
+		\huge{Vielen Dank für die Aufmerksamkeit}
+	\end{center}
+	\begin{center}
+		\Huge{Fragen?}
+	\end{center}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{\bibname}
+\bibliography{literatur}     %BibTeX-Datei literatur.bib
+\end{frame}
+
+
+\end{document}

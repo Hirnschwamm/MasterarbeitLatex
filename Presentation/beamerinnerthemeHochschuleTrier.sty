@@ -1,0 +1,34 @@
+\ProvidesPackage{beamerinnerthemeHochschuleTrier}[2017/01/16 package beamerinnerthemeHochschuleTrier]
+
+\useinnertheme{circles}
+
+%Angelehnt an die Definition von {section in toc} in beamer:
+\setbeamertemplate{subsection in toc}{\leavevmode\leftskip=2ex%
+	\leftskip=2em\llap{%
+		\usebeamerfont*{subsection number projected}%
+		\usebeamercolor{subsection number projected}%
+		\begin{pgfpicture}{-1ex}{0ex}{1ex}{2ex}
+			\color{bg}
+			\pgfpathcircle{\pgfpoint{0pt}{.65ex}}{.95ex}
+			\pgfusepath{fill}
+			\pgftext[base]{\color{fg}\inserttocsubsectionnumber}
+		\end{pgfpicture}\kern1.25ex%
+	}%
+	\inserttocsubsection\par}
+\setbeamertemplate{subsubsection in toc}{\leavevmode\leftskip=2ex%
+	\leftskip=4em\llap{%
+		\usebeamerfont*{subsubsection number projected}%
+		\usebeamercolor{subsubsection number projected}%
+		\begin{pgfpicture}{-1ex}{0ex}{1ex}{2ex}
+			\color{bg}
+			\pgfpathcircle{\pgfpoint{0pt}{.65ex}}{.8ex}
+			\pgfusepath{fill}
+			\pgftext[base]{\color{fg}\inserttocsubsubsectionnumber}
+		\end{pgfpicture}\kern1.25ex%
+	}%
+	\inserttocsubsubsection\par}
+
+
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{theorems}[ams style]
