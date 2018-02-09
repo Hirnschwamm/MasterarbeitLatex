@@ -21,7 +21,7 @@
 %\usepackage[english]{babel}
 
 \usepackage{calc}  
-\usepackage{enumitem}  
+%\usepackage{enumitem}  
 
 \input{templatesetup}
 
@@ -90,7 +90,7 @@
 		\begin{column}{0.55\textwidth}
 			\only<2->
 			{
-				\begin{description}[leftmargin=!,labelwidth=\widthof{\bfseries Routing Engine}]
+				\begin{description}[MyCC-Server]
 					\item<2->[Konversation] Informationsaustausch über beliebigen Kanal
 					\item<3->[ACD] Automatic Conversation Distribution	
 					\item<4->[Agent] Contactcenter-Teilnehmer
@@ -120,8 +120,44 @@
 	\includegraphics[width=0.9\textwidth]{img/RoutingEngineSipExplanation.png}
 \end{frame}
 
-\begin{frame}{Einführung}{Warum?}
+\begin{frame}{Einführung}{Was?}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+				\item Charakteristiken domänenspezifischer Sprachen (nach \cite[S. 30ff]{Voelter:13})
+				\begin{itemize}
+					\item<2-> Domäne vs. General Purpose
+					\item<3-> Modellieren vs. Programmieren
+					\item<4-> Abstraktion vs. Maschinennähe
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\only<2>
+			{
+				\center
+				\includegraphics[width=0.4\textwidth]{img/Druckpresse.jpg}
+				\includegraphics[width=0.58\textwidth]{img/TuringMachine.jpg}
+			}
+		\end{column}
+	\end{columns}
+\end{frame}
 
+\begin{frame}{Einführung}{Warum?}
+	\begin{itemize}
+		\item<1-> Kunden von MyCC wollen...
+			\begin{itemize}
+				\item<2-> Anpassbarkeit 
+				\item<3-> Benutzerfreundlichkeit
+				\item<4-> Funktionsumfang
+			\end{itemize}
+		\item<5-> Gewinne für MyCC sind...
+			\begin{itemize}
+				\item<6-> Flexibilität
+				\item<7-> Unabhängigkeit
+				\item<8-> Skalierbarkeit
+			\end{itemize}
+	\end{itemize}
 \end{frame}
 
 \section*{Schluss}
