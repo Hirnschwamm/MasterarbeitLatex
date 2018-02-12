@@ -194,14 +194,35 @@ stringstyle=\ttfamily\color{red}
 \end{frame}
 
 \begin{frame}{Einführung}{Warum?}
-	\begin{itemize}
-		\item<1-> Kunden von MyCC wollen...
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
 			\begin{itemize}
-				\item<2-> Anpassbarkeit 
-				\item<3-> Benutzerfreundlichkeit
-				\item<4-> Funktionsumfang
+				\item<1-> Kunden von MyCC wollen...
+				\begin{itemize}
+					\item<2-> Anpassbarkeit 
+					\item<3-> Benutzerfreundlichkeit
+					\item<4-> Funktionsumfang
+				\end{itemize}
 			\end{itemize}
-	\end{itemize}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\only<2>
+			{
+				\center
+				\includegraphics[width=\textwidth]{img/Anpassbarkeit.jpg}
+			}
+			\only<3>
+			{
+				\center
+				\includegraphics[width=\textwidth]{img/Benutzerfreundlichkeit.jpg}
+			}
+			\only<4>
+			{
+				\center
+				\includegraphics[width=\textwidth]{img/Funktionsumfang.jpg}
+			}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \begin{frame}{Entwurf}{Die Sprache}
@@ -228,16 +249,13 @@ stringstyle=\ttfamily\color{red}
 \end{frame}
 
 \begin{frame}{Implementierung}{Editor}
-	\only<1>
-	{	
-		\center
-		\includegraphics[width=0.7\textwidth]{img/FlowClassStructure.png}
-	}
-	\only<2>
-	{
-		\center
-		\includegraphics[width=0.65\textwidth]{img/NodeHierarchy.png}
-	}
+	\center
+	\includegraphics[width=0.7\textwidth]{img/FlowClassStructure.png}
+\end{frame}
+
+\begin{frame}{Implementierung}{Editor}
+	\center
+	\includegraphics[width=0.65\textwidth]{img/NodeHierarchy.png}
 \end{frame}
 
 \begin{frame}[fragile]{Implementierung}{Transformation}
@@ -267,13 +285,26 @@ stringstyle=\ttfamily\color{red}
 	\end{columns}
 \end{frame}
 
+\begin{frame}{Implementierung}{Transformation}
+	\center
+	\includegraphics[width=0.45\textwidth]{img/TransformatorUML.png}
+\end{frame}
+
+\begin{frame}{Evaluierung}{Laufzeit}
+	\center
+	\includegraphics[width=0.65\textwidth]{img/AverageTimeDiagram2.png}
+\end{frame}
+
 \section*{Schluss}
 \begin{frame}
 	\begin{center}
-		\huge{Vielen Dank für die Aufmerksamkeit}
-	\end{center}
-	\begin{center}
 		\Huge{Fragen?}
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+		\Huge{Vielen Dank für die Aufmerksamkeit!}
 	\end{center}
 \end{frame}
 
