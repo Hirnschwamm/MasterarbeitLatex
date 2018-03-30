@@ -92,6 +92,11 @@
  	\end{minipage}
 
 \vfil
+\vspace{1cm}
+\begin{figure}
+\centering
+\includegraphics[scale=0.2]{img/sperrvermerk.png}{\centering}
+\end{figure}
 \null
 \end{titlepage}
 }
