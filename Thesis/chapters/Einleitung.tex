@@ -138,23 +138,35 @@ var tree = generator.CompilationUnit(classDeclarationArray).SyntaxTree;
 
 \subsection{Asynchrone Methodenausführung in .NET}
 \label{subsec:Asynchrone Methodenausfuehrung}
-Einige Operationen innerhalb eines Konversationsroutings müssen den Ablauf dieses Routings für eine gewisse Dauer anhalten, bevor die nächste Operation ausgeführt werden kann. Zum Beispiel wird beim Abspielen einer Audiodatei das Konversationsrouting nicht fortgeführt, bis die Audiodatei nicht vollständig wiedergegeben ist. Die Umsetzung solcher Operationen im Quellcode  der Transformation blockiert den Programmfluss jedoch nicht, da diese Operationen mittels asynchroner Methodenausführung auf anderen Threads ausgeführt werden. Dies findet in .NET über das Async/Await-Sprachkonstrukt statt, welches anhand des untenstehenden Codes erklärt wird.
+Einige Operationen innerhalb eines Konversationsroutings müssen den Ablauf dieses Routings für eine gewisse Dauer anhalten, bevor die nächste Operation ausgeführt werden kann. Zum Beispiel wird beim Abspielen einer Audiodatei das Konversationsrouting nicht fortgeführt, bis die Audiodatei nicht vollständig wiedergegeben ist. Die Umsetzung solcher Operationen im Quellcode blockiert den Programmfluss jedoch nicht, da diese Operationen mittels asynchroner Methodenausführung auf anderen Threads ausgeführt werden. Dies findet in .NET über das Async/Await-Sprachkonstrukt statt, welches anhand des untenstehenden Codes erklärt wird.
 \noindent
 \newline
 \begin{lstlisting}[language=custom]
-async Task<int> A ()
+int A()
 {
-	int temp = await B();
-	return temp;
+	Task<int> bTask = B();
+	bTask.Wait();
+	return bTask.Result;
 }
-
-Task<int> B ()
+        
+async Task<int> B()
+{
+	Task<int> cTask = C();
+	int t1 = DoOtherWork();
+	int t2 = await cTask;	        
+	return t1 + t2;
+}
+        
+Task<int> C()
 {
 	return Task.Run<int>( () => DoWork() );
 }
 \end{lstlisting}
 
-\noindent Eine Methode, hier genannt Methode \texttt{A}, kann mit dem Schlüsselwort \texttt{async} gekennzeichnet werden. Dies signalisiert, dass \texttt{A} eine asynchrone Methode ist, welche in ihrem Methoden-Körper mittels des \texttt{await}-Schlüsselworts auf die andere Methode \texttt{B} warten kann. Trifft der Programmfluss auf dieses \texttt{await}, wird die Kontrolle an den Aufrufer von \texttt{A} zurückgegeben, während auf das Ergebnis von \texttt{B} gewartet wird. Der Aufrufer von \texttt{A} kann nun mit seiner Arbeit weitermachen, oder gemäß des Musters mittels \texttt{await} auf \texttt{A} warten. \texttt{B}s Arbeit wird mit der Methode \texttt{Task.Run} gestartet, welche die zu verrichtende Arbeit auf einem anderen Thread startet und ein \texttt{Task}-Objekt zurückgibt. Ein Thread repräsentiert einen weiteren Pro\-gramm\-ab\-lauf, welcher im aktuellen Prozess nebenläufig zu anderen Programmabläufen ausgeführt wird. Ein \texttt{Task}-Objekt bildet eine auszuführende Aufgabe ab, die asynchron zum aktuellen Hauptthread des Programmes abläuft. Ist der mit \texttt{Task.Run} gestartete Thread mit seiner Arbeit fertig (in diesem Fall mit der Methode \texttt{DoWork}) wird das Ergebnis in dem \texttt{Task}-Objekt gespeichert, von dem \texttt{await}-Operator abgeholt, und in die Variable \texttt{temp} geschrieben. \texttt{temp} wird nun zurückgeliefert, sodass das von A zurückgelieferte \texttt{Task}-Objekt nun das gewünschte Ergebnis enthält. Auf diese Weise wurde der Hauptprogrammfluss nicht blockiert, obwohl eine potentiell zeitintensive Operation in \texttt{B} ausgeführt wurde.
+\noindent
+Das Code-Beispiel beginnt mit der Methode \texttt{A}, welche eine herkömmliche synchrone Methode mit einem Integer als Rückgabewert repräsentiert. \texttt{A} ruft in der ersten Zeile die Methode \texttt{B} auf, deren Rückgabewert ein Objekt vom Typ \texttt{Task<int>} ist. Ein \texttt{Task}-Objekt bildet eine auszuführende Aufgabe ab, die asynchron zum aktuellen Hauptthread des Programms abläuft. Der Typparameter \texttt{<int>} zeigt an, dass der Task nach seiner Fertigstellung als Ergebnis einen Integer beinhalten wird. Beim Aufruf \texttt{B()} wechselt der Programmfluss in die Methode \texttt{B}. Hier wird die Methode \texttt{C} aufgerufen und der von ihr zurückgelieferte \texttt{Task} in einer lokalen Variable \texttt{cTask} gespeichert. \texttt{C} startet mittels der Framework-Methode \texttt{Task.Run} die Methode \texttt{DoWork} auf einem neuen Thread, sodass \texttt{DoWork} nebenläufig ausgeführt wird. Als Ergebnis erhält \texttt{C} ein \texttt{Task}-Objekt, welches es an \texttt{B} zurückliefert. \texttt{B} kann nun Arbeit verrichten, für die es das Ergebnis von \texttt{C} nicht benötigt, während \texttt{DoWork} asynchron weiterläuft. Diese unabhängige Arbeit wird durch den Aufruf von \texttt{DoOtherWork} symbolisiert. Ist \texttt{B} an einem Punkt angekommen, an dem der Rückgabewert von \texttt{C} benötigt wird, benutzt \texttt{B} das \texttt{await}-Schlüsselwort, um das Ergebnis des \texttt{Task}-Objektes zu erhalten. Das \texttt{await}-Schlüsselwort kann nur in Methoden verwendet werden, die in ihrer Signatur mit dem \texttt{async}-Schlüsselwort als asynchrone Methoden designiert wurden und gibt die Kontrolle an den Aufrufer der Methode ab, bis das abzuwartende Ergebnis vorliegt. Auf diese Weise blockiert der aktuelle Thread nicht an dieser Stelle, sondern kehrt zu \texttt{A} zurück. \texttt{A} wartet nun über \texttt{Task.Wait} darauf, bis der Task fertig ist. Im Gegensatz zu einem Aufruf mit \texttt{await} blockiert der aktuelle Thread nun an dieser Stelle. Ist der von \texttt{C} gestartete asynchrone Thread mit der \texttt{DoWork}-Methode fertig, wird das Ergebnis vom \texttt{await}-Operator abgeholt und der lokalen Variable \texttt{t2} zugewiesen. \texttt{B} kann seine Arbeit nun zu Ende bringen und gibt ein Ergebnis zurück, sodass der \texttt{Wait}-Aufruf in \texttt{A} terminiert. \texttt{B}s Ergebnis steht nun in \texttt{bTask.Result} zur Verfügung, welches von \texttt{A} zurückgeliefert wird. 
+\newline
+Es ist zu beachten, dass A statt dem \texttt{Wait}-Aufruf genauso mit dem Async/Await-Entwurfsmuster fortführen könnte, indem es auf \texttt{B} mit dem \texttt{await}-Operator wartet und so die Kontrolle an seinen eigenen Aufrufer zurückgibt. Durch diese Propagierung kann sich das Entwurfsmuster weiter durch den Programmcode ziehen. Dies wird laut \cite[S. 6f]{Cleary:14} gegenüber dem synchronen Blockieren von Threads empfohlen, um Deadlocks zu vermeiden.
 
 \subsection{Session Initiation Protocol}
 \label{subsec:Session Initiation Protocol}
@@ -164,4 +176,4 @@ Die Kommunikation der Routing Engine mit der PBX findet über das Session Initia
 Die grafische Benutzeroberfläche von MyCC und damit auch des grafischen DSL-Editors ist mit der Windows Forms-Technologie implementiert. Dabei handelt es sich um eine .NET-Bibliothek, die Komponenten zum Darstellen von grafischen Benutzeroberflächen zur Verfügung stellt. Obwohl es neuere Frameworks zur Entwicklung von grafischen Benutzeroberflächen gibt (zum Beispiel die Windows Presentation Foundation), werde Windows Forms laut Microsoft weiterhin unterstützt und gewartet (siehe \cite{Allen:14}). Programme, die Windows Forms verwenden, benutzen zur Interaktion mit der Benutzeroberfläche .NET Events \cite[S. 171ff]{Platt:03}. Das heißt, dass die grafische Benutzeroberfläche aus Komponenten (sog. Controls) zusammengestellt wird, welche bei Interaktion durch einen Benutzer Events auslösen, auf die zu Grunde liegender Code dann reagieren kann. Zur Ergänzung von Windows Forms wird in der vorliegenden Arbeit die Drittanbieter-Bibliothek Devexpress verwendet, welche Erweiterungen vor allem in Form von komplexen Controls zur Verfügung stellt. 
 
 \subsection{Abstrakte und konkrete Syntax}
-Im Bereich der Entwicklung von formalen Sprachen wird bei der Syntax einer Sprache oft zwischen abstrakter und konkreter Syntax unterschieden. Die abstrakte Syntax eines Programmes ist eine Repräsentation in Form einer Datenstruktur, welche die semantisch relevanten Informationen enthält (nach \cite[S. 26]{Voelter:13}). Bei Text-basierten Sprachen nimmt diese Datenstruktur oftmals die Form eines Baums an, der dann als abstrakter Syntaxbaum (engl. abstract syntax tree, kurz AST) bezeichnet wird. Die abstrakte Syntax enthält keine Informationen über die visuelle Darstellung der Programm-Syntax. Stattdessen sind diese in der konkreten Syntax enthalten, welche die Form annimmt, in der ein Endbenutzer ein Programm schreibt oder modelliert. Die Syntax eines Programmes kann auf viele verschiedene Arten und Weisen visualisiert werden, beispielsweise über Text oder eine grafische Repräsentation. Daher ist es für eine Sprache möglich, mehrere konkrete Syntaxen zu haben (vgl. \cite[S. 6f]{Kleppe:09}.
+Im Bereich der Entwicklung von formalen Sprachen wird bei der Syntax einer Sprache oft zwischen abstrakter und konkreter Syntax unterschieden. Die abstrakte Syntax eines Programmes ist eine Repräsentation in Form einer Datenstruktur, welche die semantisch relevanten Informationen enthält (nach \cite[S. 26]{Voelter:13}). Bei Text-basierten Sprachen nimmt diese Datenstruktur oftmals die Form eines Baums an, der dann als abstrakter Syntaxbaum (engl. abstract syntax tree, kurz AST) bezeichnet wird. Die abstrakte Syntax enthält keine Informationen über die visuelle Darstellung der Programm-Syntax. Stattdessen sind diese in der konkreten Syntax enthalten, welche die Form annimmt, in der ein Endbenutzer ein Programm schreibt oder modelliert. Die Syntax eines Programmes kann auf viele verschiedene Arten und Weisen visualisiert werden, beispielsweise über Text oder eine grafische Repräsentation. Daher ist es für eine Sprache möglich, mehrere konkrete Syntaxen zu haben (vgl. \cite[S. 6f]{Kleppe:09}).
