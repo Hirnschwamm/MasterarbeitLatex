@@ -123,74 +123,14 @@ stringstyle=\ttfamily\color{red}
 \end{frame}
 
 \begin{frame}{Einführung}{Was?}
-	\begin{columns}[T]
-		\setbeamertemplate{description item}[align left]
-		\begin{column}{0.55\textwidth}
-			\only<2->
-			{
-				\begin{description}[MyCC-Server]
-					\item<2->[Konversation] Informationsaustausch über beliebigen Kanal
-					\item<3->[ACD] Automatic Conversation Distribution	
-					\item<4->[Agent] Contactcenter-Teilnehmer
-					\item<5->[MyCC-Server] Zentrale Verwaltungskomponente		
-					\item<6->[IP-PBX] IP-Private Branch Exchange
-					\item<7->[SIP] Session Initiation Protocol
-				\end{description}
-			}
-		\end{column}
-		\begin{column}{0.45\textwidth}
-				\only<1-7>
-				{
-					\vspace{0.5cm}
-        			\includegraphics[scale=0.4]{img/MyCC_logo.jpg}
-				}        		
-        		\only<8>
-				{
-					\vspace{0.5cm}
-					\includegraphics[scale=0.15]{img/MyCCStructure.png}
-				}
-    	\end{column}
-    \end{columns}
+	\begin{figure}
+		\includegraphics[scale=0.2]{img/MyCCStructure.png}
+	\end{figure}
 \end{frame}
 
 \begin{frame}{Einführung}{Was?}
 	\center
 	\includegraphics[width=0.9\textwidth]{img/RoutingEngineSipExplanation.png}
-\end{frame}
-
-\begin{frame}{Einführung}{Was?}
-	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			\begin{itemize}
-				\item Charakteristiken domänenspezifischer Sprachen (nach \cite[S. 30ff]{Voelter:13})
-				\begin{itemize}
-					\item<2-> Domäne vs. General Purpose
-					\item<3-> Modellieren vs. Programmieren
-					\item<4-> Abstraktion vs. Maschinennähe
-				\end{itemize}
-			\end{itemize}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			\only<2>
-			{
-				\center
-				\includegraphics[width=0.4\textwidth]{img/Druckpresse.jpg}
-				\includegraphics[width=0.58\textwidth]{img/TuringMachine.jpg}
-			}
-			\only<3>
-			{
-				\center
-				\includegraphics[width=0.49\textwidth]{img/UMLModel.png}
-				\includegraphics[width=0.49\textwidth]{img/SourceCode.png}
-			}
-			\only<4>
-			{
-				\center
-				\includegraphics[width=0.33\textwidth]{img/GearShift.jpg}
-				\includegraphics[width=0.64\textwidth]{img/GearShiftTechnical.jpg}
-			}
-		\end{column}
-	\end{columns}
 \end{frame}
 
 \begin{frame}{Entwurf}{Die Sprache}
@@ -207,23 +147,13 @@ stringstyle=\ttfamily\color{red}
 	\only<3>
 	{
 		\center
-		\includegraphics[width=0.6\textwidth]{img/TestRouting.png}
-	}
-	\only<4>
-	{
-		\center
 		\includegraphics[width=0.7\textwidth]{img/Verarbeitungsschritte.png}
 	}
 \end{frame}
 
-\begin{frame}{Implementierung}{Editor}
+\begin{frame}{Implementierung}{Objekt-Graph}
 	\center
 	\includegraphics[width=0.7\textwidth]{img/FlowClassStructure.png}
-\end{frame}
-
-\begin{frame}{Implementierung}{Editor}
-	\center
-	\includegraphics[width=0.65\textwidth]{img/NodeHierarchy.png}
 \end{frame}
 
 \begin{frame}[fragile]{Implementierung}{Transformation}
@@ -253,11 +183,6 @@ stringstyle=\ttfamily\color{red}
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Implementierung}{Transformation}
-	\center
-	\includegraphics[width=0.45\textwidth]{img/TransformatorUML.png}
-\end{frame}
-
 \begin{frame}{Evaluierung}{Laufzeit}
 	\center
 	\includegraphics[width=0.65\textwidth]{img/AverageTimeDiagram2.png}
@@ -275,10 +200,5 @@ stringstyle=\ttfamily\color{red}
 		\Huge{Vielen Dank für die Aufmerksamkeit!}
 	\end{center}
 \end{frame}
-
-\begin{frame}[allowframebreaks]{\bibname}
-\bibliography{literatur}     %BibTeX-Datei literatur.bib
-\end{frame}
-
 
 \end{document}
